@@ -1,0 +1,124 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Lottery Order",
+      "description": "A booking request for a lottery ticket",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "lotteryType": { "type": "string" },
+        "tickets": { "type": "string" },
+        "ticketCount": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "utrNumber": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "paymentProof": { "type": "string", "description": "Base64 string of payment screenshot" },
+        "status": { "type": "string", "enum": ["Pending", "Confirmed", "Rejected"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Grievance": {
+      "title": "User Grievance",
+      "description": "A complaint or feedback from a user",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "subject": { "type": "string" },
+        "message": { "type": "string" },
+        "isWinnerClaim": { "type": "boolean" },
+        "bankDetails": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Resolved"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "AgentApplication": {
+      "title": "Agent Application",
+      "description": "An application to become a lottery agent",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "city": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Approved", "Rejected"] },
+        "agentPassword": { "type": "string", "description": "Auto-generated admin password for agent" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "NewsItem": {
+      "title": "News Item",
+      "description": "Latest announcements and news",
+      "type": "object",
+      "properties": {
+        "day": { "type": "string" },
+        "month": { "type": "string" },
+        "title": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Result": {
+      "title": "Draw Result",
+      "description": "Lottery draw results",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "date": { "type": "string" },
+        "prize1": { "type": "string" },
+        "prize1Amount": { "type": "number" },
+        "prize2": { "type": "string" },
+        "prize2Amount": { "type": "number" },
+        "prize3": { "type": "string" },
+        "prize3Amount": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Setting": {
+      "title": "Global Settings",
+      "description": "App-wide settings",
+      "type": "object",
+      "properties": {
+        "upi_id": { "type": "string" },
+        "marquee_text": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/lottery_orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of ticket orders"
+    },
+    "/grievances/{grievanceId}": {
+      "schema": "Grievance",
+      "description": "Collection of user grievances"
+    },
+    "/agent_applications/{appId}": {
+      "schema": "AgentApplication",
+      "description": "Collection of agent applications"
+    },
+    "/news_items/{newsId}": {
+      "schema": "NewsItem",
+      "description": "Collection of news items"
+    },
+    "/results/{resultId}": {
+      "schema": "Result",
+      "description": "Collection of draw results"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Application settings document"
+    },
+    "/admins/{uid}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" }
+        }
+      },
+      "description": "List of authorized admin users"
+    }
+  }
+}

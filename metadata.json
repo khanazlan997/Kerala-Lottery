@@ -1,0 +1,8 @@
+{
+  "name": "Kerala Lottery Portal",
+  "description": "Official-style portal for Kerala State Lottery with ticket booking, order tracking, and results.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

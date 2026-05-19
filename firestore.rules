@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) || 
+        exists(/databases/$(database)/documents/agents/$(request.auth.uid)) ||
+        exists(/databases/$(database)/documents/authorized_emails/$(request.auth.token.email)) ||
+        request.auth.token.email == "admin@kerala.com" ||
+        request.auth.token.email == "khanazlan997@gmail.com"
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Orders: Public can create and read (for tracking). Admin can manage.
+    match /lottery_orders/{orderId} {
+      allow create: if true; 
+      allow read: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Grievances: Public can create, only admin can manage.
+    match /grievances/{grievanceId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Agent Applications: Public can create, only admin can manage.
+    match /agent_applications/{appId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // News Items: Public read, Admin write.
+    match /news_items/{newsId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Results: Public read (explicit get/list), Admin write.
+    match /results/{resultId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Settings: Public read, Admin write.
+    match /settings/{settingId} {
+      allow get, list: if true;
+      allow write: if isAdmin();
+    }
+
+    // Admins: Only authorized users or existing admins can manage.
+    match /admins/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (
+        request.auth.token.email == "admin@kerala.com" || 
+        request.auth.token.email == "khanazlan997@gmail.com"
+      );
+      allow update, delete: if isAdmin();
+    }
+
+    // Test Connection
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Default deny for EVERYTHING ELSE
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
