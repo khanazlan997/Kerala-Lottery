@@ -253,30 +253,32 @@
         .hero-cta-bar {
             width: 100%;
             background: #1e293b;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
+            flex-direction: column;
             z-index: 20;
-            border-top: 1px solid var(--primary-gold);
+            border-top: 2px solid var(--primary-gold);
             margin-bottom: 30px;
         }
         .cta-item {
-            padding: 15px;
+            padding: 24px 20px;
             text-align: center;
             color: #fff;
             cursor: pointer;
-            transition: background 0.3s;
-            border-right: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            border-bottom: 3px solid #0f172a;
             font-family: var(--accent-font);
-            font-size: 13px;
-            font-weight: 500;
+            font-size: 26px;
+            font-weight: 800;
             text-transform: uppercase;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            gap: 4px;
+            gap: 15px;
+            letter-spacing: 1.5px;
         }
         .cta-item:hover { background: var(--primary-gold); color: #000; }
-        .cta-item i { font-style: normal; font-size: 18px; }
+        .cta-item i, .cta-item svg { font-style: normal; font-size: 30px; width: 30px !important; height: 30px !important; }
 
         /* --- MARQUEE --- */
         .marquee-wrapper {
@@ -759,7 +761,6 @@
         /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
             .section-container { padding: 0 4%; }
-            .hero-cta-bar { grid-template-columns: repeat(4, 1fr); }
         }
 
         @media (max-width: 768px) {
@@ -768,8 +769,7 @@
             }
             .hero { height: 420px; }
             .slide h2 { font-size: clamp(1.8rem, 10vw, 3rem); }
-            .hero-cta-bar { grid-template-columns: repeat(2, 1fr); }
-            .cta-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px; font-size: 11px; }
+            .cta-item { padding: 20px 15px; font-size: 22px; border-bottom: 2px solid #0f172a; }
             .header-info { display: none; }
             nav { padding: 0 15px; }
             .logo-box img { height: 45px !important; }
@@ -800,7 +800,7 @@
             .booking-grid { grid-template-columns: 1fr; }
             .logo-text h1 { font-size: 14px; }
             .logo-text span { font-size: 8px; }
-            .hero-cta-bar { grid-template-columns: repeat(2, 1fr); }
+            .cta-item { padding: 16px 12px; font-size: 19px; }
             .footer-grid { grid-template-columns: 1fr; text-align: center; }
             .section-header h2 { font-size: 22px; }
             
@@ -971,12 +971,12 @@
 
     <!-- LATEST ANNOUNCEMENTS SECTION -->
     <section class="section-container">
-        <div class="latest-draw-btns" style="display: flex; gap: 15px; margin-bottom: 25px; justify-content: center;">
-            <button class="btn-gold" style="flex: 1; max-width: 200px; display: flex; align-items: center; justify-content: center; gap: 10px;" onclick="openModal('resultModal')">
-                <i data-lucide="award"></i> View Result
+        <div class="latest-draw-btns" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; align-items: center; justify-content: center; width: 100%;">
+            <button class="btn-gold" style="width: 100%; max-width: 500px; padding: 20px 24px; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px; border-radius: 8px;" onclick="openModal('resultModal')">
+                <i data-lucide="award" style="width: 28px; height: 28px;"></i> View Result
             </button>
-            <button class="btn-gold" style="flex: 1; max-width: 200px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #1e293b;" onclick="openModal('trackModal')">
-                <i data-lucide="search"></i> Order Track
+            <button class="btn-gold" style="width: 100%; max-width: 500px; padding: 20px 24px; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 12px; background: #1e293b; border-radius: 8px;" onclick="openModal('trackModal')">
+                <i data-lucide="search" style="width: 28px; height: 28px;"></i> Order Track
             </button>
         </div>
 
@@ -1281,7 +1281,7 @@
                     <input type="text" id="pay-utr" placeholder="Enter Transaction ID">
                 </div>
                 <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-                    <label>Screenshot Proof (Optional)</label>
+                    <label>Screenshot Proof (Mandatory) / स्क्रीनशॉट प्रूफ (अनिवार्य) <span style="color: #ef4444;">*</span></label>
                     <input type="file" id="pay-ss" accept="image/*" style="font-size: 12px;" onchange="previewSS()">
                     <div id="ss-preview" style="margin-top: 10px;"></div>
                 </div>
@@ -1313,6 +1313,7 @@
                 <div class="admin-nav-item active" onclick="switchAdminTab(this, 'dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></div>
                 <div class="admin-nav-item" onclick="switchAdminTab(this, 'orders')"><i data-lucide="shopping-bag"></i> <span>Orders</span></div>
                 <div class="admin-nav-item" onclick="switchAdminTab(this, 'results')"><i data-lucide="trophy"></i> <span>Results</span></div>
+                <div class="admin-nav-item" onclick="switchAdminTab(this, 'analysis')"><i data-lucide="bar-chart-2"></i> <span>Ticket Analysis</span></div>
                 <div class="admin-nav-item" onclick="switchAdminTab(this, 'news')"><i data-lucide="newspaper"></i> <span>News</span></div>
                 <div class="admin-nav-item" onclick="switchAdminTab(this, 'grievances')"><i data-lucide="clipboard-list"></i> <span>Grievances</span></div>
                 <div class="admin-nav-item" onclick="switchAdminTab(this, 'agents')"><i data-lucide="users"></i> <span>Agents</span></div>
@@ -1322,6 +1323,125 @@
             <main class="admin-main" id="admin-content">
                 <!-- Admin tabs content dynamically loaded -->
             </main>
+        </div>
+    </div>
+
+    <!-- MODAL: WINNER CONGRATULATIONS & CLAIM -->
+    <div class="modal-overlay" id="winnerClaimModal">
+        <div class="modal-content" style="max-width: 480px; position: relative; border: 2px solid #eab308; box-shadow: 0 25px 50px -12px rgba(234, 179, 8, 0.4); padding:0; border-radius:12px; overflow:hidden;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #fef08a 0%, #fefce8 100%); border-bottom: 1.5px solid #fef08a; padding: 15px 20px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="color: #854d0e; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; margin:0; font-size:16px;">
+                    <i data-lucide="crown" style="color: #eab308; width:18px; height:18px;"></i> Winner Claim Portal
+                </h3>
+                <span class="close-modal" onclick="closeModal('winnerClaimModal')" style="color: #854d0e; cursor:pointer; font-size:24px; font-weight:bold; line-height:1;">&times;</span>
+            </div>
+            
+            <div class="modal-body" id="winner-modal-body" style="padding: 24px; text-align: center; max-height:85vh; overflow-y:auto; background:#fff;">
+                <!-- Step 1: Congratulation Popup Content -->
+                <div id="winner-claim-step1">
+                    <div style="font-size: 60px; line-height: 1; margin: 10px 0 20px 0; animation: bounce 2s infinite;">🏆</div>
+                    <h2 style="font-family: var(--heading-font); color: #b91c1c; font-size: 26px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Congratulations!</h2>
+                    <h5 style="color: #c2410c; font-size: 14px; font-weight: 700; margin-bottom: 20px;">बधाई हो! आप विजेता बन चुके हैं!</h5>
+                    
+                    <div style="background: linear-gradient(135deg, #fefeba, #fef08a); border: 1.5px dashed #eab308; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #854d0e; letter-spacing: 1px; display: block; margin-bottom: 4px;">YOUR TOTAL WINNING AMOUNT (कुल इनाम राशि)</span>
+                        <div style="font-size: 32px; font-weight: 900; color: #b91c1c; font-family: var(--heading-font); text-shadow: 0 1px 1px #fff;" id="winner-claim-total">₹0</div>
+                    </div>
+
+                    <p style="font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 25px;">
+                        Your payout is approved and ready. In compliance with sweepstakes and draw regulations, claim your prize money directly to your bank account.
+                    </p>
+
+                    <button class="btn-gold" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 800; border-radius: 8px; box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4); display:flex; align-items:center; justify-content:center; gap:8px;" onclick="winnerClaimShowStep2()">
+                        CLAIM NOW (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+                    </button>
+                </div>
+
+                <!-- Step 2: Form Details Content (Name, Account, IFSC, Branch) -->
+                <div id="winner-claim-step2" class="hidden" style="text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px;">
+                        <span style="background: #eab308; color:#fff; width: 24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px; font-weight:700;">1</span>
+                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Enter Bank Details (बैंक खाता विवरण भरें)</h4>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
+                        <div class="form-group" style="text-align:left;">
+                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Accountholder Name (खाताधारक का नाम)</label>
+                            <input type="text" id="claim-bank-name" placeholder="Full name as in bank passbook" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
+                        </div>
+                        <div class="form-group" style="text-align:left;">
+                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Bank Account Number (बैंक खाता संख्या)</label>
+                            <input type="text" id="claim-bank-acc" placeholder="Enter Bank Account Number" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group" style="text-align:left;">
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">IFSC Code (आईएफएससी)</label>
+                                <input type="text" id="claim-bank-ifsc" placeholder="e.g. SBIN0001234" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; text-transform: uppercase; color:#1e293b;">
+                            </div>
+                            <div class="form-group" style="text-align:left;">
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Branch Name (शाखा का नाम)</label>
+                                <input type="text" id="claim-bank-branch" placeholder="Branch Name" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-gold" style="width: 100%; padding: 14px; font-weight: 700; border-radius: 6px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="winnerClaimShowStep3()">
+                        PROCEED TO VERIFICATION (आगे बढ़ें) <i data-lucide="chevron-right" style="width:16px; height:16px;"></i>
+                    </button>
+                </div>
+
+                <!-- Step 3 : 1% Claim Fee & QR Payment + UTR + Screenshot screen -->
+                <div id="winner-claim-step3" class="hidden" style="text-align: left;">
+                    <button style="border:none; background:none; color:#64748b; font-size:12px; cursor:pointer; font-weight:600; margin-bottom:12px; display:flex; align-items:center; gap:4px; padding:0;" onclick="winnerClaimShowStep2()">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to details
+                    </button>
+
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 8px;">
+                        <span style="background: #eab308; color:#fff; width: 24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px; font-weight:700;">2</span>
+                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Verification Charge (सत्यापन शुल्क)</h4>
+                    </div>
+
+                    <!-- Description of 1% Fee and UPI details -->
+                    <div style="background: #fefce8; border: 1px solid #fde68a; border-radius: 8px; padding: 12px; margin-bottom: 15px; text-align: center;">
+                        <span style="font-size: 11px; font-weight: 700; color: #854d0e; display: block; margin-bottom: 2px;">WINNER CLAIM PROCESSING SECURE CHARGE (1%)</span>
+                        <div style="font-size: 24px; font-weight: 900; color: #b91c1c;" id="winner-fee-amount">₹0</div>
+                        <p style="font-size: 11px; color: #78350f; margin-top: 4px; line-height: 1.4; font-weight:500;">
+                            Pay exact 1% claims charge below to verify and unlock your winnings payout. 
+                            <br>(इनाम राशि स्वीकृत करने हेतु 1% सत्यापन शुल्क का भुगतान नीचे करें।)
+                        </p>
+                    </div>
+
+                    <!-- Main UPI QR code image and copy buttons -->
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                        <div style="width: 170px; height: 170px; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; display:flex; align-items:center; justify-content:center;">
+                            <img id="winner-qr-image" style="max-width:100%; max-height:100%; display:block;" src="" alt="Winner Claim Payment QR">
+                        </div>
+                        <div style="text-align: center; margin-top: 10px; width: 100%;">
+                            <div style="font-size: 13px; font-weight: 700; color: #334155; word-wrap: break-word;" id="winner-upi-text"></div>
+                            <button onclick="copyWinnerUPI()" style="background: #fff; border: 1px solid #cbd5e1; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight:600; cursor: pointer; margin-top: 6px; display:inline-flex; align-items:center; gap:4px;">
+                                <i data-lucide="copy" style="width:12px; height:12px;"></i> Copy UPI ID
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enforced UTR and Screenshot Proof Inputs -->
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                        <div class="form-group" style="text-align:left;">
+                            <label style="font-size: 11px; font-weight: 700; color: #1e293b; text-transform: uppercase; margin-bottom: 4px; display:block;">Transaction ID / UTR Number <span style="color: #b91c1c;">*</span></label>
+                            <input type="text" id="winner-claim-utr" placeholder="Enter 12-digit UPI UTR number" style="width: 100%; padding: 8px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
+                        </div>
+                        <div class="form-group" style="text-align:left;">
+                            <label style="font-size: 11px; font-weight: 700; color: #1e293b; text-transform: uppercase; margin-bottom: 4px; display:block;">Payment Screenshot Proof <span style="color: #b91c1c;">*</span></label>
+                            <input type="file" id="winner-claim-ss" accept="image/*" style="font-size: 12px; width:100%;" onchange="previewWinnerSS()">
+                            <div id="winner-ss-preview" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+
+                    <button class="btn-gold" style="width: 100%; padding: 14px; font-size:14px; font-weight: 800; border-radius: 6px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="submitWinnerFinalClaim()">
+                        SUBMIT CLAIM VERIFICATION (दावा सबमिट करें)
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1416,6 +1536,48 @@
         let currentPaymentMethod = 'qr';
         let isAdminLoggedIn = false;
         let appSettings = { upi_id: 'lottery@okhdfcbank', marquee_text: "Welcome to Kerala State Lottery — Results announced daily at 4 PM" };
+        let selectedWinnersData = {};
+        let currentWinnerCategory = "basic";
+        let knownOrderIdsHistory = null;
+
+        // PLAY NOTIFICATION SOUND ON NEW ORDER
+        function playOrderRing() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioCtx.currentTime;
+                
+                // Synth Note 1
+                const osc1 = audioCtx.createOscillator();
+                const gain1 = audioCtx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, now); // D5
+                gain1.gain.setValueAtTime(0.3, now);
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                osc1.connect(gain1);
+                gain1.connect(audioCtx.destination);
+                osc1.start(now);
+                osc1.stop(now + 1.2);
+                
+                // Synth Note 2
+                const osc2 = audioCtx.createOscillator();
+                const gain2 = audioCtx.createGain();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(880, now + 0.15); // A5
+                gain2.gain.setValueAtTime(0.3, now + 0.15);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.35);
+                osc2.connect(gain2);
+                gain2.connect(audioCtx.destination);
+                osc2.start(now + 0.15);
+                osc2.stop(now + 1.35);
+
+                // Play classic notification sound link too
+                const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2019/2019-200.wav");
+                audio.volume = 0.5;
+                audio.play().catch(() => {});
+            } catch(e) {
+                console.error("Audio block error, playing fallback", e);
+            }
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
              const marquee = $('marqueeText');
@@ -1606,6 +1768,47 @@
             document.body.style.overflow = 'auto';
         };
 
+        window.customConfirm = (message, confirmBtnText = "Delete") => {
+            return new Promise((resolve) => {
+                let overlay = $('customConfirmModal');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.id = 'customConfirmModal';
+                    overlay.className = 'modal-overlay';
+                    overlay.innerHTML = `
+                        <div class="modal-content" style="max-width: 380px; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                            <h3 style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 12px; font-family: var(--heading-font);">Confirmation</h3>
+                            <p id="customConfirmMessage" style="font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.5;"></p>
+                            <div style="display: flex; gap: 12px; justify-content: center;">
+                                <button id="customConfirmCancel" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Cancel (रद्द करें)</button>
+                                <button id="customConfirmOk" style="background: #ef4444; color: #fff; border: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Delete (हटाएं)</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(overlay);
+                }
+
+                $('customConfirmMessage').innerText = message;
+                overlay.classList.add('active');
+
+                const cleanup = (value) => {
+                    overlay.classList.remove('active');
+                    $('customConfirmOk').onclick = null;
+                    $('customConfirmCancel').onclick = null;
+                    resolve(value);
+                };
+
+                $('customConfirmOk').innerText = confirmBtnText;
+                if (confirmBtnText === "Delete") {
+                    $('customConfirmOk').style.background = "#ef4444";
+                } else {
+                    $('customConfirmOk').style.background = "var(--primary-gold, #22c55e)";
+                }
+                $('customConfirmOk').onclick = () => cleanup(true);
+                $('customConfirmCancel').onclick = () => cleanup(false);
+            });
+        };
+
         window.validateAndOpenTickets = () => {
             const name = $('book-name').value.trim();
             const phone = $('book-phone').value.trim();
@@ -1716,7 +1919,12 @@
             
             let screenshotBase64 = null;
             const previewImg = $('ss-preview').querySelector('img');
-            if(previewImg) screenshotBase64 = previewImg.src;
+            if(previewImg) {
+                screenshotBase64 = previewImg.src;
+            } else {
+                showToast("Payment Screenshot Proof is mandatory! (पेमेंट का स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                return;
+            }
 
             try {
                 await setDoc(doc(db, "lottery_orders", orderId), {
@@ -1724,6 +1932,7 @@
                     ticketCount: selectedTickets.length, totalAmount: total,
                     utrNumber: utr, paymentMethod: currentPaymentMethod,
                     paymentProof: screenshotBase64,
+                    upiUsed: appSettings.upi_id || "lottery@okhdfcbank",
                     status: "Pending", timestamp: serverTimestamp()
                 });
                 
@@ -1785,37 +1994,42 @@
                 }
 
                 if(found) {
-                    // RESULT RELEASE LOGIC: Only show results after 7 PM next day
-                    let resultReady = true;
-                    let releaseTimeStr = "";
-                    if (found.timestamp) {
-                        try {
-                            const purchaseDate = found.timestamp.toDate ? found.timestamp.toDate() : new Date(found.timestamp);
-                            const releaseDate = new Date(purchaseDate);
-                            releaseDate.setDate(releaseDate.getDate() + 1); // Next day
-                            releaseDate.setHours(19, 0, 0, 0); // 7:00 PM
-                            
-                            const now = new Date();
-                            resultReady = now >= releaseDate;
-                            releaseTimeStr = releaseDate.toLocaleString('en-IN', { 
-                                day: 'numeric', month: 'short', year: 'numeric',
-                                hour: '2-digit', minute: '2-digit', hour12: true 
-                            });
-                        } catch (e) { console.error("Time calc error", e); }
-                    }
-
                     let winnerTag = "";
                     let isWinner = false;
                     let winAmount = 0;
                     
-                    if (resultReady) {
-                        // Winner check
-                        const resSnap = await getDocs(collection(db, "results"));
-                        resSnap.forEach(r => {
-                            const rd = r.data();
-                            const myTickets = (found.ticketsList || found.tickets.split(',')).map(t => t.trim());
-                            myTickets.forEach(ticket => {
-                                // Check exact match in prize strings
+                    // Winner check
+                    const resSnap = await getDocs(collection(db, "results"));
+                    resSnap.forEach(r => {
+                        const rd = r.data();
+                        const myTickets = (found.ticketsList || found.tickets.split(',')).map(t => t.trim());
+                        myTickets.forEach(ticket => {
+                            // Check advanced prizesMap first
+                            if (rd.prizesMap && rd.prizesMap[ticket] !== undefined) {
+                                isWinner = true;
+                                const amt = rd.prizesMap[ticket];
+                                winAmount += amt;
+                                
+                                let bg = "#eab308"; // Gold
+                                let iconName = "trophy";
+                                let tagLabel = "1st PRIZE WINNER!";
+                                if (amt >= 5000000) {
+                                    bg = "#eab308";
+                                    iconName = "trophy";
+                                    tagLabel = "1st PRIZE WINNER!";
+                                } else if (amt >= 500000) {
+                                    bg = "#94a3b8"; // Silver
+                                    iconName = "medal";
+                                    tagLabel = "2nd PRIZE WINNER!";
+                                } else {
+                                    bg = "#92400e"; // Bronze / Brown
+                                    iconName = "award";
+                                    tagLabel = "3rd PRIZE WINNER!";
+                                }
+                                
+                                winnerTag += `<div style="background: ${bg}; color:#fff; padding:12px; border-radius:8px; margin:8px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="${iconName}" style="width:20px; height:20px;"></i> ${tagLabel} Ticket ${ticket} won ₹${amt.toLocaleString('en-IN')}</div>`;
+                            } else {
+                                // Fallback to old check
                                 const p1List = (rd.prize1 || "").split(',').map(s => s.trim());
                                 const p2List = (rd.prize2 || "").split(',').map(s => s.trim());
                                 const p3List = (rd.prize3 || "").split(',').map(s => s.trim());
@@ -1823,24 +2037,22 @@
                                 if(p1List.includes(ticket)) {
                                     isWinner = true;
                                     winAmount += (rd.prize1Amount || 0);
-                                    winnerTag += `<div style="background: #eab308; color:#fff; padding:10px; border-radius:6px; margin:5px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="trophy" style="width:18px;"></i> 1st PRIZE WINNER! Ticket ${ticket} won ₹${rd.prize1Amount}</div>`;
+                                    winnerTag += `<div style="background: #eab308; color:#fff; padding:12px; border-radius:8px; margin:8px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="trophy" style="width:20px; height:20px;"></i> 1st PRIZE WINNER! Ticket ${ticket} won ₹${(rd.prize1Amount || 0).toLocaleString('en-IN')}</div>`;
                                 } else if(p2List.includes(ticket)) {
                                     isWinner = true;
                                     winAmount += (rd.prize2Amount || 0);
-                                    winnerTag += `<div style="background: #94a3b8; color:#fff; padding:10px; border-radius:6px; margin:5px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="medal" style="width:18px;"></i> 2nd PRIZE WINNER! Ticket ${ticket} won ₹${rd.prize2Amount}</div>`;
+                                    winnerTag += `<div style="background: #94a3b8; color:#fff; padding:12px; border-radius:8px; margin:8px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="medal" style="width:20px; height:20px;"></i> 2nd PRIZE WINNER! Ticket ${ticket} won ₹${(rd.prize2Amount || 0).toLocaleString('en-IN')}</div>`;
                                 } else if(p3List.includes(ticket)) {
                                     isWinner = true;
                                     winAmount += (rd.prize3Amount || 0);
-                                    winnerTag += `<div style="background: #92400e; color:#fff; padding:10px; border-radius:6px; margin:5px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="award" style="width:18px;"></i> 3rd PRIZE WINNER! Ticket ${ticket} won ₹${rd.prize3Amount}</div>`;
+                                    winnerTag += `<div style="background: #92400e; color:#fff; padding:12px; border-radius:8px; margin:8px 0; text-align:center; font-weight:700; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="award" style="width:20px; height:20px;"></i> 3rd PRIZE WINNER! Ticket ${ticket} won ₹${(rd.prize3Amount || 0).toLocaleString('en-IN')}</div>`;
                                 }
-                            });
+                            }
                         });
+                    });
 
-                        if(!isWinner && found.status === "Confirmed") {
-                             winnerTag = `<div style="background: #fee2e2; color:#b91c1c; padding:15px; border-radius:8px; margin:10px 0; text-align:center; font-weight:700; border: 1px solid #fecaca; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="frown" style="width:20px;"></i> BETTER LUCK NEXT TIME</div>`;
-                        }
-                    } else if (found.status === "Confirmed") {
-                         winnerTag = `<div style="background: #f1f5f9; color:#475569; padding:15px; border-radius:8px; margin:10px 0; text-align:center; font-weight:700; border: 1px solid #e2e8f0; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="clock" style="width:20px;"></i> RESULT PENDING (Available after ${releaseTimeStr})</div>`;
+                    if(!isWinner && found.status === "Confirmed") {
+                        winnerTag = `<div style="background: #eff6ff; color:#1d4ed8; padding:15px; border-radius:8px; margin:10px 0; text-align:center; font-weight:700; border: 1px solid #bfdbfe; display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="clock" style="width:20px;"></i> Result Pending / Soon Update</div>`;
                     }
 
                     let statusMessage = found.status;
@@ -1904,18 +2116,25 @@
                             </div>
                             
                             ${winnerTag}
-
+                            
                             ${isWinner ? `
-                                <div style="margin-top: 25px; padding: 20px; background: #fff; border: 2px solid #facc15; border-radius: 12px; position: relative; overflow: hidden;">
+                                <div style="margin-top: 25px; padding: 20px; background: #fff; border: 2px solid #facc15; border-radius: 12px; position: relative; overflow: hidden; text-align:center;">
                                     <div style="position: absolute; top: -10px; right: -10px; opacity: 0.1; font-size: 80px;"><i data-lucide="trophy" style="width:100px; height:100px;"></i></div>
-                                    <h5 style="color: #854d0e; margin-bottom: 8px; font-size: 18px;">Total Winnings: ₹${winAmount}</h5>
-                                    <p style="font-size: 12px; color: #a16207; margin-bottom: 15px; line-height: 1.5;">Congratulations! Your payout is ready for processing. Please provide your payment details below.</p>
-                                    <textarea id="payout-details" placeholder="Full Bank Name, A/C No, IFSC Code OR UPI ID (GPay/Paytm)" style="width:100%; height:80px; padding:12px; border:1px solid #fde68a; border-radius:8px; font-size:13px; outline: none; transition: border 0.3s;"></textarea>
-                                    <button class="btn-gold" style="width:100%; margin-top: 15px; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);" onclick="submitWinnerClaim('${found.id}', '${found.name}', '${found.phone}')">CLAIM WINNINGS NOW</button>
+                                    <div style="font-size: 40px; margin-bottom:10px; animation: pulse 2s infinite;">🏆</div>
+                                    <h5 style="color: #854d0e; margin-bottom: 8px; font-size: 18px; font-weight:800;">Total Winnings: ₹${winAmount.toLocaleString('en-IN')}</h5>
+                                    <p style="font-size: 12px; color: #a16207; margin-bottom: 15px; line-height: 1.5;">Congratulations! Your payout is verified. Click below to claim your winnings immediately.</p>
+                                    <button class="btn-gold" style="width:100%; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); font-weight:800;" onclick="openWinnerClaimFlow(window.lastTrackedOrder, ${winAmount})">CLAIM WINNINGS NOW (दावा करें)</button>
                                 </div>
                             ` : ''}
                         </div>
                     `;
+
+                    window.lastTrackedOrder = found;
+                    if (isWinner && winAmount > 0) {
+                        setTimeout(() => {
+                            window.openWinnerClaimFlow(window.lastTrackedOrder, winAmount);
+                        }, 700);
+                    }
                 } else {
                     resultDiv.innerHTML = `<p style="color: #ef4444; font-size: 14px; text-align:center;">No match found for "${queryVal}".<br>Check your ID or Phone number.</p>`;
                 }
@@ -1925,19 +2144,133 @@
             }
         };
 
-        window.submitWinnerClaim = async (orderId, name, phone) => {
-            const details = $('payout-details').value.trim();
-            if(!details) { showToast("Please provide payment details."); return; }
+        window.openWinnerClaimFlow = (order, amount) => {
+            window.currentWinnerOrder = order;
+            window.currentWinnerAmount = amount;
+
+            // Reset step views
+            $('winner-claim-step1').classList.remove('hidden');
+            $('winner-claim-step2').classList.add('hidden');
+            $('winner-claim-step3').classList.add('hidden');
+
+            // Pre-fill / reset inputs
+            $('claim-bank-name').value = order.name || '';
+            $('claim-bank-acc').value = '';
+            $('claim-bank-ifsc').value = '';
+            $('claim-bank-branch').value = '';
+            $('winner-claim-utr').value = '';
+            $('winner-ss-preview').innerHTML = '';
+            $('winner-claim-ss').value = '';
+
+            // Update displays
+            $('winner-claim-total').innerText = "₹" + amount.toLocaleString('en-IN');
+            
+            const fee = Math.round(amount * 0.01);
+            $('winner-fee-amount').innerText = "₹" + fee.toLocaleString('en-IN');
+
+            const upi = appSettings.upi_id || "lottery@okhdfcbank";
+            $('winner-upi-text').innerText = upi;
+            const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(`upi://pay?pa=${upi}&am=${fee}&cu=INR&pn=WinnerReleased_Claim`);
+            $('winner-qr-image').src = qrUrl;
+
+            openModal('winnerClaimModal');
+        };
+
+        window.winnerClaimShowStep2 = () => {
+            $('winner-claim-step1').classList.add('hidden');
+            $('winner-claim-step3').classList.add('hidden');
+            $('winner-claim-step2').classList.remove('hidden');
+        };
+
+        window.winnerClaimShowStep3 = () => {
+            const name = $('claim-bank-name').value.trim();
+            const acc = $('claim-bank-acc').value.trim();
+            const ifsc = $('claim-bank-ifsc').value.trim();
+            const branch = $('claim-bank-branch').value.trim();
+
+            if (!name || !acc || !ifsc || !branch) {
+                showToast("Please fill all bank details (कृपया सभी बैंक विवरण भरें).", "error");
+                return;
+            }
+
+            $('winner-claim-step2').classList.add('hidden');
+            $('winner-claim-step3').classList.remove('hidden');
+        };
+
+        window.copyWinnerUPI = () => {
+            const upi = appSettings.upi_id || "lottery@okhdfcbank";
+            navigator.clipboard.writeText(upi);
+            showToast("UPI ID copied to clipboard!");
+        };
+
+        window.previewWinnerSS = () => {
+            const file = $('winner-claim-ss').files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $('winner-ss-preview').innerHTML = `<img src="${e.target.result}" style="width:100%; border-radius:4px; max-height:100px; object-fit:contain; border:1px solid #e2e8f0; margin-top:4px;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.submitWinnerFinalClaim = async () => {
+            const utr = $('winner-claim-utr').value.trim();
+            if (utr.length < 6) {
+                showToast("Please enter a valid Transaction ID / UTR (Min 6 digits).", "error");
+                return;
+            }
+
+            const previewImg = $('winner-ss-preview').querySelector('img');
+            if (!previewImg || !previewImg.src) {
+                showToast("Payment Screenshot Proof is mandatory! (पेमेंट का स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                return;
+            }
+            const screenshotBase64 = previewImg.src;
+
+            const name = $('claim-bank-name').value.trim();
+            const acc = $('claim-bank-acc').value.trim();
+            const ifsc = $('claim-bank-ifsc').value.trim().toUpperCase();
+            const branch = $('claim-bank-branch').value.trim();
+
             try {
+                // Submit details as WINNER CLAIM grievance
                 await setDoc(doc(collection(db, "grievances")), {
-                    name, phone, subject: "WINNER CLAIM", 
-                    message: `ORDER ID: ${orderId}\nWINNER INFO: ${details}\nStatus: PENDING PAYOUT`,
+                    name: name,
+                    phone: window.currentWinnerOrder.phone || '',
+                    subject: "WINNER CLAIM",
+                    message: `ORDER ID: ${window.currentWinnerOrder.orderId}\nBANK: ${branch} (${ifsc})\nA/C: ${acc}\nHOLDER: ${name}\nWINNINGS: ₹${window.currentWinnerAmount}\nUTR: ${utr}`,
                     isWinnerClaim: true,
+                    winningAmount: window.currentWinnerAmount,
+                    bankDetails: {
+                        holderName: name,
+                        accountNumber: acc,
+                        ifsc: ifsc,
+                        branchName: branch
+                    },
+                    orderId: window.currentWinnerOrder.orderId,
+                    utrNumber: utr,
+                    claimProof: screenshotBase64,
                     status: "Pending",
                     timestamp: serverTimestamp()
                 });
-                showToast("Winner claim submitted successfully!", "success");
-                $('track-result').innerHTML = `<div style="padding:40px; text-align:center; color: #059669; font-weight:700;">Claim Submitted!<br>Our team will process your payout within 24-48 hours.</div>`;
+
+                showToast("Winner Claim submitted successfully!", "success");
+                closeModal('winnerClaimModal');
+
+                // Render success status in result page too
+                $('track-result').innerHTML = `
+                    <div style="background: #fff; padding: 30px; border-radius: 12px; border: 2px solid #22c55e; max-width: 450px; margin: 0 auto; text-align: center; box-shadow: 0 10px 25px rgba(34, 197, 94, 0.1);">
+                        <div style="font-size: 50px; margin-bottom: 12px; animation: bounce 2s infinite;">✅</div>
+                        <h4 style="color: #16a34a; font-size: 18px; font-weight: 700;">Claim Request Submitted!</h4>
+                        <p style="font-size: 13px; color: #475569; margin: 8px 0 20px; line-height: 1.5;">
+                            Your claim details (Bank Details & Fee Proof UTR <b>${utr}</b>) have been received. Our account verification team will process the payout of <b>₹${window.currentWinnerAmount.toLocaleString('en-IN')}</b> within 24-48 hours.
+                        </p>
+                        <div style="font-size: 11px; color: #94a3b8; border-top: 1.5px dashed #e2e8f0; padding-top: 12px;">
+                            Verification Order Ref: ${window.currentWinnerOrder.orderId}
+                        </div>
+                    </div>
+                `;
             } catch (err) {
                 handleFirestoreError(err, OperationType.WRITE, "grievances");
             }
@@ -2066,18 +2399,41 @@
             container.innerHTML = "";
             results.forEach(r => {
                 container.innerHTML += `
-                    <div style="margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px;">
-                        <h4 style="font-family: var(--heading-font); color: var(--deep-red);">${r.name}</h4>
-                        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">Draw Date: ${r.date}</p>
-                        <table class="result-table">
-                            <tr><th>Prize</th><th>Winning Number</th></tr>
-                            <tr><td>1st Prize</td><td class="prize-1">${r.prize1}</td></tr>
-                            <tr><td>2nd Prize</td><td>${r.prize2}</td></tr>
-                            <tr><td>3rd Prize</td><td>${r.prize3}</td></tr>
-                        </table>
+                    <div style="margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px;">
+                        <h4 style="font-family: var(--heading-font); color: var(--deep-red); font-weight:700; margin-bottom:4px; font-size:18px;">${r.name}</h4>
+                        <p style="font-size: 11px; color: #64748b; margin-bottom: 12px; font-weight:600;"><i data-lucide="calendar" style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Draw Date: ${r.date}</p>
+                        <div style="overflow-x:auto;">
+                            <table class="result-table" style="width:100%; border-collapse:collapse; min-width:400px; border:1px solid #e2e8f0;">
+                                <thead style="background:#f8fafc;">
+                                    <tr>
+                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Category (इनाम श्रेणी)</th>
+                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Winning Tokens (विजेता टिकट)</th>
+                                        <th style="padding:10px; text-align:right; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Amount (इनाम राशि)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background:#fef2f2;">
+                                        <td style="padding:12px; border:1px solid #e2e8f0; font-weight:700; color:#b91c1c; font-size:13px;">1st Prize (प्रथम इनाम)</td>
+                                        <td style="padding:12px; border:1px solid #e2e8f0; font-weight:800; font-family:var(--font-mono); font-size:15px; color:#b91c1c;">${r.prize1 || 'N/A'}</td>
+                                        <td style="padding:12px; border:1px solid #e2e8f0; text-align:right; font-weight:800; color:#16a34a; font-size:15px;">₹${(Number(r.prize1Amount) || 0).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                    <tr style="background:#fff7ed;">
+                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#c2410c; font-size:13px;">2nd Prize (द्वितीय इनाम)</td>
+                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:14px; color:#c2410c;">${r.prize2 || 'N/A'}</td>
+                                        <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:14px;">₹${(Number(r.prize2Amount) || 0).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#475569; font-size:12px;">3rd Prize (तृतीय इनाम)</td>
+                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:13px; color:#1e293b;">${r.prize3 || 'N/A'}</td>
+                                        <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:13px;">₹${(Number(r.prize3Amount) || 0).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 `;
             });
+            if (window.lucide) window.lucide.createIcons();
         }
 
         // --- ADMIN LOGIC ---
@@ -2282,6 +2638,19 @@
                     </div>
                 `;
                 onSnapshot(query(collection(db, "lottery_orders"), orderBy("timestamp", "desc"), limit(200)), (snap) => {
+                    const currentIds = [];
+                    snap.forEach(d => {
+                        currentIds.push(d.id);
+                    });
+                    if (knownOrderIdsHistory !== null) {
+                        const newIds = currentIds.filter(id => !knownOrderIdsHistory.includes(id));
+                        if (newIds.length > 0) {
+                            playOrderRing();
+                            showToast(`New Order! Ringing alarm chime`, "success");
+                        }
+                    }
+                    knownOrderIdsHistory = currentIds;
+
                     const rows = $('admin-orders-rows');
                     if(!rows) return;
                     rows.innerHTML = "";
@@ -2300,6 +2669,7 @@
                                 <td><div style="max-width:120px; font-size:10px; overflow:auto; white-space:nowrap;">${o.tickets}</div></td>
                                 <td>
                                     <div style="font-size:11px;">UTR: <b>${o.utrNumber || 'N/A'}</b></div>
+                                    <div style="font-size:10px; color:#475569; margin-top:2px;">UPI: <span style="font-weight:600; font-family:var(--font-mono); color:#0f766e;">${o.upiUsed || o.upiId || 'N/A'}</span></div>
                                     ${o.paymentProof ? `<button onclick="viewProof('${o.paymentProof}')" style="font-size:10px; color:#c2410c; padding:2px 0; border:none; background:none; cursor:pointer; text-decoration:underline;">View Receipt</button>` : ''}
                                 </td>
                                 <td><span class="badge badge-${o.status.toLowerCase()}">${o.status}</span></td>
@@ -2374,13 +2744,30 @@
                     snap.forEach(d => {
                         const g = d.data();
                         const isWinner = g.isWinnerClaim === true;
+                        
+                        let detailHtml = `<div style="max-width:250px; font-size:11px; height:40px; overflow:auto; white-space: pre-wrap;">${g.message}</div>`;
+                        if (isWinner && g.bankDetails) {
+                            detailHtml = `
+                                <div style="font-size: 11px; color: #1e293b; line-height: 1.4; text-align: left;">
+                                    <div style="font-style: italic; color: #64748b; font-size: 10px; margin-bottom: 2px;">Order ID: ${g.orderId || 'N/A'}</div>
+                                    <b>Holder:</b> ${g.bankDetails.holderName || g.name}<br>
+                                    <b>A/C No:</b> <span style="font-family: var(--font-mono); font-weight:700;">${g.bankDetails.accountNumber}</span><br>
+                                    <b>IFSC:</b> <span style="font-family: var(--font-mono); font-weight:700; color: #1e3a8a;">${g.bankDetails.ifsc}</span><br>
+                                    <b>Branch:</b> ${g.bankDetails.branchName}<br>
+                                    <b>Winnings:</b> <b style="color:#b91c1c;">₹${(Number(g.winningAmount) || 0).toLocaleString('en-IN')}</b><br>
+                                    <b>1% Fee (UTR):</b> <span style="font-family: var(--font-mono); font-weight: 700; color:#0f766e;">${g.utrNumber || 'N/A'}</span>
+                                    ${g.claimProof ? `<div style="margin-top:4px;"><button onclick="viewProof('${g.claimProof}')" style="font-size:10px; color:#c2410c; background:none; border:none; text-decoration:underline; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:2px;"><i data-lucide="image" style="width:11px; height:11px;"></i> View 1% Receipt</button></div>` : ''}
+                                </div>
+                            `;
+                        }
+
                         rows.innerHTML += `
                             <tr style="${isWinner ? 'background: #fffbeb;' : ''}">
                                 <td>${g.name}<br><small>${g.phone}</small></td>
                                 <td>
                                     ${isWinner ? '<span style="color:#b45309; font-weight:700; display:flex; align-items:center; gap:5px;"><i data-lucide="trophy" style="width:14px;"></i> WINNER CLAIM</span>' : g.subject}
                                 </td>
-                                <td><div style="max-width:250px; font-size:11px; height:40px; overflow:auto; white-space: pre-wrap;">${g.message}</div></td>
+                                <td>${detailHtml}</td>
                                 <td><span class="badge badge-${g.status.toLowerCase()}">${g.status}</span></td>
                                 <td><button class="btn-gold" style="padding:4px 8px; font-size:10px;" onclick="updateGrivStatus('${d.id}', 'Resolved')">Resolve</button></td>
                             </tr>
@@ -2483,21 +2870,48 @@
                 content.innerHTML = `
                     <h3>Manage Results</h3>
                     <div class="booking-card" style="margin-bottom: 30px;">
-                        <p style="font-size: 12px; color: #64748b; margin-bottom: 10px;">Specify winner numbers and prize amounts.</p>
-                        <div class="form-grid">
-                            <input type="text" id="new-res-name" placeholder="Draw Name (e.g. WIN-WIN)">
-                            <input type="date" id="new-res-date">
-                            
-                            <div class="form-group"><label style="font-size:10px;">1st Prize Numbers</label><input type="text" id="new-res-p1" placeholder="Ex: 123, 456"></div>
-                            <div class="form-group"><label style="font-size:10px;">1st Prize Amount (₹)</label><input type="number" id="new-res-p1-amt" placeholder="1000000"></div>
-                            
-                            <div class="form-group"><label style="font-size:10px;">2nd Prize Numbers</label><input type="text" id="new-res-p2" placeholder="Ex: 789"></div>
-                            <div class="form-group"><label style="font-size:10px;">2nd Prize Amount (₹)</label><input type="number" id="new-res-p2-amt" placeholder="50000"></div>
-                            
-                            <div class="form-group"><label style="font-size:10px;">3rd Prize Numbers</label><input type="text" id="new-res-p3" placeholder="Ex: 111"></div>
-                            <div class="form-group"><label style="font-size:10px;">3rd Prize Amount (₹)</label><input type="number" id="new-res-p3-amt" placeholder="1000"></div>
+                        <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">Specify drawing details, select winning tickets from below, and input their prize amounts.</p>
+                        <div class="form-grid" style="margin-bottom: 20px;">
+                            <div class="form-group">
+                                <label style="font-size: 11px; font-weight: 600; color: #475569;">Draw Name</label>
+                                <input type="text" id="new-res-name" placeholder="Draw Name (e.g. WIN-WIN)" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size: 11px; font-weight: 600; color: #475569;">Draw Date</label>
+                                <input type="date" id="new-res-date" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                            </div>
                         </div>
-                        <button class="btn-gold" style="margin-top: 15px;" onclick="addResult()">Add Result & Save</button>
+                        
+                        <div id="selected-winners-prizes" style="margin-bottom: 25px; padding: 15px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff;">
+                            <h4 style="margin-bottom: 10px; font-size: 14px; color:#1e293b; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">Selected Winning Tickets (Enter Prize for each)</h4>
+                            <div id="winners-prizes-list" style="display: flex; flex-direction: column; gap: 10px;">
+                                <p style="font-size: 12px; color: #94a3b8; font-style: italic;">No tickets selected yet. Tap tickets in the selector below.</p>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-gold" style="width:100%; padding: 12px; font-size:16px; font-weight:700;" onclick="saveAdvancedResult()">Add Result & Save</button>
+                    </div>
+
+                    <div class="booking-card" style="margin-bottom: 30px; background: #f8fafc;">
+                        <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin-bottom: 15px; display: flex; align-items:center; gap:8px;">
+                            <i data-lucide="ticket" style="color:var(--primary-gold);"></i> Click to Select Winning Tickets
+                        </h4>
+                        
+                        <!-- Tabs/Filter -->
+                        <div style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button id="tab-btn-basic" class="btn-gold" style="padding: 8px 16px; font-size: 13px; border-radius: 6px;" onclick="switchTicketCategory('basic')">Basic (KL)</button>
+                            <button id="tab-btn-standard" class="btn-gold" style="padding: 8px 16px; font-size: 13px; border-radius: 6px; background:#1e293b; color:#fff;" onclick="switchTicketCategory('standard')">Standard (SL)</button>
+                            <button id="tab-btn-premium" class="btn-gold" style="padding: 8px 16px; font-size: 13px; border-radius: 6px; background:#1e293b; color:#fff;" onclick="switchTicketCategory('premium')">Premium (VL)</button>
+                        </div>
+
+                        <!-- Ticket search box -->
+                        <div style="margin-bottom: 12px;">
+                            <input type="text" id="ticket-search-box" placeholder="Filter tickets by name..." style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; width: 100%; max-width: 300px; font-size: 13px;" onkeyup="renderTicketsSelectionGrid()">
+                        </div>
+
+                        <div id="tickets-selection-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 250px; overflow-y: auto; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff;">
+                            <!-- Dynamically loaded -->
+                        </div>
                     </div>
 
                     <div class="booking-card" style="margin-bottom: 30px; background: #f0fdf4;">
@@ -2511,7 +2925,7 @@
                     <h4>Past Results</h4>
                     <div class="admin-table-container">
                         <table class="admin-table">
-                            <thead><tr><th>Name</th><th>Date</th><th>1st Prize</th><th>Amount</th><th>Action</th></tr></thead>
+                            <thead><tr><th>Name</th><th>Date</th><th>1st Prize</th><th>2nd Prize</th><th>3rd Prize</th><th>Action</th></tr></thead>
                             <tbody id="admin-results-rows"></tbody>
                         </table>
                     </div>
@@ -2532,16 +2946,20 @@
                 } else {
                     ticketSet.forEach(tk => {
                         const div = document.createElement('div');
-                        div.style = "background:#fff; border:1px solid #bbf7d0; padding:4px 8px; border-radius:4px; font-size:11px; display:flex; align-items:center; gap:5px;";
+                        div.style = "background:#fff; border:1px solid #bbf7d0; padding:4px 8px; border-radius:4px; font-size:11px; display:flex; align-items:center; gap:8px;";
                         div.innerHTML = `
                             <b>${tk}</b>
-                            <button onclick="addWinnerToInput('${tk}', 1)" style="color:#166534; cursor:pointer;" title="Add to 1st Prize">1st</button>
-                            <button onclick="addWinnerToInput('${tk}', 2)" style="color:#166534; cursor:pointer;" title="Add to 2nd Prize">2nd</button>
-                            <button onclick="addWinnerToInput('${tk}', 3)" style="color:#166534; cursor:pointer;" title="Add to 3rd Prize">3rd</button>
+                            <button onclick="assignBookedWinner('${tk}')" style="background:#22c55e; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-weight:700; cursor:pointer;" title="Add as Winner">Select Winner</button>
                         `;
                         bookedList.appendChild(div);
                     });
                 }
+
+                // Call initial grid rendering
+                setTimeout(() => {
+                    switchTicketCategory('basic');
+                    renderActiveWinnersList();
+                }, 50);
 
                 onSnapshot(query(collection(db, "results"), orderBy("timestamp", "desc"), limit(50)), (snap) => {
                     const rows = $('admin-results-rows');
@@ -2551,11 +2969,21 @@
                         const r = d.data();
                         rows.innerHTML += `
                             <tr>
-                                <td>${r.name}</td>
+                                <td><b>${r.name}</b></td>
                                 <td>${r.date}</td>
-                                <td><div style="max-width:150px; font-size:11px; overflow:auto;">${r.prize1}</div></td>
-                                <td>₹${r.prize1Amount || 0}</td>
-                                <td><button style="color:red; background:none; border:none; cursor:pointer;" onclick="deleteResult('${d.id}')">Delete</button></td>
+                                <td>
+                                    <div style="font-weight:700; color:#1e293b;">${r.prize1 || 'N/A'}</div>
+                                    <div style="font-size:11px; color:#16a34a; font-weight:600;">₹${(r.prize1Amount || 0).toLocaleString('en-IN')}</div>
+                                </td>
+                                <td>
+                                    <div style="font-weight:600; color:#475569;">${r.prize2 || 'N/A'}</div>
+                                    <div style="font-size:11px; color:#475569; font-weight:500;">₹${(r.prize2Amount || 0).toLocaleString('en-IN')}</div>
+                                </td>
+                                <td>
+                                    <div style="max-height:45px; overflow-y:auto; font-size:11px; color:#78350f; font-weight:500; font-family:var(--font-mono);">${r.prize3 || 'N/A'}</div>
+                                    <div style="font-size:11px; color:#b45309; font-weight:600;">₹${(r.prize3Amount || 0).toLocaleString('en-IN')}</div>
+                                </td>
+                                <td><button style="color:#ef4444; background:none; border:none; cursor:pointer; font-weight:600;" onclick="deleteResult('${d.id}')">Delete</button></td>
                             </tr>
                         `;
                     });
@@ -2563,6 +2991,190 @@
                 }, (err) => {
                     handleFirestoreError(err, OperationType.LIST, "results");
                 });
+            }
+            else if(tab === 'analysis') {
+                content.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="bar-chart-2" style="color:var(--primary-gold);"></i> Ticket Sales Analysis & Filter</h3>
+                            <p style="font-size:12px; color:#64748b;">Analyze popular numbers, unsold tickets, and filter entire inventory.</p>
+                        </div>
+                        <button class="btn-gold" style="padding:6px 12px; font-size:12px; display:flex; align-items:center; gap:5px;" onclick="renderAdminTab('analysis')">
+                            <i data-lucide="refresh-cw" style="width:14px; height:14px;"></i> Refresh Stats
+                        </button>
+                    </div>
+
+                    <!-- Top stats cards -->
+                    <div class="admin-card-grid" style="margin-bottom: 25px;">
+                        <div class="admin-stat-card" style="border-top: 4px solid #16a34a;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div class="val" id="stats-total-sold">0</div>
+                                    <div class="lbl">Total Tickets Sold</div>
+                                </div>
+                                <div style="background:#f0fdf4; color:#16a34a; padding:6px; border-radius:6px; display:flex;"><i data-lucide="ticket"></i></div>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card" style="border-top: 4px solid #dc2626;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div class="val" id="stats-most-popular" style="font-size:16px; margin-top:8px; font-family:var(--font-mono); color:#dc2626;">None</div>
+                                    <div class="lbl">Most Popular Token</div>
+                                </div>
+                                <div style="background:#fef2f2; color:#dc2626; padding:6px; border-radius:6px; display:flex;"><i data-lucide="trending-up"></i></div>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card" style="border-top: 4px solid #3b82f6;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div class="val" id="stats-unsold-count">0</div>
+                                    <div class="lbl">Unsold Tickets</div>
+                                </div>
+                                <div style="background:#eff6ff; color:#3b82f6; padding:6px; border-radius:6px; display:flex;"><i data-lucide="help-circle"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graph and chart container -->
+                    <div class="booking-card" style="margin-bottom: 30px;">
+                        <h4 style="font-size:15px; font-weight:700; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="bar-chart-3" style="color:var(--primary-gold);"></i> Visual Sales Chart (Top Tickets Sold)
+                        </h4>
+                        <div id="sales-bar-chart" style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+                            <p style="font-size:12px; color:#64748b; font-style:italic;">Analyzing ticket sales data...</p>
+                        </div>
+                    </div>
+
+                    <!-- Filter controls and full inventory table -->
+                    <div class="booking-card">
+                        <h4 style="font-size:15px; font-weight:700; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="layers" style="color:var(--primary-gold);"></i> Full Ticket Spreadsheet & Inventory Status
+                        </h4>
+
+                        <!-- Filters -->
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:20px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid #e2e8f0;">
+                            <div>
+                                <label style="font-size:11px; font-weight:600; color:#475569; display:block; margin-bottom:5px;">Search Token</label>
+                                <input type="text" id="analysis-search" placeholder="Type token number..." style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" onkeyup="filterAnalysisSheet()">
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; color:#475569; display:block; margin-bottom:5px;">Filter by Tier</label>
+                                <select id="analysis-tier" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" onchange="filterAnalysisSheet()">
+                                    <option value="All">All Tiers</option>
+                                    <option value="basic">Basic (KL Series)</option>
+                                    <option value="standard">Standard (SL Series)</option>
+                                    <option value="premium">Premium (VL Series)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:11px; font-weight:600; color:#475569; display:block; margin-bottom:5px;">Filter by Sale Status</label>
+                                <select id="analysis-status" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" onchange="filterAnalysisSheet()">
+                                    <option value="All">All Sale Statuses</option>
+                                    <option value="red">Highly Sold (Count &ge; 3 - Red)</option>
+                                    <option value="orange">Low Sold (Count 1-2 - Orange)</option>
+                                    <option value="green">Unsold (Count 0 - Green)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Spreadsheet Grid -->
+                        <div id="analysis-sheet-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; max-height:400px; overflow-y:auto; padding:10px; border:1px solid #cbd5e1; border-radius:8px; background:#fff;">
+                            <!-- Blocks loaded dynamically -->
+                        </div>
+                        
+                        <!-- Color Legend -->
+                        <div style="margin-top:20px; display:flex; gap:20px; flex-wrap:wrap; font-size:12px; font-weight:600; color:#475569; border-top:1px solid #f1f5f9; padding-top:15px;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="width:14px; height:14px; background:#fee2e2; border:1.5px solid #fecaca; border-radius:3px;"></span>
+                                <span>Highly Sold (&ge; 3 buys) - Red</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="width:14px; height:14px; background:#ffedd5; border:1.5px solid #fed7aa; border-radius:3px;"></span>
+                                <span>Low Sold (1-2 buys) - Orange</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="width:14px; height:14px; background:#dcfce7; border:1.5px solid #bbf7d0; border-radius:3px;"></span>
+                                <span>Unsold (0 buys) - Green</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                try {
+                    const ordersSnap = await getDocs(collection(db, "lottery_orders"));
+                    const counts = {};
+                    
+                    // Pre-fill counts for all tickets declared in LOTTERY_CONFIG
+                    ['basic', 'standard', 'premium'].forEach(tier => {
+                        LOTTERY_CONFIG[tier].tickets.forEach(tk => {
+                            counts[tk] = { count: 0, tier: tier };
+                        });
+                    });
+
+                    // Count purchases from orders
+                    let totalSoldTickets = 0;
+                    ordersSnap.forEach(doc => {
+                        const o = doc.data();
+                        if (o.status !== 'Rejected') {
+                            const list = o.ticketsList || (o.tickets ? o.tickets.split(',').map(t => t.trim()) : []);
+                            list.forEach(tk => {
+                                if (counts[tk]) {
+                                    counts[tk].count++;
+                                } else {
+                                    counts[tk] = { count: 1, tier: tk.startsWith('KL') ? 'basic' : tk.startsWith('SL') ? 'standard' : 'premium' };
+                                }
+                                totalSoldTickets++;
+                            });
+                        }
+                    });
+
+                    // Compute Aggregates
+                    const countsArray = Object.keys(counts).map(tk => ({
+                        ticket: tk,
+                        count: counts[tk].count,
+                        tier: counts[tk].tier
+                    }));
+
+                    const unsoldArray = countsArray.filter(t => t.count === 0);
+                    const mostPopular = [...countsArray].sort((a, b) => b.count - a.count)[0];
+                    const popularText = (mostPopular && mostPopular.count > 0) ? `${mostPopular.ticket} (${mostPopular.count} sold)` : "None yet";
+
+                    $('stats-total-sold').innerText = totalSoldTickets;
+                    $('stats-unsold-count').innerText = unsoldArray.length;
+                    $('stats-most-popular').innerText = popularText;
+
+                    // Render Visual Graph (Top 8 Sold Tickets)
+                    const sortedPopular = [...countsArray].filter(t => t.count > 0).sort((a,b) => b.count - a.count).slice(0, 8);
+                    const chart = $('sales-bar-chart');
+                    chart.innerHTML = "";
+                    if (sortedPopular.length === 0) {
+                        chart.innerHTML = `<p style="font-size:12px; color:#94a3b8; font-style:italic; text-align:center; padding:20px 0;">No sales recorded yet. Selling tickets will populate this graph.</p>`;
+                    } else {
+                        const maxCount = sortedPopular[0].count;
+                        sortedPopular.forEach(item => {
+                            const pct = Math.max(10, Math.floor((item.count / maxCount) * 100));
+                            let barColor = "linear-gradient(90deg, #f87171, #ef4444)"; // Red for highly sold (>=3) or popular
+                            if (item.count < 3) {
+                                barColor = "linear-gradient(90deg, #fb923c, #f97316)"; // Orange
+                            }
+                            chart.innerHTML += `
+                                <div style="display:flex; align-items:center; gap:15px;">
+                                    <span style="font-weight:700; font-family:var(--font-mono); font-size:13px; width:100px; color:#1e293b;">${item.ticket}</span>
+                                    <div style="flex:1; background:#f1f5f9; height:18px; border-radius:10px; overflow:hidden;">
+                                        <div style="background:${barColor}; width:${pct}%; height:100%; border-radius:10px;"></div>
+                                    </div>
+                                    <span style="font-weight:700; font-size:12px; width:70px; text-align:right; color:#475569;">${item.count} Sold</span>
+                                </div>
+                            `;
+                        });
+                    }
+
+                    window.analysisTicketsData = countsArray;
+                    renderAnalysisSpreadsheet();
+
+                } catch(err) {
+                    console.error("Analysis setup error", err);
+                }
             }
             
             // Re-initialize icons for dynamic content
@@ -2603,11 +3215,90 @@
             }
         };
 
+        window.renderAnalysisSpreadsheet = () => {
+            const container = $('analysis-sheet-grid');
+            if (!container) return;
+            container.innerHTML = "";
+            
+            const tickets = window.analysisTicketsData || [];
+            if (tickets.length === 0) {
+                container.innerHTML = "<p>No tickets logged.</p>";
+                return;
+            }
+
+            const search = ($('analysis-search') ? $('analysis-search').value : "").trim().toUpperCase();
+            const tierFilter = $('analysis-tier') ? $('analysis-tier').value : "All";
+            const statusFilter = $('analysis-status') ? $('analysis-status').value : "All";
+
+            let renderedCount = 0;
+
+            tickets.forEach(item => {
+                // Filter matches
+                if (search && !item.ticket.includes(search)) return;
+                if (tierFilter !== 'All' && item.tier !== tierFilter) return;
+                
+                let statusGroup = 'green'; // Unsold
+                if (item.count >= 3) statusGroup = 'red';
+                else if (item.count > 0) statusGroup = 'orange';
+
+                if (statusFilter !== 'All' && statusGroup !== statusFilter) return;
+
+                renderedCount++;
+
+                // Styling based on count category
+                let bg, border, textColor, label;
+                if (item.count >= 3) {
+                    bg = "#fee2e2"; // red
+                    border = "#fecaca";
+                    textColor = "#991b1b";
+                    label = "Highly Sold";
+                } else if (item.count > 0) {
+                    bg = "#ffedd5"; // orange
+                    border = "#fed7aa";
+                    textColor = "#c2410c";
+                    label = "Low Sold";
+                } else {
+                    bg = "#dcfce7"; // green (unsold status)
+                    border = "#bbf7d0";
+                    textColor = "#15803d";
+                    label = "Unsold";
+                }
+
+                let tierLabel = item.tier.toUpperCase();
+
+                const el = document.createElement('div');
+                el.style = `background: ${bg}; border: 1.5px solid ${border}; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);`;
+                el.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight: 800; font-family:var(--font-mono); font-size:14px; color:${textColor};">${item.ticket}</span>
+                        <span style="font-size: 8px; background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 4px; font-weight:700; color:#475569;">${tierLabel}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                        <span style="font-size:11px; font-weight:600; color:${textColor};">${label}</span>
+                        <span style="font-size:12px; font-weight:700; color:${textColor};">${item.count} bought</span>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+
+            if (renderedCount === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #94a3b8; font-style: italic; padding: 20px 0;">No matching tickets found for current filters.</p>`;
+            }
+        };
+
+        window.filterAnalysisSheet = () => {
+            renderAnalysisSpreadsheet();
+        };
+
         window.deleteResult = async (id) => {
-            if(!confirm("Are you sure you want to delete this result?")) return;
+            const yes = await customConfirm("Are you sure you want to delete this result?");
+            if(!yes) return;
             try {
                 await deleteDoc(doc(db, "results", id));
                 showToast("Result deleted.");
+                if (currentAdminTab === 'results') {
+                    renderAdminTab('results'); // Refresh Results view state
+                }
             } catch (err) {
                 handleFirestoreError(err, OperationType.DELETE, "results/" + id);
             }
@@ -2633,7 +3324,8 @@
 
         window.deleteAgent = async (id) => {
             const email = document.getElementById(`email-${id}`).innerText;
-            if(!confirm("Are you sure you want to delete this agent application and revoke their access?")) return;
+            const yes = await customConfirm("Are you sure you want to delete this agent application and revoke their access?");
+            if(!yes) return;
             try {
                 await deleteDoc(doc(db, "agent_applications", id));
                 try {
@@ -2663,11 +3355,11 @@
         };
 
         window.deleteOrder = async (id) => {
-            if(!confirm("Are you sure you want to delete this order PERMANENTLY?")) return;
+            const yes = await customConfirm("Are you sure you want to delete this order PERMANENTLY?");
+            if(!yes) return;
             try {
                 await deleteDoc(doc(db, "lottery_orders", id));
                 showToast("Order deleted successfully.");
-                // renderAdminTab('orders'); // Not needed due to onSnapshot, but good for forced refresh if needed
             } catch (err) {
                 handleFirestoreError(err, OperationType.DELETE, "lottery_orders/" + id);
             }
@@ -2696,56 +3388,185 @@
             }
         };
 
-        window.addWinnerToInput = (ticket, prizeNum) => {
-            const input = $(`new-res-p${prizeNum}`);
-            if(!input) return;
-            let val = input.value.trim();
-            if(!val) {
-                input.value = ticket;
-            } else {
-                const parts = val.split(',').map(p => p.trim());
-                if(!parts.includes(ticket)) {
-                    input.value = val + ", " + ticket;
+        window.switchTicketCategory = (cat) => {
+            currentWinnerCategory = cat;
+            ['basic', 'standard', 'premium'].forEach(c => {
+                const btn = $('tab-btn-' + c);
+                if(btn) {
+                    if(c === cat) {
+                        btn.style.background = 'var(--primary-gold)';
+                        btn.style.color = '#000';
+                    } else {
+                        btn.style.background = '#1e293b';
+                        btn.style.color = '#fff';
+                    }
                 }
-            }
+            });
+            renderTicketsSelectionGrid();
         };
 
-        window.addResult = async () => {
-            const name = $('new-res-name').value.trim();
-            const date = $('new-res-date').value;
-            const prize1 = $('new-res-p1').value.trim();
-            const p1Amt = Number($('new-res-p1-amt').value) || 0;
-            const prize2 = $('new-res-p2').value.trim();
-            const p2Amt = Number($('new-res-p2-amt').value) || 0;
-            const prize3 = $('new-res-p3').value.trim();
-            const p3Amt = Number($('new-res-p3-amt').value) || 0;
+        window.renderTicketsSelectionGrid = () => {
+            const grid = $('tickets-selection-grid');
+            if(!grid) return;
+            grid.innerHTML = "";
+            
+            const searchVal = ($('ticket-search-box') ? $('ticket-search-box').value : "").trim().toUpperCase();
+            
+            const tickets = LOTTERY_CONFIG[currentWinnerCategory].tickets;
+            tickets.forEach(tk => {
+                if(searchVal && !tk.includes(searchVal)) {
+                    return;
+                }
+                const isSelected = selectedWinnersData[tk] !== undefined;
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.innerText = tk;
+                btn.className = isSelected ? "btn-selected" : "btn-unselected";
+                btn.style.padding = "8px";
+                btn.style.fontSize = "12px";
+                btn.style.fontWeight = "bold";
+                btn.style.border = "1px solid " + (isSelected ? "var(--primary-gold)" : "#cbd5e1");
+                btn.style.background = isSelected ? "#fefce8" : "#fff";
+                btn.style.color = isSelected ? "#854d0e" : "#475569";
+                btn.style.borderRadius = "4px";
+                btn.style.cursor = "pointer";
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    toggleWinnerTicket(tk);
+                };
+                grid.appendChild(btn);
+            });
+        };
 
-            if(!name || !date || !prize1) { showToast("Name, Date and Prize 1 required"); return; }
+        window.toggleWinnerTicket = (tk) => {
+            if(selectedWinnersData[tk] !== undefined) {
+                delete selectedWinnersData[tk];
+            } else {
+                let defaultAmt = 1000;
+                if(tk.startsWith('KL')) defaultAmt = 50000;
+                else if(tk.startsWith('SL')) defaultAmt = 500000;
+                else if(tk.startsWith('VL')) defaultAmt = 1000000;
+                selectedWinnersData[tk] = defaultAmt;
+            }
+            renderActiveWinnersList();
+            renderTicketsSelectionGrid();
+        };
+
+        window.renderActiveWinnersList = () => {
+            const container = $('winners-prizes-list');
+            if(!container) return;
+            container.innerHTML = "";
+            
+            const keys = Object.keys(selectedWinnersData);
+            if(keys.length === 0) {
+                container.innerHTML = '<p style="font-size: 12px; color: #94a3b8; font-style: italic;">No tickets selected yet. Tap tickets in the selector below.</p>';
+                return;
+            }
+            
+            keys.forEach(tk => {
+                const div = document.createElement('div');
+                div.style.display = "flex";
+                div.style.alignItems = "center";
+                div.style.gap = "10px";
+                div.style.padding = "8px 12px";
+                div.style.background = "#f8fafc";
+                div.style.borderRadius = "6px";
+                div.style.border = "1px solid #e2e8f0";
+                
+                let labelColor = "#3b82f6";
+                if (tk.startsWith('KL')) labelColor = "#22c55e";
+                else if (tk.startsWith('SL')) labelColor = "#f59e0b";
+                else if (tk.startsWith('VL')) labelColor = "#ec4899";
+                
+                div.innerHTML = `
+                    <span style="font-weight: 800; font-family:var(--accent-font); font-size:14px; width:90px; color:${labelColor};">${tk}</span>
+                    <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                        <span style="font-size:12px; color:#64748b; font-weight:500;">₹</span>
+                        <input type="number" value="${selectedWinnersData[tk]}" style="flex:1; padding:4px 8px; font-size:13px; border:1px solid #cbd5e1; border-radius:4px;" onkeyup="updateWinnerAmount('${tk}', this.value)" onchange="updateWinnerAmount('${tk}', this.value)">
+                    </div>
+                    <button type="button" onclick="toggleWinnerTicket('${tk}')" style="background:none; border:none; color:#ef4444; font-size:18px; cursor:pointer; display:flex; align-items:center;"><i data-lucide="trash-2" style="width:16px;"></i></button>
+                `;
+                container.appendChild(div);
+            });
+            if (window.lucide) window.lucide.createIcons();
+        };
+
+        window.updateWinnerAmount = (tk, val) => {
+            selectedWinnersData[tk] = Number(val) || 0;
+        };
+
+        window.assignBookedWinner = (tk) => {
+            if(selectedWinnersData[tk] === undefined) {
+                let defaultAmt = 1000;
+                if(tk.startsWith('KL')) defaultAmt = 50000;
+                else if(tk.startsWith('SL')) defaultAmt = 500000;
+                else if(tk.startsWith('VL')) defaultAmt = 1000000;
+                selectedWinnersData[tk] = defaultAmt;
+                showToast(`Ticket ${tk} selected as winner!`, "success");
+            } else {
+                showToast(`Ticket ${tk} is already selected.`, "info");
+            }
+            renderActiveWinnersList();
+            renderTicketsSelectionGrid();
+        };
+
+        window.saveAdvancedResult = async () => {
+            const name = $('new-res-name').value.trim();
+            const date = $('new-res-date').value.trim();
+            
+            if(!name || !date) {
+                showToast("Draw Name and date are required.", "error");
+                return;
+            }
+            
+            const ticketKeys = Object.keys(selectedWinnersData);
+            if(ticketKeys.length === 0) {
+                showToast("Please select at least one winning ticket.", "error");
+                return;
+            }
+            
+            const sortedTickets = [...ticketKeys].sort((a,b) => selectedWinnersData[b] - selectedWinnersData[a]);
+            
+            const p1 = sortedTickets[0] || "";
+            const p1Amt = selectedWinnersData[p1] || 0;
+            
+            const p2 = sortedTickets[1] || "";
+            const p2Amt = selectedWinnersData[p2] || 0;
+            
+            const p3List = sortedTickets.slice(2);
+            const p3 = p3List.join(', ');
+            const p3Amt = p3List.length > 0 ? selectedWinnersData[p3List[0]] : 0;
+            
             try {
-                await setDoc(doc(collection(db, "results")), { 
-                    name, date, 
-                    prize1, prize1Amount: p1Amt,
-                    prize2, prize2Amount: p2Amt,
-                    prize3, prize3Amount: p3Amt,
-                    timestamp: serverTimestamp() 
+                await setDoc(doc(collection(db, "results")), {
+                    name,
+                    date,
+                    prize1: p1,
+                    prize1Amount: p1Amt,
+                    prize2: p2,
+                    prize2Amount: p2Amt,
+                    prize3: p3,
+                    prize3Amount: p3Amt,
+                    prizesMap: selectedWinnersData,
+                    timestamp: serverTimestamp()
                 });
-                showToast("Result added!");
+                
+                showToast("Result added successfully!", "success");
+                
+                $('new-res-name').value = "";
+                $('new-res-date').value = "";
+                selectedWinnersData = {};
+                renderActiveWinnersList();
+                renderTicketsSelectionGrid();
+                
                 renderAdminTab('results');
-            } catch (err) {
+                
+            } catch(err) {
                 handleFirestoreError(err, OperationType.WRITE, "results");
             }
         };
 
-        window.deleteResult = async (id) => {
-            if(!confirm("Delete this result report?")) return;
-            try {
-                await deleteDoc(doc(db, "results", id));
-                showToast("Result deleted.");
-                renderAdminTab('results');
-            } catch (err) {
-                handleFirestoreError(err, OperationType.DELETE, "results/" + id);
-            }
-        };
+
 
         window.addNews = async () => {
             const id = $('edit-news-id').value;
@@ -2782,7 +3603,8 @@
         };
 
         window.deleteNews = async (id) => {
-            if(!confirm("Delete this news item?")) return;
+            const yes = await customConfirm("Delete this news item?");
+            if(!yes) return;
             try {
                 await deleteDoc(doc(db, "news_items", id));
                 showToast("News deleted.");
