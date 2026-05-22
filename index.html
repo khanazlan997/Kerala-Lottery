@@ -1033,8 +1033,8 @@
             
             <div style="margin-top: 30px; padding: 20px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
                 <h4 style="margin-bottom: 10px; color: var(--navy-blue);">Support & Contact</h4>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 5px; display:flex; align-items:center; gap:5px;"><i data-lucide="mail" style="width:14px;"></i> Email: support@keralalottery.com</p>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 5px; display:flex; align-items:center; gap:5px;"><i data-lucide="phone" style="width:14px;"></i> Helpline: +91 98765 43210</p>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 5px; display:flex; align-items:center; gap:5px;"><i data-lucide="mail" style="width:14px;"></i> Email: <span id="display-email">support@keralalottery.com</span></p>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 5px; display:flex; align-items:center; gap:5px;"><i data-lucide="phone" style="width:14px;"></i> Helpline: <span id="display-phone">+91 98765 43210</span></p>
                 <p style="font-size: 14px; color: #64748b; display:flex; align-items:center; gap:5px;"><i data-lucide="map-pin" style="width:14px;"></i> Add: Director of Lotteries, Vikas Bhavan, TVM</p>
             </div>
         </div>
@@ -1085,8 +1085,8 @@
             </div>
             <div class="footer-col">
                 <h4>Contact Info</h4>
-                <p>Phone: 0471-2300230</p>
-                <p>Email: help@keralalottery.gov.in</p>
+                <p>Phone: <span id="display-footer-phone">+91 98765 43210</span></p>
+                <p>Email: <span id="display-footer-email">support@keralalottery.com</span></p>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -1182,8 +1182,8 @@
                 <button class="btn-gold" style="width:100%; margin-bottom: 20px;" onclick="submitGrievance()">Submit Grievance</button>
                 <div style="padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; color: #64748b;">
                     <h5 style="color: var(--navy-blue); margin-bottom: 8px;">Direct Support</h5>
-                    <p style="display:flex; align-items:center; gap:5px;"><i data-lucide="mail" style="width:14px;"></i> Email: support@keralalottery.com</p>
-                    <p style="display:flex; align-items:center; gap:5px;"><i data-lucide="phone" style="width:14px;"></i> Helpline: +91 98765 43210</p>
+                    <p style="display:flex; align-items:center; gap:5px;"><i data-lucide="mail" style="width:14px;"></i> Email: <span id="display-email-grievance">support@keralalottery.com</span></p>
+                    <p style="display:flex; align-items:center; gap:5px;"><i data-lucide="phone" style="width:14px;"></i> Helpline: <span id="display-phone-grievance">+91 98765 43210</span></p>
                 </div>
             </div>
         </div>
@@ -1912,6 +1912,16 @@
                         if ($('marqueeText')) $('marqueeText').innerText = appSettings.marquee_text || "";
                         if ($('set-upi')) $('set-upi').value = appSettings.upi_id || "";
                         if ($('set-marquee')) $('set-marquee').value = appSettings.marquee_text || "";
+                        
+                        // Populate support email and phone
+                        const mail = appSettings.support_email || "support@keralalottery.com";
+                        const phone = appSettings.support_phone || "+91 98765 43210";
+                        if ($('display-email')) $('display-email').innerText = mail;
+                        if ($('display-email-grievance')) $('display-email-grievance').innerText = mail;
+                        if ($('display-phone')) $('display-phone').innerText = phone;
+                        if ($('display-phone-grievance')) $('display-phone-grievance').innerText = phone;
+                        if ($('display-footer-email')) $('display-footer-email').innerText = mail;
+                        if ($('display-footer-phone')) $('display-footer-phone').innerText = phone;
                     } catch (e) {
                         console.warn("Error parsing cached settings:", e);
                     }
@@ -1920,6 +1930,8 @@
                     appSettings = {
                         upi_id: 'lottery@okhdfcbank',
                         marquee_text: "Welcome to Kerala State Lottery — Results announced daily at 4 PM",
+                        support_email: "support@keralalottery.com",
+                        support_phone: "+91 98765 43210",
                         maintenance_mode: false
                     };
                     localStorage.setItem('app_settings', JSON.stringify(appSettings));
@@ -1934,6 +1946,16 @@
                             if ($('marqueeText')) $('marqueeText').innerText = appSettings.marquee_text || "";
                             if ($('set-upi')) $('set-upi').value = appSettings.upi_id || "";
                             if ($('set-marquee')) $('set-marquee').value = appSettings.marquee_text || "";
+                            
+                            // Populate support email and phone from Cloud
+                            const mail = appSettings.support_email || "support@keralalottery.com";
+                            const phone = appSettings.support_phone || "+91 98765 43210";
+                            if ($('display-email')) $('display-email').innerText = mail;
+                            if ($('display-email-grievance')) $('display-email-grievance').innerText = mail;
+                            if ($('display-phone')) $('display-phone').innerText = phone;
+                            if ($('display-phone-grievance')) $('display-phone-grievance').innerText = phone;
+                            if ($('display-footer-email')) $('display-footer-email').innerText = mail;
+                            if ($('display-footer-phone')) $('display-footer-phone').innerText = phone;
                         }
                     }).catch((dbErr) => {
                         console.warn("Could not sync settings from cloud on startup:", dbErr);
@@ -2288,13 +2310,34 @@
                     let isWinner = false;
                     let winAmount = 0;
                     
-                    // Winner check (Read from local cache which contains the fetched results.json)
+                    // Winner check (dynamically fetch from Firestore or local state db, fallback to defaults)
                     let results = [];
-                    const cachedResults = localStorage.getItem('cached_results');
-                    if (cachedResults) {
+                    if (db) {
                         try {
-                            results = JSON.parse(cachedResults);
-                        } catch(e) { console.warn("Error parsing cached results for checking:", e); }
+                            const snap = await getDocs(collection(db, "results"));
+                            if (!snap.empty) {
+                                results = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                                localStorage.setItem('cached_results', JSON.stringify(results));
+                                localStorage.setItem('cached_results_timestamp', Date.now().toString());
+                                results.forEach(r => syncToLocalTable("results", r));
+                            }
+                        } catch (e) {
+                            console.warn("Error fetching real-time results inside trackOrder:", e);
+                        }
+                    }
+                    if (results.length === 0) {
+                        const localRes = getLocalTable("results");
+                        if (localRes && localRes.length > 0) {
+                            results = localRes;
+                        }
+                    }
+                    if (results.length === 0) {
+                        const cachedResults = localStorage.getItem('cached_results');
+                        if (cachedResults) {
+                            try {
+                                results = JSON.parse(cachedResults);
+                            } catch(e) { console.warn("Error parsing cached results for checking:", e); }
+                        }
                     }
                     if (results.length === 0) {
                         results = DEFAULT_RESULTS;
@@ -2645,21 +2688,11 @@
             try {
                 // 1. Immediately show cached news items if they exist
                 const cachedNews = localStorage.getItem('cached_news');
-                const cachedTime = localStorage.getItem('cached_news_timestamp');
-                const now = Date.now();
-                const cacheDuration = 1 * 60 * 60 * 1000; // 1 hour TTL
-
-                let hasValidCache = false;
                 if (cachedNews) {
                     try {
                         const newsItems = JSON.parse(cachedNews);
                         container.innerHTML = "";
                         newsItems.forEach(n => container.innerHTML += renderNewsCard(n));
-
-                        if (cachedTime && (now - parseInt(cachedTime)) < cacheDuration) {
-                            hasValidCache = true;
-                            console.log("Using cached news (TTL active)");
-                        }
                     } catch (e) {
                         console.warn("Error parsing cached news:", e);
                     }
@@ -2668,29 +2701,40 @@
                     DEFAULT_NEWS.forEach(n => container.innerHTML += renderNewsCard(n));
                 }
 
-                // 2. Fetch from static file ONLY if cache is expired/missing
-                if (!hasValidCache) {
-                    try {
-                        const response = await fetch('/data/news.json');
-                        if (response.ok) {
-                            const newsSnap = await response.json();
-                            if (newsSnap && newsSnap.length > 0) {
-                                localStorage.setItem('cached_news', JSON.stringify(newsSnap));
-                                localStorage.setItem('cached_news_timestamp', now.toString());
-                                container.innerHTML = "";
-                                newsSnap.forEach(n => container.innerHTML += renderNewsCard(n));
-                            }
-                        } else {
-                            throw new Error("News response error");
-                        }
-                    } catch (fetchErr) {
-                        console.warn("Static news fetch fallback:", fetchErr);
-                        const localNews = getLocalTable("news_items");
-                        if (localNews && localNews.length > 0) {
-                            container.innerHTML = "";
-                            localNews.forEach(n => container.innerHTML += renderNewsCard(n));
+                // 2. Fetch from Firestore (preferred) or fallbacks
+                try {
+                    let newsItemsList = [];
+                    if (db) {
+                        const snap = await getDocs(collection(db, "news_items"));
+                        if (!snap.empty) {
+                            newsItemsList = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            newsItemsList.sort((a,b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
                         }
                     }
+                    if (newsItemsList.length === 0) {
+                        const localNews = getLocalTable("news_items");
+                        if (localNews && localNews.length > 0) {
+                            newsItemsList = localNews;
+                        }
+                    }
+                    if (newsItemsList.length === 0) {
+                        const response = await fetch('/data/news.json');
+                        if (response.ok) {
+                            newsItemsList = await response.json();
+                        }
+                    }
+
+                    if (newsItemsList && newsItemsList.length > 0) {
+                        if (db) {
+                            newsItemsList.forEach(n => syncToLocalTable("news_items", n));
+                        }
+                        localStorage.setItem('cached_news', JSON.stringify(newsItemsList));
+                        localStorage.setItem('cached_news_timestamp', Date.now().toString());
+                        container.innerHTML = "";
+                        newsItemsList.forEach(n => container.innerHTML += renderNewsCard(n));
+                    }
+                } catch (fetchErr) {
+                    console.warn("Failed fetching updated news:", fetchErr);
                 }
             } catch (e) {
                 console.warn("loadNews setup fallback:", e.message || String(e));
@@ -2728,20 +2772,10 @@
             try {
                 // 1. Immediately show cached results if they exist
                 const cachedResults = localStorage.getItem('cached_results');
-                const cachedTime = localStorage.getItem('cached_results_timestamp');
-                const now = Date.now();
-                const cacheDuration = 1 * 60 * 60 * 1000; // 1 hour TTL
-
-                let hasValidCache = false;
                 if (cachedResults) {
                     try {
                         const res = JSON.parse(cachedResults);
                         renderResultsTable(res);
-
-                        if (cachedTime && (now - parseInt(cachedTime)) < cacheDuration) {
-                            hasValidCache = true;
-                            console.log("Using cached results (TTL active)");
-                        }
                     } catch (e) {
                         console.warn("Error parsing cached results:", e);
                     }
@@ -2749,27 +2783,40 @@
                     renderResultsTable(DEFAULT_RESULTS);
                 }
 
-                // 2. Fetch from static file ONLY if cache is expired/missing
-                if (!hasValidCache) {
-                    try {
-                        const response = await fetch('/data/results.json');
-                        if (response.ok) {
-                            const resSnap = await response.json();
-                            if (resSnap && resSnap.length > 0) {
-                                localStorage.setItem('cached_results', JSON.stringify(resSnap));
-                                localStorage.setItem('cached_results_timestamp', now.toString());
-                                renderResultsTable(resSnap);
-                            }
-                        } else {
-                            throw new Error("Results response error");
-                        }
-                    } catch (fetchErr) {
-                        console.warn("Static results fetch fallback:", fetchErr);
-                        const localRes = getLocalTable("results");
-                        if (localRes && localRes.length > 0) {
-                            renderResultsTable(localRes);
+                // 2. Fetch from Firestore (preferred) or fallbacks
+                try {
+                    let resultsList = [];
+                    if (db) {
+                        const snap = await getDocs(collection(db, "results"));
+                        if (!snap.empty) {
+                            resultsList = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            // Sort by timestamp or date dec
+                            resultsList.sort((a,b) => new Date(b.date || b.timestamp || 0) - new Date(a.date || a.timestamp || 0));
                         }
                     }
+                    if (resultsList.length === 0) {
+                        const localRes = getLocalTable("results");
+                        if (localRes && localRes.length > 0) {
+                            resultsList = localRes;
+                        }
+                    }
+                    if (resultsList.length === 0) {
+                        const response = await fetch('/data/results.json');
+                        if (response.ok) {
+                            resultsList = await response.json();
+                        }
+                    }
+
+                    if (resultsList && resultsList.length > 0) {
+                        if (db) {
+                            resultsList.forEach(r => syncToLocalTable("results", r));
+                        }
+                        localStorage.setItem('cached_results', JSON.stringify(resultsList));
+                        localStorage.setItem('cached_results_timestamp', Date.now().toString());
+                        renderResultsTable(resultsList);
+                    }
+                } catch (fetchErr) {
+                    console.warn("Failed fetching updated results:", fetchErr);
                 }
             } catch (e) {
                 console.warn("loadResults setup fallback:", e.message || String(e));
@@ -3208,11 +3255,19 @@
                         <h4>System Configuration</h4>
                         <div class="form-group" style="margin-top: 15px;">
                             <label>Default UPI ID</label>
-                            <input type="text" id="set-upi" value="${appSettings.upi_id}">
+                            <input type="text" id="set-upi" value="${appSettings.upi_id || ''}">
                         </div>
                         <div class="form-group" style="margin-top: 15px;">
                             <label>Marquee Text</label>
-                            <textarea id="set-marquee" style="width:100%; height:60px; padding:10px;">${appSettings.marquee_text}</textarea>
+                            <textarea id="set-marquee" style="width:100%; height:60px; padding:10px;">${appSettings.marquee_text || ''}</textarea>
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Support Email (सपोर्ट ईमेल)</label>
+                            <input type="email" id="set-support-email" value="${appSettings.support_email || 'support@keralalottery.com'}">
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Helpline Phone Number (हेल्पलाइन फोन नंबर)</label>
+                            <input type="text" id="set-support-phone" value="${appSettings.support_phone || '+91 98765 43210'}">
                         </div>
                         <button class="btn-gold" style="margin-top: 15px;" onclick="saveSettings()">Save Configuration</button>
                     </div>
@@ -3994,13 +4049,24 @@
             try {
                 const upi_id = $('set-upi').value.trim();
                 const marquee_text = $('set-marquee').value.trim();
+                const support_email = $('set-support-email').value.trim() || "support@keralalottery.com";
+                const support_phone = $('set-support-phone').value.trim() || "+91 98765 43210";
                 
-                appSettings = { id: "global", upi_id, marquee_text };
+                appSettings = { ...appSettings, id: "global", upi_id, marquee_text, support_email, support_phone };
                 await saveToCloudAndLocal("settings", "global", appSettings);
                 
                 localStorage.setItem('app_settings', JSON.stringify(appSettings));
                 localStorage.setItem('app_settings_timestamp', Date.now().toString());
-                $('marqueeText').innerText = marquee_text;
+                
+                // Instantly update elements in the DOM
+                if ($('marqueeText')) $('marqueeText').innerText = marquee_text;
+                if ($('display-email')) $('display-email').innerText = support_email;
+                if ($('display-email-grievance')) $('display-email-grievance').innerText = support_email;
+                if ($('display-phone')) $('display-phone').innerText = support_phone;
+                if ($('display-phone-grievance')) $('display-phone-grievance').innerText = support_phone;
+                if ($('display-footer-email')) $('display-footer-email').innerText = support_email;
+                if ($('display-footer-phone')) $('display-footer-phone').innerText = support_phone;
+                
                 showToast("Settings saved successfully.", "success");
             } catch (err) {
                 console.error("Save settings failed:", err);
@@ -4171,8 +4237,8 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Sync Locally First
-            syncToLocalTable("results", resultData);
+            // Sync to Cloud and Local
+            await saveToCloudAndLocal("results", resultId, resultData);
             localStorage.setItem('cached_results_timestamp', '0'); // Force reload results cache on next draw
             showToast("Result added successfully!", "success");
 
@@ -4204,8 +4270,8 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Sync Locally First
-            syncToLocalTable("news_items", newsData);
+            // Sync to Cloud and Local
+            await saveToCloudAndLocal("news_items", newsId, newsData);
             localStorage.setItem('cached_news_timestamp', '0'); // Force reload news items cache on next page load
 
             showToast(id ? "News updated successfully!" : "News announced successfully!", "success");
@@ -4235,7 +4301,7 @@
             if(!yes) return;
             localStorage.setItem('cached_news_timestamp', '0'); // Force news reload on next load
             try {
-                syncToLocalTable("news_items", { id }, true);
+                await deleteFromCloudAndLocal("news_items", id);
                 showToast("News deleted.", "success");
                 renderAdminTab('news');
             } catch (err) {
