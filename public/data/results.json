@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "name": "WIN-WIN W-785",
+    "date": "2026-05-18",
+    "prize1": "KL-492049 (₹75 Lakh)",
+    "prize2": "KL-329402 (₹5 Lakh)",
+    "prize3": "KL-102940 (₹1 Lakh)",
+    "timestamp": "2026-05-18T16:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "SREE SAKTHI SS-420",
+    "date": "2026-05-17",
+    "prize1": "SL-204950 (₹80 Lakh)",
+    "prize2": "SL-594030 (₹10 Lakh)",
+    "prize3": "SL-394050 (₹5 Lakh)",
+    "timestamp": "2026-05-17T16:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "AKSHAYA AK-624",
+    "date": "2026-05-16",
+    "prize1": "VL-884029 (₹1 Crore)",
+    "prize2": "VL-112049 (₹20 Lakh)",
+    "prize3": "VL-552044 (₹10 Lakh)",
+    "timestamp": "2026-05-16T16:00:00.000Z"
+  }
+]
