@@ -10,9 +10,10 @@ service cloud.firestore {
       return isSignedIn() && (
         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) || 
         exists(/databases/$(database)/documents/agents/$(request.auth.uid)) ||
-        exists(/databases/$(database)/documents/authorized_emails/$(request.auth.token.email)) ||
-        request.auth.token.email == "admin@kerala.com" ||
-        request.auth.token.email == "khanazlan997@gmail.com"
+        (request.auth.token != null && 'email' in request.auth.token && request.auth.token.email != null && exists(/databases/$(database)/documents/authorized_emails/$(request.auth.token.email))) ||
+        (request.auth.token != null && 'email' in request.auth.token && request.auth.token.email == "admin@kerala.com") ||
+        (request.auth.token != null && 'email' in request.auth.token && request.auth.token.email == "khanazlan997@gmail.com") ||
+        (request.auth.token != null && 'email' in request.auth.token && request.auth.token.email == "publicadsnetwork@gmail.com")
       );
     }
 
@@ -61,8 +62,10 @@ service cloud.firestore {
     match /admins/{uid} {
       allow read: if isSignedIn();
       allow create: if isSignedIn() && (
-        request.auth.token.email == "admin@kerala.com" || 
-        request.auth.token.email == "khanazlan997@gmail.com"
+        request.auth.token != null && 'email' in request.auth.token && (
+          request.auth.token.email == "admin@kerala.com" || 
+          request.auth.token.email == "khanazlan997@gmail.com"
+        )
       );
       allow update, delete: if isAdmin();
     }

