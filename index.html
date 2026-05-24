@@ -2074,11 +2074,7 @@
         };
 
         // --- INITIAL DATA ---
-        const DEFAULT_RESULTS = [
-            { id: 1, name: 'WIN-WIN W-785', date: '2026-05-18', prize1: 'KL-492049 (₹75 Lakh)', prize2: 'KL-329402 (₹5 Lakh)', prize3: 'KL-102940 (₹1 Lakh)' },
-            { id: 2, name: 'SREE SAKTHI SS-420', date: '2026-05-17', prize1: 'SL-204950 (₹80 Lakh)', prize2: 'SL-594030 (₹10 Lakh)', prize3: 'SL-394050 (₹5 Lakh)' },
-            { id: 3, name: 'AKSHAYA AK-624', date: '2026-05-16', prize1: 'VL-884029 (₹1 Crore)', prize2: 'VL-112049 (₹20 Lakh)', prize3: 'VL-552044 (₹10 Lakh)' }
-        ];
+        const DEFAULT_RESULTS = [];
 
         const DEFAULT_NEWS = [
             { id: 1, day: '18', month: 'MAY', title: 'KL Draw Today', text: 'The KL - Win Win Win results will be announced at 4 PM today.' },
@@ -2672,10 +2668,22 @@
                   })
                 : matchedOrders;
 
+            window.trackerTicketsMap = {};
             filteredOrders.forEach(o => {
                 const list = o.ticketsList || (o.tickets ? o.tickets.split(',').map(t => t.trim()) : []);
+                const orderDate = o.date || (o.timestamp ? o.timestamp.substring(0, 10) : "");
                 list.forEach(tk => {
-                    if (tk) allTickets.push(tk.toUpperCase().trim());
+                    if (tk) {
+                        const cleanTk = tk.toUpperCase().trim();
+                        allTickets.push(cleanTk);
+                        // Store the status and order date. Confirmed status takes priority.
+                        if (!window.trackerTicketsMap[cleanTk] || window.trackerTicketsMap[cleanTk].status !== 'Confirmed') {
+                            window.trackerTicketsMap[cleanTk] = {
+                                status: o.status || "Pending",
+                                orderDate: orderDate
+                            };
+                        }
+                    }
                 });
             });
             const uniqueTickets = Array.from(new Set(allTickets));
@@ -2804,46 +2812,83 @@
                 return "premium";
             }
             
+            let hasPendingTickets = false;
+            let hasWaitResultTickets = false;
+            let hasUnluckyTickets = false;
+
             validTickets.forEach(ticket => {
                 const category = getTicketCategory(ticket);
                 const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+                
+                // Get ticket order details
+                const ticketInfo = (window.trackerTicketsMap && window.trackerTicketsMap[ticket]) || { status: "Pending", orderDate: "" };
+                const orderStatus = ticketInfo.status;
+                const orderDate = ticketInfo.orderDate;
                 
                 let isWinner = false;
                 let amt = 0;
                 let drawName = "";
                 
-                results.forEach(rd => {
-                    if (rd.prizesMap && rd.prizesMap[ticket] !== undefined) {
-                        isWinner = true;
-                        amt += Number(rd.prizesMap[ticket]);
-                        drawName = rd.name || "Daily Draw";
-                    } else {
-                        const p1List = (rd.prize1 || "").split(',').map(s => s.trim().toUpperCase());
-                        const p2List = (rd.prize2 || "").split(',').map(s => s.trim().toUpperCase());
-                        const p3List = (rd.prize3 || "").split(',').map(s => s.trim().toUpperCase());
-                        
-                        if (p1List.includes(ticket)) {
+                // Look for results that match the exact date that this ticket's order belongs to
+                const matchingResults = results.filter(rd => rd.date === orderDate);
+                const hasResultsForDate = matchingResults.length > 0;
+                
+                if (hasResultsForDate) {
+                    matchingResults.forEach(rd => {
+                        if (rd.prizesMap && rd.prizesMap[ticket] !== undefined) {
                             isWinner = true;
-                            amt += Number(rd.prize1Amount || 0);
+                            amt += Number(rd.prizesMap[ticket]);
                             drawName = rd.name || "Daily Draw";
-                        } else if (p2List.includes(ticket)) {
-                            isWinner = true;
-                            amt += Number(rd.prize2Amount || 0);
-                            drawName = rd.name || "Daily Draw";
-                        } else if (p3List.includes(ticket)) {
-                            isWinner = true;
-                            amt += Number(rd.prize3Amount || 0);
-                            drawName = rd.name || "Daily Draw";
+                        } else {
+                            const p1List = (rd.prize1 || "").split(',').map(s => s.trim().toUpperCase());
+                            const p2List = (rd.prize2 || "").split(',').map(s => s.trim().toUpperCase());
+                            const p3List = (rd.prize3 || "").split(',').map(s => s.trim().toUpperCase());
+                            
+                            if (p1List.includes(ticket)) {
+                                isWinner = true;
+                                amt += Number(rd.prize1Amount || 0);
+                                drawName = rd.name || "Daily Draw";
+                            } else if (p2List.includes(ticket)) {
+                                isWinner = true;
+                                amt += Number(rd.prize2Amount || 0);
+                                drawName = rd.name || "Daily Draw";
+                            } else if (p3List.includes(ticket)) {
+                                isWinner = true;
+                                amt += Number(rd.prize3Amount || 0);
+                                drawName = rd.name || "Daily Draw";
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 
                 let resultBadge = "";
                 let amountText = "";
+                let rowBg = "#ffffff";
+                let rowBorder = "1px solid #e2e8f0";
+                let ticketStyle = "color:#475569; font-weight:700;";
                 
-                if (isWinner && amt > 0) {
+                if (orderStatus !== "Confirmed") {
+                    hasPendingTickets = true;
+                    // Processing
+                    resultBadge = `<span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.3); font-size:11.5px; display:inline-block;">Processing ⏳</span>`;
+                    amountText = `<span style="color: #64748b; font-size:12px; font-style:italic; font-weight:500;">Processing (सत्यापन जारी है)</span>`;
+                    rowBg = "#fffbeb";
+                    rowBorder = "1.5px solid #fde68a";
+                    ticketStyle = "color:#b45309; font-weight:800;";
+                } else if (!hasResultsForDate) {
+                    hasWaitResultTickets = true;
+                    // Approved but result not updated
+                    resultBadge = `<span style="background: rgba(30, 41, 59, 0.08); color: #475569; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(30, 41, 59, 0.15); font-size:11.5px; display:inline-block;">Wait for Result ⏳</span>`;
+                    amountText = `<span style="color: #475569; font-size:12px; font-style:italic; font-weight:600;">Wait for Result (प्रतीक्षा करें)</span>`;
+                    rowBg = "#f8fafc";
+                    ticketStyle = "color:#1e293b; font-weight:700;";
+                } else if (isWinner && amt > 0) {
+                    // Winner!
                     resultBadge = `<span style="background: #22c55e; color: #ffffff; padding: 4px 10px; border-radius: 4px; font-weight: 800; border: 1px solid #16a34a; font-size:11.5px; display:inline-block; animation: pulse 2s infinite;">Winner 🎉</span>`;
                     amountText = `<span style="color: #15803d; font-weight: 900; font-size:14px;">₹${amt.toLocaleString('en-IN')}</span>`;
+                    rowBg = "#f0fdf4";
+                    rowBorder = "1.5px solid #bbf7d0";
+                    ticketStyle = "color:#15803d; font-weight:800;";
                     
                     window.trackerWinningTickets.push({
                         ticket: ticket,
@@ -2852,29 +2897,23 @@
                         drawName: drawName
                     });
                     window.trackerWinningAmount += amt;
-                    
-                    // High quality visual green row for winning tickets as requested!
-                    rowHTML += `
-                        <tr style="border-bottom:1.5px solid #bbf7d0; background-color: #f0fdf4;">
-                            <td style="padding:12px 12px; font-weight:800; font-family:var(--accent-font); color:#15803d;">${ticket}</td>
-                            <td style="padding:12px 12px;"><span style="font-size:11px; padding:3px 8px; border-radius:4px; font-weight:700; background:#dcfce7; color:#15803d;">${categoryLabel}</span></td>
-                            <td style="padding:12px 12px;">${resultBadge}</td>
-                            <td style="padding:12px 12px; text-align:right;">${amountText}</td>
-                        </tr>
-                    `;
                 } else {
-                    resultBadge = `<span style="background: #f1f5f9; color: #94a3b8; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size:11px;">Unlucky ❌</span>`;
-                    amountText = `<span style="color: #94a3b8;">-</span>`;
-                    
-                    rowHTML += `
-                        <tr style="border-bottom:1px solid #e2e8f0; background-color: #ffffff;">
-                            <td style="padding:12px 12px; font-weight:700; font-family:var(--accent-font); color:#475569;">${ticket}</td>
-                            <td style="padding:12px 12px;"><span style="font-size:11px; padding:2px 6px; border-radius:4px; font-weight:600; ${category === 'basic' ? 'background:#eff6ff; color:#1d4ed8;' : category === 'standard' ? 'background:#fdf2f8; color:#db2777;' : 'background:#f0fdf4; color:#16a34a'}">${categoryLabel}</span></td>
-                            <td style="padding:12px 12px;">${resultBadge}</td>
-                            <td style="padding:12px 12px; text-align:right;">${amountText}</td>
-                        </tr>
-                    `;
+                    hasUnluckyTickets = true;
+                    // Unlucky
+                    resultBadge = `<span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.2); font-size:11.5px; display:inline-block;">Unlucky ❌</span>`;
+                    amountText = `<span style="color: #94a3b8; font-size: 13px; font-weight: 600;">Unlucky (अभाग्यशाली)</span>`;
+                    rowBg = "#fef2f2";
+                    ticketStyle = "color:#475569; font-weight:700;";
                 }
+                
+                rowHTML += `
+                    <tr style="border-bottom:${rowBorder}; background-color: ${rowBg};">
+                        <td style="padding:12px 12px; ${ticketStyle} font-family:var(--accent-font);">${ticket}</td>
+                        <td style="padding:12px 12px;"><span style="font-size:11px; padding:3px 8px; border-radius:4px; font-weight:700; background:#f1f5f9; color:#475569;">${categoryLabel}</span></td>
+                        <td style="padding:12px 12px;">${resultBadge}</td>
+                        <td style="padding:12px 12px; text-align:right;">${amountText}</td>
+                    </tr>
+                `;
             });
             
             $('checker-results-grid-rows').innerHTML = rowHTML;
@@ -2897,12 +2936,34 @@
                     `;
                 }
             } else {
-                actionContainer.innerHTML = `
-                    <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No winning tickets found in this search. (इस खोज में कोई भी विजयी टिकट नहीं मिला।)</p>
-                    <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
-                        Back to My Tickets (टिकट सूची देखें)
-                    </button>
-                `;
+                if (hasPendingTickets) {
+                    actionContainer.innerHTML = `
+                        <p style="font-size:13px; color:#d97706; font-weight:700; text-align:center; margin-bottom:15px; line-height: 1.6;">
+                            ⏳ Your bookings are currently processing. Once admin approves, check back for results! <br>
+                            <span style="font-size:11.5px; font-weight:500; color:#b45309;">(आपके टिकट एडमिन सत्यापन के अधीन हैं। स्वीकृत होते ही परिणाम यहाँ दिखाई देगा।)</span>
+                        </p>
+                        <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
+                            Back to My Tickets (टिकट सूची देखें)
+                        </button>
+                    `;
+                } else if (hasWaitResultTickets) {
+                    actionContainer.innerHTML = `
+                        <p style="font-size:13px; color:#475569; font-weight:700; text-align:center; margin-bottom:15px; line-height: 1.6;">
+                            ⏳ Results for your drawing date have not been uploaded yet. Please stay tuned! <br>
+                            <span style="font-size:11.5px; font-weight:500; color:#64748b;">(आपके ड्रॉ का परिणाम अभी घोषित नहीं हुआ है। कृपया कुछ देर बाद फिर से जांचें।)</span>
+                        </p>
+                        <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
+                            Back to My Tickets (टिकट सूची देखें)
+                        </button>
+                    `;
+                } else {
+                    actionContainer.innerHTML = `
+                        <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No winning tickets found in this search. (इस खोज में कोई भी विजयी टिकट नहीं मिला।)</p>
+                        <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
+                            Back to My Tickets (टिकट सूची देखें)
+                        </button>
+                    `;
+                }
             }
             
             $('check-step-tickets').classList.add('hidden');
@@ -3716,15 +3777,23 @@
             try {
                 // 1. Immediately show cached results if they exist
                 const cachedResults = localStorage.getItem('cached_results');
+                let initialLoaded = false;
                 if (cachedResults) {
                     try {
-                        const res = JSON.parse(cachedResults);
-                        renderResultsTable(res);
+                        let res = JSON.parse(cachedResults);
+                        // Filter out old default/mock results
+                        res = res.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+                        if (res.length > 0) {
+                            renderResultsTable(res);
+                            initialLoaded = true;
+                        }
                     } catch (e) {
                         console.warn("Error parsing cached results:", e);
                     }
-                } else {
-                    renderResultsTable(DEFAULT_RESULTS);
+                }
+                
+                if (!initialLoaded) {
+                    renderResultsTable([]);
                 }
 
                 // 2. Fetch from Firestore (preferred) or fallbacks
@@ -3751,6 +3820,9 @@
                         }
                     }
 
+                    // Filter out old default/mock results
+                    resultsList = resultsList.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+
                     if (resultsList && resultsList.length > 0) {
                         if (db) {
                             resultsList.forEach(r => syncToLocalTable("results", r));
@@ -3758,15 +3830,16 @@
                         localStorage.setItem('cached_results', JSON.stringify(resultsList));
                         localStorage.setItem('cached_results_timestamp', Date.now().toString());
                         renderResultsTable(resultsList);
+                    } else {
+                        localStorage.setItem('cached_results', JSON.stringify([]));
+                        renderResultsTable([]);
                     }
                 } catch (fetchErr) {
                     console.warn("Failed fetching updated results:", fetchErr);
                 }
             } catch (e) {
                 console.warn("loadResults setup fallback:", e.message || String(e));
-                if (!localStorage.getItem('cached_results')) {
-                    renderResultsTable(DEFAULT_RESULTS);
-                }
+                renderResultsTable([]);
             }
         };
 
@@ -4621,7 +4694,8 @@
                 // Smart Seeding for empty tables from fetched static caches or defaults
                 if (table === "results") {
                     const cachedResults = localStorage.getItem('cached_results');
-                    const initial = cachedResults ? JSON.parse(cachedResults) : DEFAULT_RESULTS;
+                    let initial = cachedResults ? JSON.parse(cachedResults) : DEFAULT_RESULTS;
+                    initial = initial.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
                     localStorage.setItem('local_db_' + table, JSON.stringify(initial));
                     return initial;
                 }
@@ -5202,7 +5276,9 @@
 
             // Sync to Cloud and Local
             await saveToCloudAndLocal("results", resultId, resultData);
+            localStorage.removeItem('cached_results');
             localStorage.setItem('cached_results_timestamp', '0'); // Force reload results cache on next draw
+            await loadResults();
             showToast("Result added successfully!", "success");
 
             $('new-res-name').value = "";
