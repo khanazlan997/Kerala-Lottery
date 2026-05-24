@@ -7,6 +7,43 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <script>
+        // Global Safeguard to Prevent "Converting circular structure to JSON"
+        (function() {
+            const originalStringify = JSON.stringify;
+            JSON.stringify = function(value, replacer, space) {
+                const seen = new WeakSet();
+                const customReplacer = typeof replacer === 'function' ? replacer : null;
+                
+                return originalStringify(value, function(key, val) {
+                    if (customReplacer) {
+                        val = customReplacer(key, val);
+                    }
+                    if (typeof val === "object" && val !== null) {
+                        if (seen.has(val)) {
+                            return "[Circular]";
+                        }
+                        seen.add(val);
+                        
+                        // Handle specialized types
+                        if (typeof val.toDate === 'function') {
+                            try {
+                                return val.toDate().toISOString();
+                            } catch (e) {
+                                return val.toString();
+                            }
+                        }
+                        if (val.nodeType && typeof val.nodeName === 'string') {
+                            return `[DOMElement: ${val.nodeName}]`;
+                        }
+                    }
+                    return val;
+                }, space);
+            };
+        })();
+    </script>
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
@@ -3847,9 +3884,77 @@
             const container = $('results-display');
             if(!container) return;
             container.innerHTML = "";
-            results.forEach(r => {
+            
+            // 1. Filter out old default/mock/placeholder results
+            let cleanResults = results.filter(r => r && r.id && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+            
+            // 2. Sort by Draw Date or timestamp descending (newest first)
+            cleanResults.sort((a,b) => {
+                const dateA = new Date(a.date || a.timestamp || 0);
+                const dateB = new Date(b.date || b.timestamp || 0);
+                return dateB - dateA;
+            });
+            
+            // 3. Limit to the last 3 (latest 3) new results
+            const latest3 = cleanResults.slice(0, 3);
+            
+            if (latest3.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 30px 15px; color:#64748b; font-weight:600; font-size:14px; background:#f8fafc; border-radius:8px; border:1px dashed #cbd5e1; margin-bottom: 20px;">
+                        No results declared yet (कोई परिणाम घोषित नहीं हुआ है)
+                    </div>
+                `;
+                return;
+            }
+
+            latest3.forEach(r => {
+                // 4. Dynamically construct tbody based on actual tickets defined
+                let tbodyHTML = "";
+                
+                const hasPrize1 = r.prize1 && r.prize1.toUpperCase() !== 'N/A' && r.prize1.trim() !== '';
+                const hasPrize2 = r.prize2 && r.prize2.toUpperCase() !== 'N/A' && r.prize2.trim() !== '';
+                const hasPrize3 = r.prize3 && r.prize3.toUpperCase() !== 'N/A' && r.prize3.trim() !== '';
+                
+                if (hasPrize1) {
+                    tbodyHTML += `
+                        <tr style="background:#fef2f2;">
+                            <td style="padding:12px; border:1px solid #e2e8f0; font-weight:700; color:#b91c1c; font-size:13px;">1st Prize (प्रथम इनाम)</td>
+                            <td style="padding:12px; border:1px solid #e2e8f0; font-weight:800; font-family:var(--font-mono); font-size:15px; color:#b91c1c;">${r.prize1}</td>
+                            <td style="padding:12px; border:1px solid #e2e8f0; text-align:right; font-weight:800; color:#16a34a; font-size:15px;">₹${(Number(r.prize1Amount) || 0).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                }
+                
+                if (hasPrize2) {
+                    tbodyHTML += `
+                        <tr style="background:#fff7ed;">
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#c2410c; font-size:13px;">2nd Prize (द्वितीय इनाम)</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:14px; color:#c2410c;">${r.prize2}</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:14px;">₹${(Number(r.prize2Amount) || 0).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                }
+                
+                if (hasPrize3) {
+                    tbodyHTML += `
+                        <tr>
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#475569; font-size:12px;">3rd Prize (तृतीय इनाम)</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:13px; color:#1e293b;">${r.prize3}</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:13px;">₹${(Number(r.prize3Amount) || 0).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                }
+                
+                if (!tbodyHTML) {
+                    tbodyHTML = `
+                        <tr>
+                            <td colspan="3" style="padding:15px; border:1px solid #e2e8f0; text-align:center; color:#94a3b8; font-style:italic;">No Winning Tickets Declared</td>
+                        </tr>
+                    `;
+                }
+
                 container.innerHTML += `
-                    <div style="margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px;">
+                    <div style="margin-bottom: 25px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 20px;">
                         <h4 style="font-family: var(--heading-font); color: var(--deep-red); font-weight:700; margin-bottom:4px; font-size:18px;">${r.name}</h4>
                         <p style="font-size: 11px; color: #64748b; margin-bottom: 12px; font-weight:600;"><i data-lucide="calendar" style="width:12px; height:12px; display:inline-block; vertical-align:middle; margin-right:4px;"></i> Draw Date: ${r.date}</p>
                         <div style="overflow-x:auto;">
@@ -3862,21 +3967,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="background:#fef2f2;">
-                                        <td style="padding:12px; border:1px solid #e2e8f0; font-weight:700; color:#b91c1c; font-size:13px;">1st Prize (प्रथम इनाम)</td>
-                                        <td style="padding:12px; border:1px solid #e2e8f0; font-weight:800; font-family:var(--font-mono); font-size:15px; color:#b91c1c;">${r.prize1 || 'N/A'}</td>
-                                        <td style="padding:12px; border:1px solid #e2e8f0; text-align:right; font-weight:800; color:#16a34a; font-size:15px;">₹${(Number(r.prize1Amount) || 0).toLocaleString('en-IN')}</td>
-                                    </tr>
-                                    <tr style="background:#fff7ed;">
-                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#c2410c; font-size:13px;">2nd Prize (द्वितीय इनाम)</td>
-                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:14px; color:#c2410c;">${r.prize2 || 'N/A'}</td>
-                                        <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:14px;">₹${(Number(r.prize2Amount) || 0).toLocaleString('en-IN')}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#475569; font-size:12px;">3rd Prize (तृतीय इनाम)</td>
-                                        <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:13px; color:#1e293b;">${r.prize3 || 'N/A'}</td>
-                                        <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:13px;">₹${(Number(r.prize3Amount) || 0).toLocaleString('en-IN')}</td>
-                                    </tr>
+                                    ${tbodyHTML}
                                 </tbody>
                             </table>
                         </div>
