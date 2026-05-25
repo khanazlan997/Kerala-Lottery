@@ -429,7 +429,7 @@
             height: 100%;
             background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px);
-            z-index: 2000;
+            z-index: 10000;
             display: none;
             align-items: center;
             justify-content: center;
@@ -895,14 +895,13 @@
         </div>
         <h1 style="font-size:36px; font-weight:800; margin-bottom:12px; font-family:var(--heading-font); letter-spacing:-0.025em; color:#f8fafc;">Website Under Maintenance</h1>
         <p style="font-size:16px; color:#94a3b8; max-width:500px; line-height:1.6; margin-bottom:30px; padding:0 10px;">
-            We are currently updating our systems to bring you a faster, optimized, quota-free database architecture. We'll be back online in just a few minutes! <br>
-            <span style="color:#f59e0b; display:inline-block; margin-top:8px;">(वेबसाइट अभी मेन्टेनेंस में है, कृपया कुछ ही मिनटों में दोबारा प्रयास करें।)</span>
+            We are currently updating our systems to bring you a faster, optimized, quota-free database architecture. We'll be back online in just a few minutes!
         </p>
         <div style="background:#1e293b; border-radius:8px; border:1px solid #334155; padding:12px 24px; font-size:14px; color:#cbd5e1; font-family:var(--font-mono); margin-bottom:40px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-            🔄 Type: Quota Mitigation Live Upgrade (कोटा सुधार लाइव अपग्रेड)
+            🔄 Type: Quota Mitigation Live Upgrade
         </div>
         <button onclick="openModal('adminLoginOverlay')" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#94a3b8; cursor:pointer; padding:10px 20px; border-radius:6px; font-size:13px; font-weight:500; transition: all 0.2s;">
-            Staff Access (कर्मचारी लॉगिन)
+            Staff Access
         </button>
     </div>
 
@@ -1267,7 +1266,7 @@
             <!-- REGULAR CHECKER MARQUEE WARNING BANNER -->
             <div style="background: #fef2f2; border-bottom: 1.5px solid #fecaca; color: #991b1b; font-size: 11px; font-weight: 800; padding: 6px 0; overflow: hidden; white-space: nowrap; font-family: var(--font-sans); display: flex; width: 100%;">
                 <div class="smooth-marquee">
-                    ⚠️ IMPORTANT NOTICE: Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi iske zimmedar company nhi hogi. Apna result regular check kre! (दावा राशि का भुगतान रात 12 बजे से पहले करना आवश्यक है, अन्यथा भुगतान अमान्य होगा। इसकी जिम्मेदारी कंपनी की नहीं होगी। कृपया नियमित रूप से अपना परिणाम जांचें।)
+                    ⚠️ IMPORTANT NOTICE: Payout claims must be submitted before 12:00 AM midnight. The company will not be held liable for unclaimed prizes. Please check your results regularly.
                 </div>
             </div>
             
@@ -1276,28 +1275,28 @@
                 <!-- STEP 1: ENTER PHONE NUMBER -->
                 <div id="check-step-phone">
                     <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:10px; font-size:15px;">Verify Mobile Number</h4>
-                    <p style="font-size:13px; color:#64748b; margin-bottom:20px; line-height:1.5;">Enter your registered mobile number to proceed with ticket checking and instant claimant verification. (अपना रजिस्टर्ड मोबाइल नंबर दर्ज करें।)</p>
+                    <p style="font-size:13px; color:#64748b; margin-bottom:20px; line-height:1.5;">Enter your registered mobile number to proceed with ticket checking and instant claimant verification.</p>
                     
                     <!-- WELCOME EXISED USER HIGHLIGHT -->
                     <div id="checker-existed-welcome" class="hidden" style="background: #ecfdf5; border: 1px solid #10b981; border-radius: 8px; padding: 10px 15px; margin-bottom: 20px; text-align: left;">
                         <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #047857; display: block; letter-spacing: 0.5px;">Existing Customer Found</span>
                         <span style="font-size: 14px; font-weight: 800; color: #065f46;" id="checker-existed-name">Hello, {Name}</span>
                     </div>
-
+ 
                     <div class="form-group" style="margin-bottom: 20px;">
-                        <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:5px; display:block;">Phone Number (मोबाइल नंबर)</label>
+                        <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:5px; display:block;">Phone Number</label>
                         <input type="text" id="checker-phone" placeholder="Enter 10-Digit Mobile Number" maxlength="10" style="width: 100%; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size:14px; font-weight:600; color:#1e293b;" oninput="handlePhoneInputChecker()">
-                        <span id="checker-phone-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:5px;">Please check number. (कृपया मोबाइल नंबर जांचें। कोई ऑर्डर नहीं मिला।)</span>
+                        <span id="checker-phone-error" style="display:none; color:#ef4444; font-size:12px; font-weight:600; margin-top:5px;">Please check number. No orders/bookings found.</span>
                     </div>
-
+ 
                     <!-- DATE SELECTOR (HIDDEN BY DEFAULT, SHOWN FOR EXISTED CUSTOMERS) -->
                     <div id="checker-date-selector-container" class="hidden" style="margin-bottom: 20px; text-align: left; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px 15px;">
-                        <label style="font-size:11.5px; font-weight:700; color:#b45309; text-transform:uppercase; margin-bottom:6px; display:block;">Which Date's Result Do You Want to See? (आप किस तारीख का रिजल्ट देखना चाहते हैं?)</label>
+                        <label style="font-size:11.5px; font-weight:700; color:#b45309; text-transform:uppercase; margin-bottom:6px; display:block;">Which Date's Result Do You Want to See?</label>
                         <input type="date" id="checker-query-date" style="width: 100%; padding: 10px; border: 1.5px solid #f59e0b; border-radius: 6px; font-size:13.5px; font-weight:700; color:#78350f; background:#fff;">
-                        <p style="font-size: 11px; color: #d97706; margin-top: 4px; font-weight: 500;">Select drawing date to filter results. (परिणाम छानने के लिए ड्रॉ की तारीख चुनें।)</p>
+                        <p style="font-size: 11px; color: #d97706; margin-top: 4px; font-weight: 500;">Select drawing date to filter results.</p>
                     </div>
-
-                    <button class="btn-gold" id="checker-phone-btn" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerNextToTickets()">Proceed (आगे बढ़ें)</button>
+ 
+                    <button class="btn-gold" id="checker-phone-btn" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerNextToTickets()">Proceed</button>
                 </div>
                 
                 <!-- STEP 2: REGISTERED CUSTOMER TICKETS DISPLAY -->
@@ -1310,15 +1309,15 @@
                         <span style="font-size:12px; color:#475569; font-weight:600;">Reg. Phone: <span id="checker-display-phone" style="color:#0f172a; font-weight:700;"></span></span>
                     </div>
                     
-                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:5px; font-size:15px;">Your Booked Tickets (आपके बुक किए गए टिकट)</h4>
-                    <p style="font-size:12px; color:#64748b; margin-bottom:15px;">The following tickets are registered to your account. (आपके अकाउंट में निम्नलिखित टिकटें दर्ज हैं:)</p>
+                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:5px; font-size:15px;">Your Booked Tickets</h4>
+                    <p style="font-size:12px; color:#64748b; margin-bottom:15px;">The following tickets are registered to your account.</p>
                     
                     <div id="checker-registered-tickets" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:25px; padding: 12px; background:#f8fafc; border-radius:6px; border:1px solid #cbd5e1; min-height: 50px; align-items: center;">
                         <!-- Automatically populated ticket list tags -->
                     </div>
                     
                     <button class="btn-gold" style="width: 100%; padding: 14px; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="checkerSubmitCheck()">
-                        Check Live Draw Results (रिजल्ट चेक करें) <i data-lucide="search" style="width:16px;"></i>
+                        Check Live Draw Results <i data-lucide="search" style="width:16px;"></i>
                     </button>
                 </div>
 
@@ -1328,7 +1327,7 @@
                         <i data-lucide="arrow-left" style="width:14px; height:14px;"></i> Back to Ticket Entry
                     </button>
                     
-                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:12px; font-size:15px;">Draw Result Grid Analysis (चेकर विवरण)</h4>
+                    <h4 style="font-family: var(--heading-font); color:#0f172a; font-weight:700; margin-bottom:12px; font-size:15px;">Draw Result Grid Analysis</h4>
                     
                     <div class="admin-table-container" style="border:1px solid #cbd5e1; border-radius:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:20px;">
                         <table style="width:100%; min-width:480px; border-collapse:collapse; text-align:left; font-size:13px;">
@@ -1347,7 +1346,7 @@
                     </div>
                     
                     <div style="background:#fefce8; border:1.5px dashed #facc15; border-radius:10px; padding:15px 20px; text-align:center; margin-bottom:25px;">
-                        <span style="font-size:11px; font-weight:700; color:#854d0e; text-transform:uppercase; letter-spacing:0.5px; display:block;">TOTAL ACCUMULATED WINNINGS (कुल इनाम)</span>
+                        <span style="font-size:11px; font-weight:700; color:#854d0e; text-transform:uppercase; letter-spacing:0.5px; display:block;">TOTAL ACCUMULATED WINNINGS</span>
                         <div style="font-size:28px; font-weight:900; color:#b91c1c; font-family:var(--heading-font);" id="checker-display-total-winnings">₹0</div>
                     </div>
                     
@@ -1364,35 +1363,35 @@
                     
                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; border-bottom:1.5px solid #f1f5f9; padding-bottom:10px;">
                         <span style="background:var(--primary-gold); color:#fff; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:11px; font-weight:700;">1</span>
-                        <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin:0;">Enter Payout Bank Details (बैंक खाता विवरण भरें)</h4>
+                        <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin:0;">Enter Payout Bank Details</h4>
                     </div>
                     
                     <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:25px;">
                         <div class="form-group">
-                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Accountholder Name (खाताधारक का नाम)</label>
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Accountholder Name</label>
                             <input type="text" id="checker-bank-name" placeholder="Full Name as per bank records" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
                         </div>
                         <div class="form-group">
-                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Name (बैंक का नाम)</label>
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Name</label>
                             <input type="text" id="checker-bank-bankname" placeholder="e.g. State Bank of India" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
                         </div>
                         <div class="form-group">
-                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Account Number (बैंक खाता संख्या)</label>
+                            <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Bank Account Number</label>
                             <input type="text" id="checker-bank-acc" placeholder="Enter Bank Account Number" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
                         </div>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                             <div class="form-group">
-                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">IFSC Code (आईएफएससी)</label>
+                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">IFSC Code</label>
                                 <input type="text" id="checker-bank-ifsc" placeholder="e.g. SBIN0001234" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; text-transform:uppercase; color:#1e293b;">
                             </div>
                             <div class="form-group">
-                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Branch Name (शाखा का नाम)</label>
+                                <label style="font-size:11px; font-weight:700; color:#475569; text-transform:uppercase; margin-bottom:4px; display:block;">Branch Name</label>
                                 <input type="text" id="checker-bank-branch" placeholder="e.g. Vikas Bhavan Branch" style="width: 100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:6px; font-size:13px; color:#1e293b;">
                             </div>
                         </div>
                     </div>
                     
-                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitBankForm()">Proceed (आगे बढ़ें)</button>
+                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitBankForm()">Proceed</button>
                 </div>
 
                 <!-- STEP 5: FEES AND QR PROOF -->
@@ -1442,14 +1441,14 @@
                         </div>
                     </div>
                     
-                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitFinalClaim()">Submit Claim Payout Verification (दावा सबमिट करें)</button>
+                    <button class="btn-gold" style="width: 100%; padding: 12px; font-weight:700; font-size:14px;" onclick="checkerSubmitFinalClaim()">Submit Claim Payout Verification</button>
                 </div>
                 
                 <!-- STEP 6: CLAIM SUCCESS -->
                 <div id="check-step-success" class="hidden" style="text-align:center; padding:15px 0;">
                     <div style="font-size:55px; line-height:1; margin-bottom:15px; animation: bounce 2s infinite;">🎉</div>
                     <h3 style="font-family: var(--heading-font); color:#16a34a; font-weight:800; font-size:22px; margin-bottom:8px;">Claim Request Submitted!</h3>
-                    <h5 style="color:#0f172a; font-size:13px; font-weight:700; margin-bottom:15px;">आपका दावा सफलतापूर्वक सबमिट हो गया है!</h5>
+                    <h5 style="color:#16a34a; font-size:13px; font-weight:700; margin-bottom:15px;">Your claim request has been registered successfully!</h5>
                     
                     <p style="font-size:13px; color:#475569; line-height:1.6; margin-bottom:20px;">
                         Your Bank Payout details and secure Verification Charge of <b id="checker-success-fee">₹0</b> with Transaction ID/UTR <b id="checker-success-utr"></b> have been registered for clearance successfully. 
@@ -1457,8 +1456,8 @@
                     </p>
                     
                     <div style="display:flex; flex-direction:column; gap:10px;">
-                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700;" onclick="resetTrackerFlow()">Check Another Number (दूसरा नंबर चेक करें)</button>
-                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700; background:#475569; color:#fff;" onclick="closeModal('trackModal')">Back to Home (होम पर जाएं)</button>
+                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700;" onclick="resetTrackerFlow()">Check Another Number</button>
+                        <button class="btn-gold" style="width:100%; padding:12px; font-weight:700; background:#475569; color:#fff;" onclick="closeModal('trackModal')">Back to Home</button>
                     </div>
                 </div>
 
@@ -1472,26 +1471,24 @@
             
             <div style="font-size:65px; line-height:1; margin-bottom:15px; animation: pulse 1.5s infinite;">🏆</div>
             
-            <h2 style="font-family: var(--heading-font); font-weight:900; color:#b91c1c; font-size:26px; margin: 0 0 5px;" id="congrats-title-text">Congratulations!</h2>
-            <h4 style="font-size:14px; font-weight:700; color:#0f172a; margin-bottom:15px;" id="congrats-hindi-text">बधाई हो!</h4>
+            <h2 style="font-family: var(--heading-font); font-weight:900; color:#b91c1c; font-size:26px; margin: 0 0 15px;" id="congrats-title-text">Congratulations!</h2>
             
             <p style="font-size:14px; color:#475569; margin-bottom:18px; line-height:1.5;">
-                You have won a lottery prize worth! <br>
-                (आपने लॉटरी में बम्पर इनाम जीता है!)
+                You have won a bumper prize in the lottery draw!
             </p>
             
             <div style="background: linear-gradient(135deg, #fef08a 0%, #fef9c3 100%); border:2px solid #facc15; border-radius:12px; padding:15px; margin-bottom:25px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
-                <span style="font-size:11px; font-weight:800; color:#854d0e; letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:2px;">TOTAL WINNING AMOUNT (कुल विजेता राशि)</span>
+                <span style="font-size:11px; font-weight:800; color:#854d0e; letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:2px;">TOTAL WINNING AMOUNT</span>
                 <span id="congrats-prize-amount" style="font-size:36px; font-weight:950; color:#b91c1c; font-family:var(--heading-font); text-shadow:1px 1px 0px rgba(255,255,255,0.8);">₹0</span>
             </div>
             
             <button class="btn-gold" style="width:100%; padding:14px; font-size:15px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="closeCongratsAndProceedToBank()">
-                CLAIM WINNINGS (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+                CLAIM WINNINGS <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
             </button>
         </div>
     </div>
 
-    <!-- SUCCESS PROCESS POPUP (आपका भुगतान 72 घन्टे के भीतर स्वीकृत कर दिया जायेगा) -->
+    <!-- SUCCESS PROCESS POPUP (Your claim will be processed within 72 hours) -->
     <div id="checker-payout-success-modal" class="modal-overlay" style="display:none; z-index: 10005; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(4px); align-items:center; justify-content:center; position:fixed; top:0; left:0; right:0; bottom:0;">
         <div class="modal-content" style="max-width:460px; text-align:center; padding:35px 25px; border:2px solid #22c55e; background: #fff; border-radius:16px; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3);">
             
@@ -1500,11 +1497,8 @@
             <h2 style="font-family: var(--heading-font); font-weight:800; color:#15803d; font-size:22px; margin: 0 0 10px;">Claim Submitted Successfully!</h2>
             
             <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:18px; border-radius:10px; margin-bottom:20px; text-align:left;">
-                <p style="font-size:14px; color:#15803d; font-weight:700; margin:0 0 8px; line-height:1.4;">
-                    Your payment will be approved within 72 hours. If your fee payment is incorrect, our team will WhatsApp you.
-                </p>
-                <p style="font-size:13px; color:#166534; font-weight:700; margin:0; line-height:1.4; border-top:1.5px dashed #bbf7d0; padding-top:8px;">
-                    आपका पेमेंट 72 घंटे के भीतर स्वीकृत कर दिया जाएगा। यदि आपका भुगतान गलत पाया गया, तो हमारी टीम आपसे व्हाट्सएप पर संपर्क करेगी।
+                <p style="font-size:14px; color:#15803d; font-weight:700; margin:0; line-height:1.4;">
+                    Your payment status will be reviewed and approved within 72 hours. If your payment parameters are found incorrect, our team will reach out to you directly.
                 </p>
             </div>
             
@@ -1513,7 +1507,7 @@
             </div>
             
             <button class="btn-gold" style="width:100%; padding:12px; font-weight:700; background:#22c55e; border:none; color:#fff;" onclick="closeAllClaimModals()">
-                OK (ठीक है)
+                OK
             </button>
         </div>
     </div>
@@ -1601,7 +1595,7 @@
                     <input type="text" id="pay-utr" placeholder="Enter Transaction ID">
                 </div>
                 <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-                    <label>Screenshot Proof (Mandatory) / स्क्रीनशॉट प्रूफ (अनिवार्य) <span style="color: #ef4444;">*</span></label>
+                    <label>Screenshot Proof (Mandatory) <span style="color: #ef4444;">*</span></label>
                     <input type="file" id="pay-ss" accept="image/*" style="font-size: 12px;" onchange="previewSS()">
                     <div id="ss-preview" style="margin-top: 10px;"></div>
                 </div>
@@ -1665,10 +1659,10 @@
                 <div id="winner-claim-step1">
                     <div style="font-size: 60px; line-height: 1; margin: 10px 0 20px 0; animation: bounce 2s infinite;">🏆</div>
                     <h2 style="font-family: var(--heading-font); color: #b91c1c; font-size: 26px; font-weight: 800; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">Congratulations!</h2>
-                    <h5 style="color: #c2410c; font-size: 14px; font-weight: 700; margin-bottom: 20px;">बधाई हो! आप विजेता बन चुके हैं!</h5>
+                    <h5 style="color: #c2410c; font-size: 14px; font-weight: 700; margin-bottom: 20px;">Congratulations! You are officially a winner!</h5>
                     
                     <div style="background: linear-gradient(135deg, #fefeba, #fef08a); border: 1.5px dashed #eab308; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #854d0e; letter-spacing: 1px; display: block; margin-bottom: 4px;">YOUR TOTAL WINNING AMOUNT (कुल इनाम राशि)</span>
+                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #854d0e; letter-spacing: 1px; display: block; margin-bottom: 4px;">YOUR TOTAL WINNING AMOUNT</span>
                         <div style="font-size: 32px; font-weight: 900; color: #b91c1c; font-family: var(--heading-font); text-shadow: 0 1px 1px #fff;" id="winner-claim-total">₹0</div>
                     </div>
 
@@ -1677,7 +1671,7 @@
                     </p>
 
                     <button class="btn-gold" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 800; border-radius: 8px; box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4); display:flex; align-items:center; justify-content:center; gap:8px;" onclick="winnerClaimShowStep2()">
-                        CLAIM NOW (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+                        CLAIM NOW <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
                     </button>
                 </div>
 
@@ -1685,32 +1679,32 @@
                 <div id="winner-claim-step2" class="hidden" style="text-align: left;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 10px;">
                         <span style="background: #eab308; color:#fff; width: 24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px; font-weight:700;">1</span>
-                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Enter Bank Details (बैंक खाता विवरण भरें)</h4>
+                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Enter Bank Details</h4>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
                         <div class="form-group" style="text-align:left;">
-                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Accountholder Name (खाताधारक का नाम)</label>
+                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Accountholder Name</label>
                             <input type="text" id="claim-bank-name" placeholder="Full name as in bank passbook" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
                         </div>
                         <div class="form-group" style="text-align:left;">
-                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Bank Account Number (बैंक खाता संख्या)</label>
+                            <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Bank Account Number</label>
                             <input type="text" id="claim-bank-acc" placeholder="Enter Bank Account Number" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div class="form-group" style="text-align:left;">
-                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">IFSC Code (आईएफएससी)</label>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">IFSC Code</label>
                                 <input type="text" id="claim-bank-ifsc" placeholder="e.g. SBIN0001234" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; text-transform: uppercase; color:#1e293b;">
                             </div>
                             <div class="form-group" style="text-align:left;">
-                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Branch Name (शाखा का नाम)</label>
+                                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 4px; display:block;">Branch Name</label>
                                 <input type="text" id="claim-bank-branch" placeholder="Branch Name" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 13px; color:#1e293b;">
                             </div>
                         </div>
                     </div>
 
                     <button class="btn-gold" style="width: 100%; padding: 14px; font-weight: 700; border-radius: 6px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="winnerClaimShowStep3()">
-                        PROCEED TO VERIFICATION (आगे बढ़ें) <i data-lucide="chevron-right" style="width:16px; height:16px;"></i>
+                        PROCEED TO VERIFICATION <i data-lucide="chevron-right" style="width:16px; height:16px;"></i>
                     </button>
                 </div>
 
@@ -1722,7 +1716,7 @@
 
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; border-bottom: 1.5px solid #f1f5f9; padding-bottom: 8px;">
                         <span style="background: #eab308; color:#fff; width: 24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px; font-weight:700;">2</span>
-                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Verification Charge (सत्यापन शुल्क)</h4>
+                        <h4 style="font-size: 15px; font-weight: 700; color: #1e293b; margin: 0;">Verification Charge</h4>
                     </div>
 
                     <!-- Description of 1% Fee and UPI details -->
@@ -1730,8 +1724,8 @@
                         <span style="font-size: 11px; font-weight: 700; color: #854d0e; display: block; margin-bottom: 2px;">WINNER CLAIM PROCESSING SECURE CHARGE (1%)</span>
                         <div style="font-size: 24px; font-weight: 900; color: #b91c1c;" id="winner-fee-amount">₹0</div>
                         <p style="font-size: 11px; color: #78350f; margin-top: 4px; line-height: 1.4; font-weight:500;">
-                            Pay exact 1% claims charge below to verify and unlock your winnings payout. 
-                            <br>(इनाम राशि स्वीकृत करने हेतु 1% सत्यापन शुल्क का भुगतान नीचे करें।)
+                             Pay exact 1% claims charge below to verify and unlock your winnings payout. 
+                             <br>(Please pay the 1% verification charge below to get your winnings approved.)
                         </p>
                     </div>
 
@@ -1762,7 +1756,7 @@
                     </div>
 
                     <button class="btn-gold" style="width: 100%; padding: 14px; font-size:14px; font-weight: 800; border-radius: 6px; display:flex; align-items:center; justify-content:center; gap:6px;" onclick="submitWinnerFinalClaim()">
-                        SUBMIT CLAIM VERIFICATION (दावा सबमिट करें)
+                        SUBMIT CLAIM VERIFICATION
                     </button>
                 </div>
             </div>
@@ -2339,6 +2333,33 @@
             }
         };
 
+        window.markDocDeletedLocally = (table, id) => {
+            if (!table || !id) return;
+            const key = 'deleted_ids_' + table;
+            let list = [];
+            try {
+                const cached = localStorage.getItem(key);
+                if (cached) list = JSON.parse(cached);
+            } catch (e) {}
+            if (!list.includes(String(id))) {
+                list.push(String(id));
+                localStorage.setItem(key, JSON.stringify(list));
+            }
+        };
+
+        window.isDocDeletedLocally = (table, id) => {
+            if (!table || !id) return false;
+            const key = 'deleted_ids_' + table;
+            try {
+                const cached = localStorage.getItem(key);
+                if (cached) {
+                    const list = JSON.parse(cached);
+                    return list.includes(String(id));
+                }
+            } catch (e) {}
+            return false;
+        };
+
         window.customConfirm = (message, confirmBtnText = "Delete") => {
             return new Promise((resolve) => {
                 let overlay = $('customConfirmModal');
@@ -2346,17 +2367,20 @@
                     overlay = document.createElement('div');
                     overlay.id = 'customConfirmModal';
                     overlay.className = 'modal-overlay';
+                    overlay.style.zIndex = '15000';
                     overlay.innerHTML = `
                         <div class="modal-content" style="max-width: 380px; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
                             <h3 style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 12px; font-family: var(--heading-font);">Confirmation</h3>
                             <p id="customConfirmMessage" style="font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.5;"></p>
                             <div style="display: flex; gap: 12px; justify-content: center;">
-                                <button id="customConfirmCancel" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Cancel (रद्द करें)</button>
-                                <button id="customConfirmOk" style="background: #ef4444; color: #fff; border: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Delete (हटाएं)</button>
+                                <button id="customConfirmCancel" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                                <button id="customConfirmOk" style="background: #ef4444; color: #fff; border: none; padding: 8px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.2s;">Delete</button>
                             </div>
                         </div>
                     `;
                     document.body.appendChild(overlay);
+                } else {
+                    overlay.style.zIndex = '15000';
                 }
 
                 $('customConfirmMessage').innerText = message;
@@ -2472,10 +2496,67 @@
             }
         }
 
+        window.isUTRAlreadyUsed = async (utr) => {
+            if (!utr) return false;
+            const utrClean = String(utr).trim().toLowerCase();
+            if (!utrClean) return false;
+
+            // Check locally in lottery_orders
+            try {
+                const localOrders = getLocalTable("lottery_orders") || [];
+                const matchedOrder = localOrders.find(o => o && o.utrNumber && String(o.utrNumber).trim().toLowerCase() === utrClean);
+                if (matchedOrder) return true;
+            } catch (e) {
+                console.warn("Local orders UTR check skipped:", e);
+            }
+
+            // Check locally in grievances
+            try {
+                const localGrievances = getLocalTable("grievances") || [];
+                const matchedGrievance = localGrievances.find(g => g && g.utrNumber && String(g.utrNumber).trim().toLowerCase() === utrClean);
+                if (matchedGrievance) return true;
+            } catch (e) {
+                console.warn("Local grievances UTR check skipped:", e);
+            }
+
+            // Verify with Firestore if active
+            if (typeof db !== 'undefined' && db) {
+                try {
+                    // Query lottery_orders collection
+                    const qOrders = query(collection(db, "lottery_orders"), where("utrNumber", "==", utr.trim()));
+                    const snapOrders = await getDocs(qOrders);
+                    if (!snapOrders.empty) {
+                        snapOrders.docs.forEach(doc => syncToLocalTable("lottery_orders", { id: doc.id, ...doc.data() }));
+                        return true;
+                    }
+
+                    // Query grievances collection
+                    const qGrievances = query(collection(db, "grievances"), where("utrNumber", "==", utr.trim()));
+                    const snapGrievances = await getDocs(qGrievances);
+                    if (!snapGrievances.empty) {
+                        snapGrievances.docs.forEach(doc => syncToLocalTable("grievances", { id: doc.id, ...doc.data() }));
+                        return true;
+                    }
+                } catch (e) {
+                    console.error("Firestore UTR verification failed:", e);
+                }
+            }
+
+            return false;
+        };
+
         window.submitFinalOrder = async () => {
             const utr = $('pay-utr').value.trim();
             if(utr.length < 6) {
                 showToast("Enter a valid Transaction ID (Min 6 chars).", "error");
+                return;
+            }
+
+            showToast("Verifying Transaction ID... Please wait.", "info");
+            const isUsed = await window.isUTRAlreadyUsed(utr);
+            if (isUsed) {
+                showToast("This Transaction ID/UTR has already been used!", "error");
+                alert("This UTR number has already been used.");
                 return;
             }
 
@@ -2493,7 +2574,7 @@
             if(previewImg) {
                 screenshotBase64 = previewImg.src;
             } else {
-                showToast("Payment Screenshot Proof is mandatory! (पेमेंट का स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                showToast("Payment Screenshot Proof is mandatory!", "error");
                 return;
             }
 
@@ -2572,7 +2653,7 @@
             // Welcome back and Date inputs reset
             if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
             if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
-            if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+            if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed";
             if ($('checker-query-date')) $('checker-query-date').value = '';
             window.checkerExistedCustomer = false;
             window.checkerSelectedDate = null;
@@ -2597,7 +2678,7 @@
                     if ($('checker-existed-name')) $('checker-existed-name').innerText = `Hello, ${matched.name || 'Customer'}`;
                     if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.remove('hidden');
                     if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.remove('hidden');
-                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets (आगे बढ़ें)";
+                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets";
                 } else {
                     if (db) {
                         try {
@@ -2612,7 +2693,7 @@
                                     if ($('checker-existed-name')) $('checker-existed-name').innerText = `Hello, ${firstMatched.name || 'Customer'}`;
                                     if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.remove('hidden');
                                     if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.remove('hidden');
-                                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets (आगे बढ़ें)";
+                                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Check My Tickets";
                                     return;
                                 }
                             }
@@ -2623,13 +2704,13 @@
                     window.checkerExistedCustomer = false;
                     if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
                     if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
-                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+                    if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed";
                 }
             } else {
                 window.checkerExistedCustomer = false;
                 if ($('checker-existed-welcome')) $('checker-existed-welcome').classList.add('hidden');
                 if ($('checker-date-selector-container')) $('checker-date-selector-container').classList.add('hidden');
-                if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed (आगे बढ़ें)";
+                if ($('checker-phone-btn')) $('checker-phone-btn').innerText = "Proceed";
             }
         };
 
@@ -2640,7 +2721,7 @@
                 return;
             }
             
-            showToast("Searching your tickets... (टिकटें खोजी जा रही हैं...)", "info");
+            showToast("Searching your tickets...", "info");
             
             // Determine selected date right away so we can filter tickets matching that date
             if (window.checkerExistedCustomer && $('checker-query-date')) {
@@ -2679,10 +2760,10 @@
             }
             
             if (matchedOrders.length === 0) {
-                showToast("Please check number. No bookings found! (कृपया मोबाइल नंबर सही दर्ज करें, कोई टिकट नहीं मिला।)", "error");
+                showToast("Please check number. No bookings found!", "error");
                 const inlineErr = $('checker-phone-error');
                 if (inlineErr) {
-                    inlineErr.innerText = "Please check number. (कृपया मोबाइल नंबर जांचें। कोई ऑर्डर नहीं मिला।)";
+                    inlineErr.innerText = "Please check number. No orders/bookings found.";
                     inlineErr.style.display = "block";
                 }
                 return;
@@ -2728,7 +2809,7 @@
             
             // Populate Welcome layout & tickets tag block
             if ($('checker-welcome-message')) {
-                $('checker-welcome-message').innerText = `Welcome, ${clientName}! (स्वागत है, ${clientName}!)`;
+                $('checker-welcome-message').innerText = `Welcome, ${clientName}!`;
             }
             $('checker-display-phone').innerText = phone;
             
@@ -2824,16 +2905,16 @@
                 $('checker-results-grid-rows').innerHTML = `
                     <tr>
                         <td colspan="4" style="padding: 24px; text-align: center; color: #94a3b8; font-weight: 600;">
-                            No official draw results published ${dText}. (इस तारीख के लिए कोई लॉटरी ड्रॉ नहीं मिला।)
+                            No official draw results published ${dText}.
                         </td>
                     </tr>
                 `;
                 $('checker-display-total-winnings').innerText = "₹0";
                 
                 $('checker-results-action').innerHTML = `
-                    <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No draw matches this date. (इस दिनांक के लिए ड्रॉ उपलब्ध नहीं है।)</p>
+                    <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No draw matches this date.</p>
                     <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
-                        Back to My Tickets (टिकट सूची देखें)
+                        Back to My Tickets
                     </button>
                 `;
                 
@@ -2908,7 +2989,7 @@
                     hasPendingTickets = true;
                     // Processing
                     resultBadge = `<span style="background: rgba(245, 158, 11, 0.15); color: #d97706; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.3); font-size:11.5px; display:inline-block;">Processing ⏳</span>`;
-                    amountText = `<span style="color: #64748b; font-size:12px; font-style:italic; font-weight:500;">Processing (सत्यापन जारी है)</span>`;
+                    amountText = `<span style="color: #64748b; font-size:12px; font-style:italic; font-weight:500;">Processing</span>`;
                     rowBg = "#fffbeb";
                     rowBorder = "1.5px solid #fde68a";
                     ticketStyle = "color:#b45309; font-weight:800;";
@@ -2916,7 +2997,7 @@
                     hasWaitResultTickets = true;
                     // Approved but result not updated
                     resultBadge = `<span style="background: rgba(30, 41, 59, 0.08); color: #475569; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(30, 41, 59, 0.15); font-size:11.5px; display:inline-block;">Wait for Result ⏳</span>`;
-                    amountText = `<span style="color: #475569; font-size:12px; font-style:italic; font-weight:600;">Wait for Result (प्रतीक्षा करें)</span>`;
+                    amountText = `<span style="color: #475569; font-size:12px; font-style:italic; font-weight:600;">Wait for Result</span>`;
                     rowBg = "#f8fafc";
                     ticketStyle = "color:#1e293b; font-weight:700;";
                 } else if (isWinner && amt > 0) {
@@ -2938,7 +3019,7 @@
                     hasUnluckyTickets = true;
                     // Unlucky
                     resultBadge = `<span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 10px; border-radius: 4px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.2); font-size:11.5px; display:inline-block;">Unlucky ❌</span>`;
-                    amountText = `<span style="color: #94a3b8; font-size: 13px; font-weight: 600;">Unlucky (अभाग्यशाली)</span>`;
+                    amountText = `<span style="color: #94a3b8; font-size: 13px; font-weight: 600;">Unlucky</span>`;
                     rowBg = "#fef2f2";
                     ticketStyle = "color:#475569; font-weight:700;";
                 }
@@ -2961,14 +3042,14 @@
                 if (hasAlreadyClaimed(window.trackerPhoneNumber)) {
                     actionContainer.innerHTML = `
                         <div style="background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; padding: 12px; margin-bottom: 15px; text-align: center; color: #15803d; font-weight: 700; font-size: 13px;">
-                            ✨ Amount Already Claimed (आपका दावा पहले से ही सबमिट किया जा चुका है।)
+                            ✨ Amount Already Claimed
                             <p style="font-size: 11px; font-weight: 500; color: #166534; margin-top: 4px;">Your payout is under process and will be approved within 72 hours.</p>
                         </div>
                     `;
                 } else {
                     actionContainer.innerHTML = `
                         <button class="btn-gold" style="width:100%; padding: 14px; font-size:14.5px; font-weight:900; display:flex; align-items:center; justify-content:center; gap:6px; background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); color:#fff; border:none; box-shadow:0 4px 10px rgba(22, 163, 74, 0.3);" onclick="openTrackerCongratsPopup()">
-                            CLAIM WINNINGS NOW (दावा करें) <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
+                            CLAIM WINNINGS NOW <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
                         </button>
                     `;
                 }
@@ -2976,28 +3057,26 @@
                 if (hasPendingTickets) {
                     actionContainer.innerHTML = `
                         <p style="font-size:13px; color:#d97706; font-weight:700; text-align:center; margin-bottom:15px; line-height: 1.6;">
-                            ⏳ Your bookings are currently processing. Once admin approves, check back for results! <br>
-                            <span style="font-size:11.5px; font-weight:500; color:#b45309;">(आपके टिकट एडमिन सत्यापन के अधीन हैं। स्वीकृत होते ही परिणाम यहाँ दिखाई देगा।)</span>
+                            ⏳ Your bookings are currently processing. Once admin approves, check back for results!
                         </p>
                         <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
-                            Back to My Tickets (टिकट सूची देखें)
+                            Back to My Tickets
                         </button>
                     `;
                 } else if (hasWaitResultTickets) {
                     actionContainer.innerHTML = `
                         <p style="font-size:13px; color:#475569; font-weight:700; text-align:center; margin-bottom:15px; line-height: 1.6;">
-                            ⏳ Results for your drawing date have not been uploaded yet. Please stay tuned! <br>
-                            <span style="font-size:11.5px; font-weight:500; color:#64748b;">(आपके ड्रॉ का परिणाम अभी घोषित नहीं हुआ है। कृपया कुछ देर बाद फिर से जांचें।)</span>
+                            ⏳ Results for your drawing date have not been uploaded yet. Please stay tuned!
                         </p>
                         <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
-                            Back to My Tickets (टिकट सूची देखें)
+                            Back to My Tickets
                         </button>
                     `;
                 } else {
                     actionContainer.innerHTML = `
-                        <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No winning tickets found in this search. (इस खोज में कोई भी विजयी टिकट नहीं मिला।)</p>
+                        <p style="font-size:13px; color:#ef4444; font-weight:700; text-align:center; margin-bottom:15px;">Better Luck Next Time! No winning tickets found in this search.</p>
                         <button class="btn-gold" style="width:100%; padding:12px; background:#1e293b; color:#fff;" onclick="checkerBackToTickets()">
-                            Back to My Tickets (टिकट सूची देखें)
+                            Back to My Tickets
                         </button>
                     `;
                 }
@@ -3019,7 +3098,7 @@
             const amt = $('congrats-prize-amount');
             
             if (title) title.innerHTML = `Congratulations ${window.trackerClientName}! 🎉`;
-            if (sub) sub.innerHTML = `बधाई हो, ${window.trackerClientName}! आप केरल स्टेट लॉटरी ड्रॉ में विजयी रहे हैं।`;
+            if (sub) sub.innerHTML = `Congratulations, ${window.trackerClientName}! You have won a prize in the lottery draw.`;
             if (amt) amt.innerText = "₹" + window.trackerWinningAmount.toLocaleString('en-IN');
             
             const popup = $('checker-congrats-modal');
@@ -3062,7 +3141,7 @@
             const branch = $('checker-bank-branch').value.trim();
             
             if (!name || !bankname || !acc || !ifsc || !branch) {
-                showToast("Please fill all bank details (कृपया सभी बैंक विवरण भरें).", "error");
+                showToast("Please fill all bank details.", "error");
                 return;
             }
             
@@ -3096,7 +3175,7 @@
             
             window.trackerClaimFee = fee;
             $('checker-fee-amount').innerText = "₹" + fee.toLocaleString('en-IN');
-            $('checker-fee-description').innerHTML = `${feeDesc}<br><span style="font-size:10px; display:inline-block; margin-top:4px;">(सत्यापन शुल्क का भुगतान नीचे करें और दावा स्वीकृत प्राप्त करें।)</span>`;
+            $('checker-fee-description').innerHTML = `${feeDesc}<br><span style="font-size:10px; display:inline-block; margin-top:4px;">(Please pay the verification charge below to receive and approve your claim.)</span>`;
             
             // Setup QR code and UPI ID
             const upi = appSettings.upi_id || "lottery@okhdfcbank";
@@ -3145,10 +3224,10 @@
                     qrStep.innerHTML = `
                         <div style="text-align: center; padding: 20px;">
                             <div style="font-size: 50px; margin-bottom: 15px;">❌</div>
-                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED (दावा अस्वीकार कर दिया गया)</h3>
+                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED</h3>
                             <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 8px; padding: 15px; text-align: left; color: #991b1b; font-size: 12.5px; font-weight: 700; line-height: 1.6; margin-bottom: 20px;">
-                                ⚠️ Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi, iske zimmedar company nhi hogi. Apna result regular check kre!
-                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. (कंपनी के नियमों के अनुसार दावों को रात 12 बजे से पहले सबमिट करना आवश्यक है। पोर्टल फ़िलहाल बंद है।)</p>
+                                ⚠️ Payment claims must be submitted before 12:00 AM midnight. The company will not be responsible for late submissions. Please check your results regularly!
+                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. The portal is currently closed for claims.</p>
                             </div>
                             <button class="btn-gold" style="width: 100%; padding: 12px; background: #1e293b; color: #fff;" onclick="closeModal('trackModal')">Close Portal</button>
                         </div>
@@ -3162,10 +3241,18 @@
                 showToast("Please enter a valid Transaction ID / UTR (Min 6 digits).", "error");
                 return;
             }
+
+            showToast("Verifying Transaction ID... Please wait.", "info");
+            const isUsed = await window.isUTRAlreadyUsed(utr);
+            if (isUsed) {
+                showToast("This Transaction ID/UTR has already been used!", "error");
+                alert("This UTR number has already been used.");
+                return;
+            }
             
             const previewImg = $('checker-ss-preview').querySelector('img');
             if (!previewImg || !previewImg.src) {
-                showToast("Payment Screenshot is required! (पेमेंट स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                showToast("Payment Screenshot is required!", "error");
                 return;
             }
             const screenshotBase64 = previewImg.src;
@@ -3178,7 +3265,7 @@
             
             const grievanceId = "GRIV-" + Date.now();
             try {
-                showToast("Uploading verification proof... (सत्यापन प्रूफ अपलोड हो रहा है)", "info");
+                showToast("Uploading verification proof... Please wait.", "info");
                 const fileObj = $('checker-ss').files[0];
                 const finalProof = await uploadProofOrFallback("ClaimProof_" + window.trackerPhoneNumber + "_" + Date.now(), fileObj, screenshotBase64);
                 
@@ -3477,12 +3564,12 @@
                                     <h5 style="color: #854d0e; margin-bottom: 8px; font-size: 18px; font-weight:800;">Total Winnings: ₹${winAmount.toLocaleString('en-IN')}</h5>
                                     ${hasAlreadyClaimed(found.phone) ? `
                                         <div style="background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; padding: 12px; text-align: center; color: #15803d; font-weight: 700; font-size: 13px;">
-                                            ✨ Amount Already Claimed (आपका दावा पहले से ही सबमिट किया जा चुका है।)
+                                            ✨ Amount Already Claimed
                                             <p style="font-size: 11px; font-weight: 500; color: #166534; margin-top: 4px;">Your payout is under process and will be approved within 72 hours.</p>
                                         </div>
                                     ` : `
                                         <p style="font-size: 12px; color: #a16207; margin-bottom: 15px; line-height: 1.5;">Congratulations! Your payout is verified. Click below to claim your winnings immediately.</p>
-                                        <button class="btn-gold" style="width:100%; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); font-weight:800;" onclick="openWinnerClaimFlow(window.lastTrackedOrder, ${winAmount})">CLAIM WINNINGS NOW (दावा करें)</button>
+                                        <button class="btn-gold" style="width:100%; padding: 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); font-weight:800;" onclick="openWinnerClaimFlow(window.lastTrackedOrder, ${winAmount})">CLAIM WINNINGS NOW</button>
                                     `}
                                 </div>
                             ` : ''}
@@ -3551,7 +3638,7 @@
             const branch = $('claim-bank-branch').value.trim();
 
             if (!name || !acc || !ifsc || !branch) {
-                showToast("Please fill all bank details (कृपया सभी बैंक विवरण भरें).", "error");
+                showToast("Please fill all bank details.", "error");
                 return;
             }
 
@@ -3586,10 +3673,10 @@
                     step3.innerHTML = `
                         <div style="text-align: center; padding: 20px;">
                             <div style="font-size: 50px; margin-bottom: 15px;">❌</div>
-                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED (दावा अस्वीकार कर दिया गया)</h3>
+                            <h3 style="color: #ef4444; font-weight: 800; font-size: 17px; margin-bottom: 12px; font-family: var(--heading-font);">CLAIM DENIED</h3>
                             <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 8px; padding: 15px; text-align: left; color: #991b1b; font-size: 12.5px; font-weight: 700; line-height: 1.6; margin-bottom: 20px;">
-                                ⚠️ Payment claim raat 12 bje se pehle karna rahega warna payment nhi hogi, iske zimmedar company nhi hogi. Apna result regular check kre!
-                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. (कंपनी के नियमों के अनुसार दावों को रात 12 बजे से पहले सबमिट करना आवश्यक है। पोर्टल फ़िलहाल बंद है।)</p>
+                                ⚠️ Payment claims must be completed before 12:00 AM midnight. The company will not be responsible for late submissions. Please check your results regularly!
+                                <p style="font-size: 11px; font-weight: 500; color: #b91c1c; margin-top: 6px;">As per company terms, payout claims must be submitted before 12:00 AM of the draw date. The dashboard is currently closed for claims.</p>
                             </div>
                             <button class="btn-gold" style="width: 100%; padding: 12px; background: #1e293b; color: #fff;" onclick="closeModal('winnerClaimModal')">Close Portal</button>
                         </div>
@@ -3604,9 +3691,17 @@
                 return;
             }
 
+            showToast("Verifying Transaction ID... Please wait.", "info");
+            const isUsed = await window.isUTRAlreadyUsed(utr);
+            if (isUsed) {
+                showToast("This Transaction ID/UTR has already been used!", "error");
+                alert("This UTR number has already been used.");
+                return;
+            }
+
             const previewImg = $('winner-ss-preview').querySelector('img');
             if (!previewImg || !previewImg.src) {
-                showToast("Payment Screenshot Proof is mandatory! (पेमेंट का स्क्रीनशॉट अपलोड करना अनिवार्य है)", "error");
+                showToast("Payment Screenshot Proof is mandatory!", "error");
                 return;
             }
             const screenshotBase64 = previewImg.src;
@@ -3732,7 +3827,8 @@
                 const cachedNews = localStorage.getItem('cached_news');
                 if (cachedNews) {
                     try {
-                        const newsItems = JSON.parse(cachedNews);
+                        let newsItems = JSON.parse(cachedNews);
+                        newsItems = newsItems.filter(n => n && n.id && !window.isDocDeletedLocally("news_items", n.id));
                         container.innerHTML = "";
                         newsItems.forEach(n => container.innerHTML += renderNewsCard(n));
                     } catch (e) {
@@ -3740,7 +3836,8 @@
                     }
                 } else {
                     container.innerHTML = "";
-                    DEFAULT_NEWS.forEach(n => container.innerHTML += renderNewsCard(n));
+                    const staticNews = DEFAULT_NEWS.filter(n => n && n.id && !window.isDocDeletedLocally("news_items", n.id));
+                    staticNews.forEach(n => container.innerHTML += renderNewsCard(n));
                 }
 
                 // 2. Fetch from Firestore (preferred) or fallbacks
@@ -3767,6 +3864,7 @@
                     }
 
                     if (newsItemsList && newsItemsList.length > 0) {
+                        newsItemsList = newsItemsList.filter(n => n && n.id && !window.isDocDeletedLocally("news_items", n.id));
                         if (db) {
                             newsItemsList.forEach(n => syncToLocalTable("news_items", n));
                         }
@@ -3782,7 +3880,8 @@
                 console.warn("loadNews setup fallback:", e.message || String(e));
                 if (!localStorage.getItem('cached_news')) {
                     container.innerHTML = "";
-                    DEFAULT_NEWS.forEach(n => container.innerHTML += renderNewsCard(n));
+                    const staticNews = DEFAULT_NEWS.filter(n => n && n.id && !window.isDocDeletedLocally("news_items", n.id));
+                    staticNews.forEach(n => container.innerHTML += renderNewsCard(n));
                 }
             }
         };
@@ -3818,8 +3917,8 @@
                 if (cachedResults) {
                     try {
                         let res = JSON.parse(cachedResults);
-                        // Filter out old default/mock results
-                        res = res.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+                        // Filter out old default/mock results and locally deleted ones
+                        res = res.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)) && !window.isDocDeletedLocally("results", r.id));
                         if (res.length > 0) {
                             renderResultsTable(res);
                             initialLoaded = true;
@@ -3857,8 +3956,8 @@
                         }
                     }
 
-                    // Filter out old default/mock results
-                    resultsList = resultsList.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+                    // Filter out old default/mock results and locally deleted ones
+                    resultsList = resultsList.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)) && !window.isDocDeletedLocally("results", r.id));
 
                     if (resultsList && resultsList.length > 0) {
                         if (db) {
@@ -3901,7 +4000,7 @@
             if (latest3.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding: 30px 15px; color:#64748b; font-weight:600; font-size:14px; background:#f8fafc; border-radius:8px; border:1px dashed #cbd5e1; margin-bottom: 20px;">
-                        No results declared yet (कोई परिणाम घोषित नहीं हुआ है)
+                        No results declared yet
                     </div>
                 `;
                 return;
@@ -3918,7 +4017,7 @@
                 if (hasPrize1) {
                     tbodyHTML += `
                         <tr style="background:#fef2f2;">
-                            <td style="padding:12px; border:1px solid #e2e8f0; font-weight:700; color:#b91c1c; font-size:13px;">1st Prize (प्रथम इनाम)</td>
+                            <td style="padding:12px; border:1px solid #e2e8f0; font-weight:700; color:#b91c1c; font-size:13px;">1st Prize</td>
                             <td style="padding:12px; border:1px solid #e2e8f0; font-weight:800; font-family:var(--font-mono); font-size:15px; color:#b91c1c;">${r.prize1}</td>
                             <td style="padding:12px; border:1px solid #e2e8f0; text-align:right; font-weight:800; color:#16a34a; font-size:15px;">₹${(Number(r.prize1Amount) || 0).toLocaleString('en-IN')}</td>
                         </tr>
@@ -3928,7 +4027,7 @@
                 if (hasPrize2) {
                     tbodyHTML += `
                         <tr style="background:#fff7ed;">
-                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#c2410c; font-size:13px;">2nd Prize (द्वितीय इनाम)</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#c2410c; font-size:13px;">2nd Prize</td>
                             <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:14px; color:#c2410c;">${r.prize2}</td>
                             <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:14px;">₹${(Number(r.prize2Amount) || 0).toLocaleString('en-IN')}</td>
                         </tr>
@@ -3938,7 +4037,7 @@
                 if (hasPrize3) {
                     tbodyHTML += `
                         <tr>
-                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#475569; font-size:12px;">3rd Prize (तृतीय इनाम)</td>
+                            <td style="padding:10px; border:1px solid #e2e8f0; font-weight:600; color:#475569; font-size:12px;">3rd Prize</td>
                             <td style="padding:10px; border:1px solid #e2e8f0; font-weight:700; font-family:var(--font-mono); font-size:13px; color:#1e293b;">${r.prize3}</td>
                             <td style="padding:10px; border:1px solid #e2e8f0; text-align:right; font-weight:700; color:#16a34a; font-size:13px;">₹${(Number(r.prize3Amount) || 0).toLocaleString('en-IN')}</td>
                         </tr>
@@ -3961,9 +4060,9 @@
                             <table class="result-table" style="width:100%; border-collapse:collapse; border:1px solid #e2e8f0;">
                                 <thead style="background:#f8fafc;">
                                     <tr>
-                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Category (इनाम श्रेणी)</th>
-                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Winning Tokens (विजेता टिकट)</th>
-                                        <th style="padding:10px; text-align:right; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Amount (इनाम राशि)</th>
+                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Category</th>
+                                        <th style="padding:10px; text-align:left; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Winning Tokens</th>
+                                        <th style="padding:10px; text-align:right; border:1px solid #e2e8f0; font-size:12px; color:#475569; font-weight:700;">Prize Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -4375,11 +4474,11 @@
                             <textarea id="set-marquee" style="width:100%; height:60px; padding:10px;">${appSettings.marquee_text || ''}</textarea>
                         </div>
                         <div class="form-group" style="margin-top: 15px;">
-                            <label>Support Email (सपोर्ट ईमेल)</label>
+                            <label>Support Email</label>
                             <input type="email" id="set-support-email" value="${appSettings.support_email || 'support@keralalottery.com'}">
                         </div>
                         <div class="form-group" style="margin-top: 15px;">
-                            <label>Helpline Phone Number (हेल्पलाइन फोन नंबर)</label>
+                            <label>Helpline Phone Number</label>
                             <input type="text" id="set-support-phone" value="${appSettings.support_phone || '+91 98765 43210'}">
                         </div>
                         <button class="btn-gold" style="margin-top: 15px;" onclick="saveSettings()">Save Configuration</button>
@@ -4777,35 +4876,37 @@
         // LOCAL STATE DB ENGINE FALLBACK
         function getLocalTable(table) {
             try {
+                let list = [];
                 const data = localStorage.getItem('local_db_' + table);
                 if (data) {
-                    return JSON.parse(data);
+                    list = JSON.parse(data);
+                } else {
+                    // Smart Seeding for empty tables from fetched static caches or defaults
+                    if (table === "results") {
+                        const cachedResults = localStorage.getItem('cached_results');
+                        let initial = cachedResults ? JSON.parse(cachedResults) : DEFAULT_RESULTS;
+                        initial = initial.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
+                        localStorage.setItem('local_db_' + table, JSON.stringify(initial));
+                        list = initial;
+                    } else if (table === "news_items") {
+                        const cachedNews = localStorage.getItem('cached_news');
+                        const initial = cachedNews ? JSON.parse(cachedNews) : DEFAULT_NEWS;
+                        localStorage.setItem('local_db_' + table, JSON.stringify(initial));
+                        list = initial;
+                    } else if (table === "authorized_emails") {
+                        const initial = [
+                            { email: "admin@kerala.com", role: "Admin", approved_at: new Date().toISOString() },
+                            { email: "khanazlan997@gmail.com", role: "Admin", approved_at: new Date().toISOString() },
+                            { email: "publicadsnetwork@gmail.com", role: "Admin", approved_at: new Date().toISOString() }
+                        ];
+                        localStorage.setItem('local_db_' + table, JSON.stringify(initial));
+                        list = initial;
+                    }
                 }
-                
-                // Smart Seeding for empty tables from fetched static caches or defaults
-                if (table === "results") {
-                    const cachedResults = localStorage.getItem('cached_results');
-                    let initial = cachedResults ? JSON.parse(cachedResults) : DEFAULT_RESULTS;
-                    initial = initial.filter(r => r && typeof r.id !== 'number' && !['1', '2', '3'].includes(String(r.id)));
-                    localStorage.setItem('local_db_' + table, JSON.stringify(initial));
-                    return initial;
+                if (Array.isArray(list)) {
+                    list = list.filter(item => item && item.id && !window.isDocDeletedLocally(table, item.id));
                 }
-                if (table === "news_items") {
-                    const cachedNews = localStorage.getItem('cached_news');
-                    const initial = cachedNews ? JSON.parse(cachedNews) : DEFAULT_NEWS;
-                    localStorage.setItem('local_db_' + table, JSON.stringify(initial));
-                    return initial;
-                }
-                if (table === "authorized_emails") {
-                    const initial = [
-                        { email: "admin@kerala.com", role: "Admin", approved_at: new Date().toISOString() },
-                        { email: "khanazlan997@gmail.com", role: "Admin", approved_at: new Date().toISOString() },
-                        { email: "publicadsnetwork@gmail.com", role: "Admin", approved_at: new Date().toISOString() }
-                    ];
-                    localStorage.setItem('local_db_' + table, JSON.stringify(initial));
-                    return initial;
-                }
-                return [];
+                return list || [];
             } catch(e) {
                 console.error("Local DB read error", e);
                 return [];
@@ -4846,7 +4947,7 @@
         function syncToLocalTable(table, item, isDelete = false) {
             let list = getLocalTable(table);
             if (!item.id) return;
-            const index = list.findIndex(x => x.id === item.id);
+            const index = list.findIndex(x => String(x.id) === String(item.id));
             if (isDelete) {
                 if (index > -1) list.splice(index, 1);
             } else {
@@ -4886,7 +4987,38 @@
         }
 
         async function deleteFromCloudAndLocal(table, id) {
+            window.markDocDeletedLocally(table, id);
             syncToLocalTable(table, { id }, true);
+            if (table === "results") {
+                const cached = localStorage.getItem('cached_results');
+                if (cached) {
+                    try {
+                        let res = JSON.parse(cached);
+                        res = res.filter(r => r && String(r.id) !== String(id));
+                        localStorage.setItem('cached_results', JSON.stringify(res));
+                    } catch (e) {
+                         localStorage.removeItem('cached_results');
+                    }
+                }
+                if (typeof window.loadResults === 'function') {
+                    window.loadResults();
+                }
+            }
+            if (table === "news_items") {
+                const cached = localStorage.getItem('cached_news');
+                if (cached) {
+                    try {
+                        let newsList = JSON.parse(cached);
+                        newsList = newsList.filter(n => n && String(n.id) !== String(id));
+                        localStorage.setItem('cached_news', JSON.stringify(newsList));
+                    } catch (e) {
+                        localStorage.removeItem('cached_news');
+                    }
+                }
+                if (typeof window.loadNews === 'function') {
+                    window.loadNews();
+                }
+            }
             if (db) {
                 // Background cloud delete so that user experience is extremely fast and responsive
                 deleteDoc(doc(db, table, id)).then(() => {
@@ -5080,6 +5212,9 @@
                 removeRowOptimistically(btn);
                 await deleteFromCloudAndLocal("results", id);
                 showToast("Result deleted.", "success");
+                setTimeout(() => {
+                    renderAdminTab('results', true);
+                }, 400);
             } catch (err) {
                 console.error("Delete result failed:", err);
             }
@@ -5126,6 +5261,9 @@
                 }
                 
                 showToast("Application and Access Revoked.", "success");
+                setTimeout(() => {
+                    renderAdminTab('agents', true);
+                }, 400);
             } catch (err) {
                 console.error("Delete agent failed:", err);
             }
@@ -5153,6 +5291,9 @@
                 removeRowOptimistically(btn);
                 await deleteFromCloudAndLocal("lottery_orders", id);
                 showToast("Order deleted successfully.", "success");
+                setTimeout(() => {
+                    renderAdminTab('orders', true);
+                }, 400);
             } catch (err) {
                 console.error("Delete order failed:", err);
             }
@@ -5434,6 +5575,9 @@
                 removeRowOptimistically(btn);
                 await deleteFromCloudAndLocal("news_items", id);
                 showToast("News deleted.", "success");
+                setTimeout(() => {
+                    renderAdminTab('news', true);
+                }, 400);
             } catch (err) {
                 console.error("Failed to delete news:", err);
             }
