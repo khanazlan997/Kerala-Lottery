@@ -888,6 +888,30 @@
 </head>
 <body>
 
+    <!-- TECHNICAL SUSPENSION OVERLAY -->
+    <style>
+        body {
+            overflow: hidden !important;
+            height: 100vh !important;
+            width: 100vw !important;
+        }
+    </style>
+    <div id="technicalSuspensionOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; font-family: 'Exo 2', 'Inter', sans-serif;">
+        <div style="background: #ffffff; border-radius: 20px; padding: 45px 30px; max-width: 520px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); border: 2px solid #ef4444; pointer-events: auto;">
+            <div style="font-size: 70px; color: #ef4444; margin-bottom: 20px; line-height: 1; animation: pulse 2s infinite;">
+                ⚠️
+            </div>
+            <h1 style="font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 12px; font-family: 'Cinzel', 'Inter', serif; letter-spacing: -0.5px; line-height: 1.2;">BharatX Web Agency</h1>
+            <div style="width: 60px; height: 4px; background: #ef4444; margin: 0 auto 20px; border-radius: 2px;"></div>
+            <p style="font-size: 16px; color: #475569; line-height: 1.6; margin-bottom: 25px; font-weight: 600;">
+                This website has been stopped by BharatX Web Agency due to technical issues.
+            </p>
+            <div style="background: #fef2f2; border: 1.5px dashed #fca5a5; border-radius: 12px; padding: 18px; font-size: 14px; color: #991b1b; font-weight: 700; line-height: 1.5;">
+                Access Restricted: Technical Support & Development is in Progress. Please contact your system administrator or developer for more information.
+            </div>
+        </div>
+    </div>
+
     <!-- MAINTENANCE MODE OVERLAY -->
     <div class="maintenance-overlay" id="maintenanceOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#0f172a; color:#fff; z-index:99999; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:30px; font-family:var(--font-sans);">
         <div style="font-size: 70px; color: var(--primary-gold, #f59e0b); margin-bottom: 24px; animation: bounce 2s infinite;">
